@@ -1,4 +1,71 @@
 services:
+  ollama:
+    image: ollama/ollama
+    volumes:
+      - ./ollama_data:/root/.ollama
+    container_name: ollama
+    pull_policy: always
+    tty: true
+    restart: unless-stopped
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
+      - OLLAMA_HOST=0.0.0.0
+    networks:
+      - weaviate-network
+
+  # Sidecar to pull models as soon as the ollama service starts
+  ollama-model-puller:
+    image: ollama/ollama
+    container_name: ollama-model-puller
+    volumes:
+      - ./ollama_data:/root/.ollama
+      - ./ollama_model_puller.sh:/ollama_model_puller.sh
+    depends_on:
+      - ollama
+    entrypoint: ["/bin/bash", "/ollama_model_puller.sh"]
+    networks:
+      - weaviate-network
+
+  contextionary:
+    container_name: contextionary
+    platform: linux/amd64
+    environment:
+      OCCURRENCE_WEIGHT_LINEAR_FACTOR: 0.75
+      EXTENSIONS_STORAGE_MODE: weaviate
+      EXTENSIONS_STORAGE_ORIGIN: http://weaviate:8080
+      NEIGHBOR_OCCURRENCE_IGNORE_PERCENTILE: 5
+      ENABLE_COMPOUND_SPLITTING: "false"
+    image: cr.weaviate.io/semitechnologies/contextionary:en0.16.0-v1.2.1
+    ports:
+      - 9999:9999
+    networks:
+      - weaviate-network
+
+  qna-transformers:
+    image: cr.weaviate.io/semitechnologies/qna-transformers:distilbert-base-uncased-distilled-squad
+    container_name: qna-transformers
+    environment:
+      ENABLE_CUDA: "0"
+    networks:
+      - weaviate-network
+
+  sum-transformers:
+    image: cr.weaviate.io/semitechnologies/sum-transformers:facebook-bart-large-cnn-1.0.0
+    container_name: sum-transformers
+    environment:
+      ENABLE_CUDA: "0"
+    networks:
+      - weaviate-network
+
+  i2v-neural:
+    image: cr.weaviate.io/semitechnologies/img2vec-pytorch:resnet50
+    platform: linux/amd64
+    container_name: i2v-neural
+    environment:
+      ENABLE_CUDA: "0"
+    networks:
+      - weaviate-network
+
   weaviate:
     container_name: weaviate
     command:
@@ -26,56 +93,21 @@ services:
       DEFAULT_VECTORIZER_MODULE: "text2vec-contextionary"
       ENABLE_MODULES: "text2vec-contextionary,qna-transformers,sum-transformers,img2vec-neural,generative-ollama"
       CLUSTER_HOSTNAME: "node1"
-
-  contextionary:
-    container_name: contextionary
-    environment:
-      OCCURRENCE_WEIGHT_LINEAR_FACTOR: 0.75
-      EXTENSIONS_STORAGE_MODE: weaviate
-      EXTENSIONS_STORAGE_ORIGIN: http://weaviate:8080
-      NEIGHBOR_OCCURRENCE_IGNORE_PERCENTILE: 5
-      ENABLE_COMPOUND_SPLITTING: "false"
-    image: cr.weaviate.io/semitechnologies/contextionary:en0.16.0-v1.2.1
-    ports:
-      - 9999:9999
-
-  qna-transformers:
-    image: cr.weaviate.io/semitechnologies/qna-transformers:distilbert-base-uncased-distilled-squad
-    container_name: qna-transformers
-    environment:
-      ENABLE_CUDA: "0"
-
-  sum-transformers:
-    image: cr.weaviate.io/semitechnologies/sum-transformers:facebook-bart-large-cnn-1.0.0
-    container_name: sum-transformers
-    environment:
-      ENABLE_CUDA: "0"
-
-  i2v-neural:
-    image: cr.weaviate.io/semitechnologies/img2vec-keras:resnet50
-    container_name: i2v-neural
-    environment:
-      ENABLE_CUDA: "0"
-
-  ollama:
-    image: ollama/ollama
-    volumes:
-      - ./ollama_data:/root/.ollama
-    container_name: ollama
-    pull_policy: always
-    tty: true
-    restart: unless-stopped
-    environment:
-      - OLLAMA_KEEP_ALIVE=24h
-      - OLLAMA_HOST=0.0.0.0
-
-  # Sidecar to pull models as soon as the ollama service starts
-  ollama-model-puller:
-    image: ollama/ollama
-    container_name: ollama-model-puller
-    volumes:
-      - ./ollama_data:/root/.ollama
-      - ./ollama_model_puller.sh:/ollama_model_puller.sh
+      LIMIT_RESOURCES: "true"
+    networks:
+      - weaviate-network
     depends_on:
-      - ollama
-    entrypoint: ["/bin/bash", "/ollama_model_puller.sh"]
+      ollama-model-puller:
+        condition: service_started
+      contextionary:
+        condition: service_started
+      qna-transformers:
+        condition: service_started
+      sum-transformers:
+        condition: service_started
+      i2v-neural:
+        condition: service_started
+
+networks:
+  weaviate-network:
+    driver: bridge
