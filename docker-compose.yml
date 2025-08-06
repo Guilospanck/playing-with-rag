@@ -2,10 +2,8 @@ services:
   ollama:
     image: ollama/ollama
     volumes:
-      - .:/code
-      - ./ollama_data:/root/.ollama
-    ports:
-      - 7869:11434
+      - ./ollama:/code
+      - ./ollama/ollama_data:/root/.ollama
     container_name: ollama
     pull_policy: always
     tty: true
@@ -21,8 +19,8 @@ services:
     image: ollama/ollama
     container_name: ollama-model-puller
     volumes:
-      - ./ollama_data:/root/.ollama
-      - ./ollama_model_puller.sh:/ollama_model_puller.sh
+      - ./ollama/ollama_data:/root/.ollama
+      - ./ollama/ollama_model_puller.sh:/ollama_model_puller.sh
     depends_on:
       - ollama
     entrypoint: ["/bin/bash", "/ollama_model_puller.sh"]
@@ -83,7 +81,7 @@ services:
       - 8080:8080
       - 50051:50051
     volumes:
-      - ./weaviate_data:/var/lib/weaviate
+      - ./weaviate/weaviate_data:/var/lib/weaviate
     restart: on-failure:0
     environment:
       CONTEXTIONARY_URL: contextionary:9999
@@ -116,6 +114,24 @@ services:
         condition: service_started
       i2v-neural:
         condition: service_started
+
+  verba:
+    container_name: verba
+    build:
+      context: ./Verba/
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    volumes:
+      - ./Verba/data:/data/
+    healthcheck:
+      test: wget --no-verbose --tries=3 --spider http://localhost:8000 || exit 1
+      interval: 5s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    networks:
+      - weaviate-network
 
 networks:
   weaviate-network:
