@@ -2,8 +2,8 @@
 
 ## Running
 
-- Weaviate
-
 ```shell
-just start-weaviate
+just start
 ```
+
+This will start `weaviate` (with its "addons"), `ollama` and `Verba`.
