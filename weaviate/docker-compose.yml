@@ -2,7 +2,10 @@ services:
   ollama:
     image: ollama/ollama
     volumes:
+      - .:/code
       - ./ollama_data:/root/.ollama
+    ports:
+      - 7869:11434
     container_name: ollama
     pull_policy: always
     tty: true
@@ -94,6 +97,12 @@ services:
       ENABLE_MODULES: "text2vec-contextionary,qna-transformers,sum-transformers,img2vec-neural,generative-ollama"
       CLUSTER_HOSTNAME: "node1"
       LIMIT_RESOURCES: "true"
+    healthcheck:
+      test: wget --no-verbose --tries=3 --spider http://localhost:8080/v1/.well-known/ready || exit 1
+      interval: 5s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
     networks:
       - weaviate-network
     depends_on:
