@@ -11,10 +11,10 @@ until /bin/ollama list >/dev/null 2>&1; do
 done
 
 echo 
-echo "📥 Pulling nomic-embed-text for the text embedding..."
+echo "\n📥 Pulling nomic-embed-text for the text embedding..."
 /bin/ollama pull nomic-embed-text
 
-echo "📥 Pulling llama3.2 for the generative part..."
+echo "\n📥 Pulling llama3.2 for the generative part..."
 /bin/ollama pull llama3.2
 
 echo 

@@ -6,4 +6,4 @@
 just start
 ```
 
-This will start `weaviate` (with its "addons"), `ollama` and `Verba`.
+This will start `weaviate` (with its "addons"), `ollama` and `verba`.

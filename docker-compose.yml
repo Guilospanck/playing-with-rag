@@ -120,12 +120,12 @@ services:
   verba:
     container_name: verba
     build:
-      context: ./Verba/
+      context: ./verba/
       dockerfile: Dockerfile
     ports:
       - 8000:8000
     volumes:
-      - ./Verba/data:/data/
+      - ./verba/data:/data/
     healthcheck:
       test: wget --no-verbose --tries=3 --spider http://localhost:8000 || exit 1
       interval: 5s
