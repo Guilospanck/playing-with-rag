@@ -1,5 +1,8 @@
 .env
+# Ignore all .env* files
 .env*
+# But don't ignore .env.example
+!.env.example
 __pycache__
 .DS_Store
 .pytest_cache

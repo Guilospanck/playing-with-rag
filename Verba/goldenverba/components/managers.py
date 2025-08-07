@@ -1126,6 +1126,7 @@ class EmbeddingManager:
         self, embedder: str, config: dict, content: list[str]
     ) -> list[list[float]]:
         """Vectorize content in batches"""
+
         try:
             batches = [
                 content[i : i + self.embedders[embedder].max_batch_size]

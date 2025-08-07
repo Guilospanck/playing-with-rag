@@ -117,6 +117,7 @@ class GitReader(Reader):
                         file_size=size,
                         status=fileConfig.status,
                         status_report=fileConfig.status_report,
+                        metadata="",
                     )
                     document = await reader.load(config, new_file_config)
                     documents.append(document[0])
