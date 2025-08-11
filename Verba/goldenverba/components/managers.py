@@ -394,56 +394,61 @@ class WeaviateManager:
     async def import_document(
         self, client: WeaviateAsyncClient, document: Document, embedder: str
     ):
-        if await self.verify_collection(
+        collection_exists = await self.verify_collection(
             client, self.document_collection_name
-        ) and await self.verify_embedding_collection(client, embedder):
-            document_collection = client.collections.get(self.document_collection_name)
-            embedder_collection = client.collections.get(self.embedding_table[embedder])
+        )
+        embedding_collection_exists = await self.verify_embedding_collection(
+            client, embedder
+        )
 
-            ### Import Document
-            document_obj = Document.to_json(document)
-            doc_uuid = await document_collection.data.insert(document_obj)
+        if not (collection_exists and embedding_collection_exists):
+            return
 
-            chunk_ids = []
+        document_collection = client.collections.get(self.document_collection_name)
+        embedder_collection = client.collections.get(self.embedding_table[embedder])
 
-            try:
-                for chunk in document.chunks:
-                    chunk.doc_uuid = doc_uuid
-                    chunk.labels = document.labels
-                    chunk.title = document.title
+        ### Import Document
+        document_obj = Document.to_json(document)
+        doc_uuid = await document_collection.data.insert(document_obj)
 
-                chunk_response = await embedder_collection.data.insert_many(
-                    [
-                        DataObject(properties=chunk.to_json(), vector=chunk.vector)
-                        for chunk in document.chunks
-                    ]
-                )
-                chunk_ids = [
-                    chunk_response.uuids[uuid] for uuid in chunk_response.uuids
+        chunk_ids = []
+
+        try:
+            for chunk in document.chunks:
+                chunk.doc_uuid = doc_uuid
+                chunk.labels = document.labels
+                chunk.title = document.title
+
+            chunk_response = await embedder_collection.data.insert_many(
+                [
+                    DataObject(properties=chunk.to_json(), vector=chunk.vector)
+                    for chunk in document.chunks
                 ]
+            )
+            chunk_ids = [chunk_response.uuids[uuid] for uuid in chunk_response.uuids]
 
-                if chunk_response.has_errors:
+            if chunk_response.has_errors:
+                raise Exception(
+                    f"Failed to ingest chunks into Weaviate: {chunk_response.errors}"
+                )
+
+            if doc_uuid and chunk_response:
+                response = await embedder_collection.aggregate.over_all(
+                    filters=Filter.by_property("doc_uuid").equal(doc_uuid),
+                    total_count=True,
+                )
+                if response.total_count != len(document.chunks):
+                    await document_collection.data.delete_by_id(doc_uuid)
+                    for _id in chunk_ids:
+                        await embedder_collection.data.delete_by_id(_id)
                     raise Exception(
-                        f"Failed to ingest chunks into Weaviate: {chunk_response.errors}"
+                        f"Chunk Mismatch detected after importing: Imported:{response.total_count} | Existing: {len(document.chunks)}"
                     )
 
-                if doc_uuid and chunk_response:
-                    response = await embedder_collection.aggregate.over_all(
-                        filters=Filter.by_property("doc_uuid").equal(doc_uuid),
-                        total_count=True,
-                    )
-                    if response.total_count != len(document.chunks):
-                        await document_collection.data.delete_by_id(doc_uuid)
-                        for _id in chunk_ids:
-                            await embedder_collection.data.delete_by_id(_id)
-                        raise Exception(
-                            f"Chunk Mismatch detected after importing: Imported:{response.total_count} | Existing: {len(document.chunks)}"
-                        )
-
-            except Exception as e:
-                if doc_uuid:
-                    await self.delete_document(client, doc_uuid)
-                raise Exception(f"Chunk import failed with : {str(e)}")
+        except Exception as e:
+            if doc_uuid:
+                await self.delete_document(client, doc_uuid)
+            raise Exception(f"Chunk import failed with : {str(e)}")
 
     ### Document CRUD
 
@@ -464,26 +469,31 @@ class WeaviateManager:
             return None
 
     async def delete_document(self, client: WeaviateAsyncClient, uuid: str):
-        if await self.verify_collection(client, self.document_collection_name):
-            document_collection = client.collections.get(self.document_collection_name)
+        collection_exists = await self.verify_collection(
+            client, self.document_collection_name
+        )
+        if not collection_exists:
+            return
 
-            if not await document_collection.data.exists(uuid):
-                return
+        document_collection = client.collections.get(self.document_collection_name)
+        if not await document_collection.data.exists(uuid):
+            return
 
-            document_obj = await document_collection.query.fetch_object_by_id(uuid)
-            embedding_config = json.loads(document_obj.properties.get("meta"))[
-                "Embedder"
-            ]
-            embedder = embedding_config["config"]["Model"]["value"]
+        document_obj = await document_collection.query.fetch_object_by_id(uuid)
+        embedding_config = json.loads(document_obj.properties.get("meta"))["Embedder"]
+        embedder = embedding_config["config"]["Model"]["value"]
 
-            if await self.verify_embedding_collection(client, embedder):
-                if await document_collection.data.delete_by_id(uuid):
-                    embedder_collection = client.collections.get(
-                        self.embedding_table[embedder]
-                    )
-                    await embedder_collection.data.delete_many(
-                        where=Filter.by_property("doc_uuid").equal(uuid)
-                    )
+        embedding_collection_exists = await self.verify_embedding_collection(
+            client, embedder
+        )
+        if not embedding_collection_exists:
+            return
+
+        if await document_collection.data.delete_by_id(uuid):
+            embedder_collection = client.collections.get(self.embedding_table[embedder])
+            await embedder_collection.data.delete_many(
+                where=Filter.by_property("doc_uuid").equal(uuid)
+            )
 
     async def delete_all_documents(self, client: WeaviateAsyncClient):
         if await self.verify_collection(client, self.document_collection_name):
@@ -512,50 +522,55 @@ class WeaviateManager:
         labels: list[str],
         properties: list[str] = None,
     ) -> list[dict]:
-        if await self.verify_collection(client, self.document_collection_name):
-            offset = pageSize * (page - 1)
-            document_collection = client.collections.get(self.document_collection_name)
+        collection_exists = await self.verify_collection(
+            client, self.document_collection_name
+        )
+        if not collection_exists:
+            return
 
-            if len(labels) > 0:
-                filter = Filter.by_property("labels").contains_all(labels)
-            else:
-                filter = None
+        offset = pageSize * (page - 1)
+        document_collection = client.collections.get(self.document_collection_name)
 
-            response = await document_collection.aggregate.over_all(
-                total_count=True, filters=filter
+        if len(labels) > 0:
+            filter = Filter.by_property("labels").contains_all(labels)
+        else:
+            filter = None
+
+        response = await document_collection.aggregate.over_all(
+            total_count=True, filters=filter
+        )
+
+        if response.total_count == 0:
+            return [], 0
+
+        total_count = response.total_count
+
+        if query == "":
+            total_count = response.total_count
+            response = await document_collection.query.fetch_objects(
+                limit=pageSize,
+                offset=offset,
+                return_properties=properties,
+                sort=Sort.by_property("title", ascending=True),
+                filters=filter,
+            )
+        else:
+            response = await document_collection.query.bm25(
+                query=query,
+                limit=pageSize,
+                offset=offset,
+                filters=filter,
+                return_properties=properties,
             )
 
-            if response.total_count == 0:
-                return [], 0
-
-            total_count = response.total_count
-
-            if query == "":
-                total_count = response.total_count
-                response = await document_collection.query.fetch_objects(
-                    limit=pageSize,
-                    offset=offset,
-                    return_properties=properties,
-                    sort=Sort.by_property("title", ascending=True),
-                    filters=filter,
-                )
-            else:
-                response = await document_collection.query.bm25(
-                    query=query,
-                    limit=pageSize,
-                    offset=offset,
-                    filters=filter,
-                    return_properties=properties,
-                )
-
-            return [
-                {
-                    "title": doc.properties["title"],
-                    "uuid": str(doc.uuid),
-                    "labels": doc.properties["labels"],
-                }
-                for doc in response.objects
-            ], total_count
+        return [
+            {
+                "title": doc.properties["title"],
+                "uuid": str(doc.uuid),
+                "labels": doc.properties["labels"],
+            }
+            for doc in response.objects
+        ], total_count
 
     async def get_document(
         self, client: WeaviateAsyncClient, uuid: str, properties: list[str] = None

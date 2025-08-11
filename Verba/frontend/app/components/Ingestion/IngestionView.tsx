@@ -19,7 +19,7 @@ interface IngestionViewProps {
   setRAGConfig: React.Dispatch<React.SetStateAction<RAGConfig | null>>;
   addStatusMessage: (
     message: string,
-    type: "INFO" | "WARNING" | "SUCCESS" | "ERROR"
+    type: "INFO" | "WARNING" | "SUCCESS" | "ERROR",
   ) => void;
 }
 
@@ -35,7 +35,7 @@ const IngestionView: React.FC<IngestionViewProps> = ({
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
   const [socketStatus, setSocketStatus] = useState<"ONLINE" | "OFFLINE">(
-    "OFFLINE"
+    "OFFLINE",
   );
 
   useEffect(() => {
@@ -88,7 +88,7 @@ const IngestionView: React.FC<IngestionViewProps> = ({
       setSocketErrorStatus();
       if (event.wasClean) {
         console.log(
-          `Import WebSocket connection closed cleanly, code=${event.code}, reason=${event.reason}`
+          `Import WebSocket connection closed cleanly, code=${event.code}, reason=${event.reason}`,
         );
       } else {
         console.error("WebSocket connection died");
@@ -144,7 +144,7 @@ const IngestionView: React.FC<IngestionViewProps> = ({
     setFileMap((prevFileMap) => {
       if (data && data.fileID in prevFileMap) {
         const newFileData: FileData = JSON.parse(
-          JSON.stringify(prevFileMap[data.fileID])
+          JSON.stringify(prevFileMap[data.fileID]),
         );
         const newFileMap: FileMap = { ...prevFileMap };
         newFileData.status = data.status;
@@ -160,7 +160,7 @@ const IngestionView: React.FC<IngestionViewProps> = ({
     setFileMap((prevFileMap) => {
       if (fileID in prevFileMap) {
         const newFileData: FileData = JSON.parse(
-          JSON.stringify(prevFileMap[fileID])
+          JSON.stringify(prevFileMap[fileID]),
         );
         const newFileMap: FileMap = { ...prevFileMap };
         newFileData.status = "WAITING";
@@ -183,7 +183,7 @@ const IngestionView: React.FC<IngestionViewProps> = ({
     ) {
       sendDataBatches(
         JSON.stringify(fileMap[selectedFileData]),
-        selectedFileData
+        selectedFileData,
       );
     }
   };
@@ -201,38 +201,40 @@ const IngestionView: React.FC<IngestionViewProps> = ({
   };
 
   const sendDataBatches = (data: string, fileID: string) => {
-    if (socket?.readyState === WebSocket.OPEN) {
-      setInitialStatus(fileID);
-      const chunkSize = 2000; // Define chunk size (in bytes)
-      const batches = [];
-      let offset = 0;
+    const socketReadyState = socket?.readyState;
 
-      // Create the batches
-      while (offset < data.length) {
-        const chunk = data.slice(offset, offset + chunkSize);
-        batches.push(chunk);
-        offset += chunkSize;
-      }
-
-      const totalBatches = batches.length;
-
-      // Send the batches
-      batches.forEach((chunk, order) => {
-        socket.send(
-          JSON.stringify({
-            chunk: chunk,
-            isLastChunk: order === totalBatches - 1,
-            total: totalBatches,
-            order: order,
-            fileID: fileID,
-            credentials: credentials,
-          })
-        );
-      });
-    } else {
+    if (socketReadyState !== WebSocket.OPEN) {
       console.error("WebSocket is not open. ReadyState:", socket?.readyState);
       setReconnect((prevState) => !prevState);
     }
+
+    setInitialStatus(fileID);
+    const chunkSize = 2000; // Define chunk size (in bytes)
+    const batches = [];
+    let offset = 0;
+
+    // Create the batches
+    while (offset < data.length) {
+      const chunk = data.slice(offset, offset + chunkSize);
+      batches.push(chunk);
+      offset += chunkSize;
+    }
+
+    const totalBatches = batches.length;
+
+    // Send the batches
+    batches.forEach((chunk, order) => {
+      socket.send(
+        JSON.stringify({
+          chunk: chunk,
+          isLastChunk: order === totalBatches - 1,
+          total: totalBatches,
+          order: order,
+          fileID: fileID,
+          credentials: credentials,
+        }),
+      );
+    });
   };
 
   return (

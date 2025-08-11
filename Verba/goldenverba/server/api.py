@@ -162,11 +162,15 @@ async def health_check():
 async def connect_to_verba(payload: ConnectPayload):
     try:
         client = await client_manager.connect(payload.credentials, payload.port)
+
         if isinstance(
             client, WeaviateAsyncClient
         ):  # Check if client is an AsyncClient object
+            msg.info(">>> CHECKING LOAD RAG CONFIG")
             config = await manager.load_rag_config(client)
+            msg.info(">>> CHECKING USER CONFIG")
             user_config = await manager.load_user_config(client)
+            msg.info(">>> CHECKING THEME")
             theme, themes = await manager.load_theme_config(client)
             return JSONResponse(
                 status_code=200,
@@ -184,12 +188,12 @@ async def connect_to_verba(payload: ConnectPayload):
                 "Couldn't connect to Weaviate, client is not an AsyncClient object"
             )
     except Exception as e:
-        msg.fail(f"Failed to connect to Weaviate {str(e)}")
+        msg.fail(f"Failed to connect to Weaviate: {str(e)}")
         return JSONResponse(
             status_code=400,
             content={
                 "connected": False,
-                "error": f"Failed to connect to Weaviate {str(e)}",
+                "error": f"Failed to connect to Weaviate: {str(e)}",
                 "rag_config": {},
                 "theme": {},
                 "themes": {},

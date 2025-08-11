@@ -61,6 +61,7 @@ class VerbaManager:
             )
         except Exception as e:
             raise e
+
         if client:
             initialized = await self.weaviate_manager.verify_collection(
                 client, self.weaviate_manager.config_collection_name
