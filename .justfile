@@ -13,14 +13,14 @@ docker-exec:
 	docker-compose exec verba bash
 
 local-docker-up:
-	docker-compose up -d --build --remove-orphans -f docker-compose.dev.yml 
+	docker-compose -f docker-compose.dev.yml up -d --build --remove-orphans 
 
 local-docker-down:
-	docker-compose down -f docker-compose.dev.yml 
+	docker-compose -f docker-compose.dev.yml down
 
 # Run RAGit locally
-local-ragit: local-docker-up
-	cd verba/ && bash -c 'source ./scripts/dev.sh && init'
+local-ragit-up: local-docker-up
+	bash -c 'source ./scripts/run.dev.sh && init'
 
 format:
 	cd verba/ && black .
