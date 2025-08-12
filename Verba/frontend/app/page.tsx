@@ -56,7 +56,7 @@ export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [credentials, setCredentials] = useState<Credentials>({
-    deployment: "Local",
+    deployment: "Docker",
     url: "",
     key: "",
     default_deployment: "",
@@ -79,7 +79,7 @@ export default function Home() {
         setGtag(health_data.gtag);
         setIsHealthy(true);
         setCredentials({
-          deployment: "Local",
+          deployment: "Docker",
           url: health_data.deployments.WEAVIATE_URL_VERBA,
           key: health_data.deployments.WEAVIATE_API_KEY_VERBA,
           default_deployment: health_data.default_deployment,
@@ -109,27 +109,6 @@ export default function Home() {
       return () => clearTimeout(timer);
     }
   }, [isLoggedIn]);
-
-  const isValidTheme = (theme: Theme): boolean => {
-    const requiredAttributes = [
-      "primary_color",
-      "secondary_color",
-      "warning_color",
-      "bg_color",
-      "bg_alt_color",
-      "text_color",
-      "text_alt_color",
-      "button_color",
-      "button_hover_color",
-      "button_text_color",
-      "button_text_alt_color",
-    ];
-    return requiredAttributes.every(
-      (attr) =>
-        typeof theme[attr as keyof Theme] === "object" &&
-        "color" in (theme[attr as keyof Theme] as object)
-    );
-  };
 
   const updateCSSVariables = useCallback(() => {
     const themeToUse = selectedTheme;

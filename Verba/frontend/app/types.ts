@@ -1,8 +1,8 @@
 export type Credentials = {
-  deployment: "Weaviate" | "Docker" | "Local" | "Custom";
+  deployment: "Docker";
   url: string;
   key: string;
-  default_deployment: "Weaviate" | "Docker" | "Local" | "Custom" | "";
+  default_deployment: "Docker";
 };
 
 export type DocumentFilter = {
@@ -60,7 +60,7 @@ export type HealthPayload = {
     WEAVIATE_URL_VERBA: string;
     WEAVIATE_API_KEY_VERBA: string;
   };
-  default_deployment: "Weaviate" | "Docker" | "Local" | "Custom" | "";
+  default_deployment: "Docker";
 };
 
 export type QueryPayload = {

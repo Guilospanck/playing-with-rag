@@ -16,7 +16,6 @@ from datetime import datetime
 
 from sklearn.decomposition import PCA
 
-
 from goldenverba.components.document import Document
 from goldenverba.components.interfaces import (
     Reader,
@@ -31,13 +30,6 @@ from goldenverba.server.types import FileConfig, FileStatus
 # Import Readers
 from goldenverba.components.reader.BasicReader import BasicReader
 from goldenverba.components.reader.GitReader import GitReader
-from goldenverba.components.reader.UnstructuredAPI import UnstructuredReader
-from goldenverba.components.reader.AssemblyAIAPI import AssemblyAIReader
-from goldenverba.components.reader.HTMLReader import HTMLReader
-from goldenverba.components.reader.FirecrawlReader import FirecrawlReader
-from goldenverba.components.reader.UpstageDocumentParse import (
-    UpstageDocumentParseReader,
-)
 
 # Import Chunkers
 from goldenverba.components.chunking.TokenChunker import TokenChunker
@@ -50,27 +42,13 @@ from goldenverba.components.chunking.JSONChunker import JSONChunker
 from goldenverba.components.chunking.SemanticChunker import SemanticChunker
 
 # Import Embedders
-from goldenverba.components.embedding.OpenAIEmbedder import OpenAIEmbedder
-from goldenverba.components.embedding.CohereEmbedder import CohereEmbedder
 from goldenverba.components.embedding.OllamaEmbedder import OllamaEmbedder
-from goldenverba.components.embedding.UpstageEmbedder import UpstageEmbedder
-from goldenverba.components.embedding.WeaviateEmbedder import WeaviateEmbedder
-from goldenverba.components.embedding.VoyageAIEmbedder import VoyageAIEmbedder
-from goldenverba.components.embedding.SentenceTransformersEmbedder import (
-    SentenceTransformersEmbedder,
-)
 
 # Import Retrievers
 from goldenverba.components.retriever.WindowRetriever import WindowRetriever
 
 # Import Generators
-from goldenverba.components.generation.CohereGenerator import CohereGenerator
-from goldenverba.components.generation.AnthrophicGenerator import AnthropicGenerator
 from goldenverba.components.generation.OllamaGenerator import OllamaGenerator
-from goldenverba.components.generation.OpenAIGenerator import OpenAIGenerator
-from goldenverba.components.generation.GroqGenerator import GroqGenerator
-from goldenverba.components.generation.NovitaGenerator import NovitaGenerator
-from goldenverba.components.generation.UpstageGenerator import UpstageGenerator
 
 try:
     import tiktoken
@@ -83,12 +61,7 @@ production = os.getenv("VERBA_PRODUCTION")
 if production != "Production":
     readers = [
         BasicReader(),
-        HTMLReader(),
         GitReader(),
-        UnstructuredReader(),
-        AssemblyAIReader(),
-        FirecrawlReader(),
-        UpstageDocumentParseReader(),
     ]
     chunkers = [
         TokenChunker(),
@@ -102,32 +75,15 @@ if production != "Production":
     ]
     embedders = [
         OllamaEmbedder(),
-        SentenceTransformersEmbedder(),
-        WeaviateEmbedder(),
-        UpstageEmbedder(),
-        VoyageAIEmbedder(),
-        CohereEmbedder(),
-        OpenAIEmbedder(),
     ]
     retrievers = [WindowRetriever()]
     generators = [
         OllamaGenerator(),
-        OpenAIGenerator(),
-        AnthropicGenerator(),
-        CohereGenerator(),
-        GroqGenerator(),
-        NovitaGenerator(),
-        UpstageGenerator(),
     ]
 else:
     readers = [
         BasicReader(),
-        HTMLReader(),
         GitReader(),
-        UnstructuredReader(),
-        AssemblyAIReader(),
-        FirecrawlReader(),
-        UpstageDocumentParseReader(),
     ]
     chunkers = [
         TokenChunker(),
@@ -140,18 +96,11 @@ else:
         JSONChunker(),
     ]
     embedders = [
-        WeaviateEmbedder(),
-        VoyageAIEmbedder(),
-        UpstageEmbedder(),
-        CohereEmbedder(),
-        OpenAIEmbedder(),
+        OllamaEmbedder()
     ]
     retrievers = [WindowRetriever()]
     generators = [
-        OpenAIGenerator(),
-        AnthropicGenerator(),
-        CohereGenerator(),
-        UpstageGenerator(),
+        OllamaGenerator()
     ]
 
 
