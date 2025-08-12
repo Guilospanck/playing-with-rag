@@ -134,6 +134,9 @@ services:
       start_period: 10s
     networks:
       - weaviate-network
+    depends_on:
+      weaviate:
+        condition: service_healthy
 
 networks:
   weaviate-network:
