@@ -1,21 +1,21 @@
 from setuptools import find_packages, setup
 
 setup(
-    name="goldenverba",
-    version="2.1.3",
+    name="ragit",
+    version="1.0.0",
     packages=find_packages(),
     python_requires=">=3.10.0,<3.13.0",
     entry_points={
         "console_scripts": [
-            "verba=goldenverba.server.cli:cli",
+            "ragit=goldenverba.server.cli:cli",
         ],
     },
-    author="Weaviate",
-    author_email="edward@weaviate.io",
-    description="Welcome to Verba: The Golden RAGtriever, an open-source initiative designed to offer a streamlined, user-friendly interface for Retrieval-Augmented Generation (RAG) applications. In just a few easy steps, dive into your data and make meaningful interactions!",
+    author="Guilospanck",
+    author_email="guilospanck@protonmail.com",
+    description="Welcome to RAGit: talk to your Git repositories.",
     long_description=open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/weaviate/Verba",
+    url="https://github.com/Guilospanck/playing-with-rag",
     classifiers=[
         "License :: OSI Approved :: BSD License",
         "Programming Language :: Python :: 3.10",
@@ -48,7 +48,15 @@ setup(
         "langdetect==1.0.9",
     ],
     extras_require={
-        "dev": ["pytest", "wheel", "twine", "black>=23.7.0", "setuptools"],
+        "dev": [
+            "pytest",
+            "wheel",
+            "twine",
+            "black>=23.7.0",
+            "setuptools",
+            "ruff>=0.5.0",
+            "mypy>=1.8.0",
+        ],
         "google": [
             "vertexai==1.46.0",
         ],
