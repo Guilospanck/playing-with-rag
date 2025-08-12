@@ -138,8 +138,6 @@ class Retriever(VerbaComponent):
         config,
         weaviate_manager,
         embedder,
-        labels,
-        document_uuids,
     ):
 
         raise NotImplementedError("retrieve method must be implemented by a subclass.")

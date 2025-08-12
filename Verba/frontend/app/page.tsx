@@ -22,7 +22,6 @@ import {
   LightTheme,
   Themes,
   DarkTheme,
-  DocumentFilter,
   WCDTheme,
   WeaviateTheme,
 } from "./types";
@@ -35,7 +34,7 @@ export default function Home() {
   // Page States
   const [currentPage, setCurrentPage] = useState("CHAT");
   const [production, setProduction] = useState<"Local" | "Demo" | "Production">(
-    "Local"
+    "Local",
   );
   const [gtag, setGtag] = useState("");
 
@@ -64,8 +63,6 @@ export default function Home() {
 
   // RAG Config
   const [RAGConfig, setRAGConfig] = useState<null | RAGConfig>(null);
-
-  const [documentFilter, setDocumentFilter] = useState<DocumentFilter[]>([]);
 
   const [statusMessages, setStatusMessages] = useState<StatusMessage[]>([]);
 
@@ -148,7 +145,7 @@ export default function Home() {
 
   const addStatusMessage = (
     message: string,
-    type: "INFO" | "WARNING" | "SUCCESS" | "ERROR"
+    type: "INFO" | "WARNING" | "SUCCESS" | "ERROR",
   ) => {
     setStatusMessages((prevMessages) => [
       ...prevMessages,
@@ -208,8 +205,6 @@ export default function Home() {
                 production={production}
                 selectedTheme={selectedTheme}
                 currentPage={currentPage}
-                documentFilter={documentFilter}
-                setDocumentFilter={setDocumentFilter}
               />
             </div>
 
@@ -219,8 +214,6 @@ export default function Home() {
                 credentials={credentials}
                 production={production}
                 selectedTheme={selectedTheme}
-                documentFilter={documentFilter}
-                setDocumentFilter={setDocumentFilter}
               />
             )}
 

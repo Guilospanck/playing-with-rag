@@ -7,12 +7,11 @@ import {
 } from "@/app/types";
 import { retrieveAllDocuments, deleteDocument } from "@/app/api";
 import { FaSearch, FaTrash } from "react-icons/fa";
-import { MdOutlineRefresh, MdCancel } from "react-icons/md";
+import { MdOutlineRefresh } from "react-icons/md";
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 import InfoComponent from "../Navigation/InfoComponent";
 import UserModalComponent from "../Navigation/UserModal";
 import VerbaButton from "../Navigation/VerbaButton";
-import { IoMdAddCircle } from "react-icons/io";
 
 interface DocumentSearchComponentProps {
   selectedDocument: string | null;
@@ -21,7 +20,7 @@ interface DocumentSearchComponentProps {
   production: "Local" | "Demo" | "Production";
   addStatusMessage: (
     message: string,
-    type: "INFO" | "WARNING" | "SUCCESS" | "ERROR"
+    type: "INFO" | "WARNING" | "SUCCESS" | "ERROR",
   ) => void;
 }
 
@@ -40,8 +39,6 @@ const DocumentSearch: React.FC<DocumentSearchComponentProps> = ({
 
   const pageSize = 50;
 
-  const [labels, setLabels] = useState<string[]>([]);
-  const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
   const [triggerSearch, setTriggerSearch] = useState(false);
 
   const [isFetching, setIsFetching] = useState(false);
@@ -75,10 +72,9 @@ const DocumentSearch: React.FC<DocumentSearchComponentProps> = ({
 
       const data: DocumentsPreviewPayload | null = await retrieveAllDocuments(
         _userInput ? _userInput : "",
-        selectedLabels,
         page,
         pageSize,
-        credentials
+        credentials,
       );
 
       if (data) {
@@ -89,7 +85,6 @@ const DocumentSearch: React.FC<DocumentSearchComponentProps> = ({
           setTotalDocuments(0);
         } else {
           setDocuments(data.documents);
-          setLabels(data.labels);
           setIsFetching(false);
           setTotalDocuments(data.totalDocuments);
         }
@@ -106,7 +101,7 @@ const DocumentSearch: React.FC<DocumentSearchComponentProps> = ({
 
   useEffect(() => {
     fetchAllDocuments(userInput);
-  }, [page, triggerSearch, selectedLabels]);
+  }, [page, triggerSearch]);
 
   const handleSearch = () => {
     fetchAllDocuments(userInput);
@@ -114,7 +109,6 @@ const DocumentSearch: React.FC<DocumentSearchComponentProps> = ({
 
   const clearSearch = () => {
     setUserInput("");
-    setSelectedLabels([]);
     fetchAllDocuments("");
   };
 
@@ -137,14 +131,6 @@ const DocumentSearch: React.FC<DocumentSearchComponentProps> = ({
       }
       fetchAllDocuments(userInput);
     }
-  };
-
-  const addLabel = (l: string) => {
-    setSelectedLabels((prev) => [...prev, l]);
-  };
-
-  const removeLabel = (l: string) => {
-    setSelectedLabels((prev) => prev.filter((label) => label !== l));
   };
 
   const openDeleteModal = (id: string) => {
@@ -188,65 +174,6 @@ const DocumentSearch: React.FC<DocumentSearchComponentProps> = ({
 
       {/* Document List */}
       <div className="bg-bg-alt-verba rounded-2xl flex flex-col p-6 gap-3 items-center h-full w-full overflow-auto">
-        <div className="flex flex-col w-full justify-start gap-2">
-          <div className="dropdown dropdown-hover">
-            <label tabIndex={0}>
-              <VerbaButton
-                title="Label"
-                className="btn-sm min-w-min"
-                icon_size={12}
-                text_class_name="text-xs"
-                Icon={IoMdAddCircle}
-                selected={false}
-                disabled={false}
-              />
-            </label>
-            <ul
-              tabIndex={0}
-              className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
-            >
-              {labels.map((label, index) => (
-                <li key={"Label" + index}>
-                  <a
-                    onClick={() => {
-                      if (!selectedLabels.includes(label)) {
-                        setSelectedLabels([...selectedLabels, label]);
-                      }
-                      const dropdownElement =
-                        document.activeElement as HTMLElement;
-                      dropdownElement.blur();
-                      const dropdown = dropdownElement.closest(
-                        ".dropdown"
-                      ) as HTMLElement;
-                      if (dropdown) dropdown.blur();
-                    }}
-                  >
-                    {label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {selectedLabels.map((label, index) => (
-              <VerbaButton
-                title={label}
-                key={"FilterDocumentLabel" + index}
-                Icon={MdCancel}
-                className="btn-sm min-w-min max-w-[200px]"
-                icon_size={12}
-                selected_color="bg-primary-verba"
-                selected={true}
-                text_class_name="truncate max-w-[200px]"
-                text_size="text-xs"
-                onClick={() => {
-                  removeLabel(label);
-                }}
-              />
-            ))}
-          </div>
-        </div>
-
         {isFetching && (
           <div className="flex items-center justify-center gap-2">
             <span className="loading loading-spinner loading-sm text-text-alt-verba"></span>

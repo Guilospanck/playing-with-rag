@@ -498,9 +498,9 @@ async def get_document(payload: GetDocumentPayload):
 async def get_document_count(payload: DatacountPayload):
     try:
         client = await client_manager.connect(payload.credentials)
-        document_uuids = [document.uuid for document in payload.documentFilter]
         datacount = await manager.weaviate_manager.get_datacount(
-            client, payload.embedding_model, document_uuids
+            client,
+            payload.embedding_model,
         )
         return JSONResponse(
             content={

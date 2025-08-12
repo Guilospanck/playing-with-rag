@@ -143,7 +143,6 @@ class FileConfig(BaseModel):
     extension: str
     source: str
     content: str
-    labels: list[str]
     rag_config: dict[str, RAGComponentClass]
     file_size: int
     status: FileStatus
@@ -185,14 +184,11 @@ class GetAllSuggestionsPayload(BaseModel):
 class QueryPayload(BaseModel):
     query: str
     RAG: dict[str, RAGComponentClass]
-    labels: list[str]
-    documentFilter: list[DocumentFilter]
     credentials: Credentials
 
 
 class DatacountPayload(BaseModel):
     embedding_model: str
-    documentFilter: list[DocumentFilter]
     credentials: Credentials
 
 
@@ -243,7 +239,6 @@ class RAGConfigPayload(BaseModel):
 
 class SearchQueryPayload(BaseModel):
     query: str
-    labels: list[str]
     page: int
     pageSize: int
     credentials: Credentials

@@ -96,62 +96,62 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
         </div>
       </div>
     );
-  } else {
-    return (
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 w-full items-center">
-        {message.content.map((document, index) => (
-          <button
-            onClick={() => {
-              setSelectedDocument(document.uuid);
-              setSelectedDocumentScore(
-                document.uuid + document.score + document.chunks.length
-              );
-              setSelectedChunkScore(document.chunks);
-            }}
-            key={"Retrieval" + document.title + index}
-            className={`flex ${selectedDocument && selectedDocument === document.uuid + document.score + document.chunks.length ? "bg-secondary-verba hover:bg-button-hover-verba" : "bg-button-verba hover:bg-secondary-verba"} rounded-3xl p-3 items-center justify-between transition-colors duration-300 ease-in-out border-none`}
-          >
-            <div className="flex items-center justify-between w-full">
-              <p
-                className="text-xs flex-grow truncate mr-2"
-                title={document.title}
-              >
-                {document.title}
-              </p>
-              <div className="flex gap-1 items-center text-text-verba flex-shrink-0">
-                <IoNewspaper size={12} />
-                <p className="text-sm">{document.chunks.length}</p>
-              </div>
-            </div>
-          </button>
-        ))}
-        <VerbaButton
-          Icon={IoDocumentAttach}
-          className="btn-sm btn-square"
-          onClick={() =>
-            (
-              document.getElementById(
-                "context-modal-" + message_index
-              ) as HTMLDialogElement
-            ).showModal()
-          }
-        />
-        <dialog id={"context-modal-" + message_index} className="modal">
-          <div className="modal-box">
-            <h3 className="font-bold text-lg">Context</h3>
-            <p className="py-4">{message.context}</p>
-            <div className="modal-action">
-              <form method="dialog">
-                <button className="btn focus:outline-none text-text-alt-verba bg-button-verba hover:bg-button-hover-verba hover:text-text-verba border-none shadow-none">
-                  <p>Close</p>
-                </button>
-              </form>
+  }
+
+  return (
+    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 w-full items-center">
+      {message.content.map((document, index) => (
+        <button
+          onClick={() => {
+            setSelectedDocument(document.uuid);
+            setSelectedDocumentScore(
+              document.uuid + document.score + document.chunks.length,
+            );
+            setSelectedChunkScore(document.chunks);
+          }}
+          key={"Retrieval" + document.title + index}
+          className={`flex ${selectedDocument && selectedDocument === document.uuid + document.score + document.chunks.length ? "bg-secondary-verba hover:bg-button-hover-verba" : "bg-button-verba hover:bg-secondary-verba"} rounded-3xl p-3 items-center justify-between transition-colors duration-300 ease-in-out border-none`}
+        >
+          <div className="flex items-center justify-between w-full">
+            <p
+              className="text-xs flex-grow truncate mr-2"
+              title={document.title}
+            >
+              {document.title}
+            </p>
+            <div className="flex gap-1 items-center text-text-verba flex-shrink-0">
+              <IoNewspaper size={12} />
+              <p className="text-sm">{document.chunks.length}</p>
             </div>
           </div>
-        </dialog>
-      </div>
-    );
-  }
+        </button>
+      ))}
+      <VerbaButton
+        Icon={IoDocumentAttach}
+        className="btn-sm btn-square"
+        onClick={() =>
+          (
+            document.getElementById(
+              "context-modal-" + message_index,
+            ) as HTMLDialogElement
+          ).showModal()
+        }
+      />
+      <dialog id={"context-modal-" + message_index} className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Context</h3>
+          <p className="py-4">{message.context}</p>
+          <div className="modal-action">
+            <form method="dialog">
+              <button className="btn focus:outline-none text-text-alt-verba bg-button-verba hover:bg-button-hover-verba hover:text-text-verba border-none shadow-none">
+                <p>Close</p>
+              </button>
+            </form>
+          </div>
+        </div>
+      </dialog>
+    </div>
+  );
 };
 
 export default ChatMessage;

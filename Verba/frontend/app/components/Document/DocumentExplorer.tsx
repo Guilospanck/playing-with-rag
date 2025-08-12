@@ -20,7 +20,6 @@ import {
   Credentials,
   ChunkScore,
   Theme,
-  DocumentFilter,
 } from "@/app/types";
 
 import VerbaButton from "../Navigation/VerbaButton";
@@ -34,11 +33,9 @@ interface DocumentExplorerProps {
   credentials: Credentials;
   selectedTheme: Theme;
   production: "Local" | "Demo" | "Production";
-  documentFilter: DocumentFilter[];
-  setDocumentFilter: React.Dispatch<React.SetStateAction<DocumentFilter[]>>;
   addStatusMessage: (
     message: string,
-    type: "INFO" | "WARNING" | "SUCCESS" | "ERROR"
+    type: "INFO" | "WARNING" | "SUCCESS" | "ERROR",
   ) => void;
 }
 
@@ -49,8 +46,6 @@ const DocumentExplorer: React.FC<DocumentExplorerProps> = ({
   chunkScores,
   production,
   selectedTheme,
-  documentFilter,
-  setDocumentFilter,
   addStatusMessage,
 }) => {
   const [selectedSetting, setSelectedSetting] = useState<
@@ -79,7 +74,7 @@ const DocumentExplorer: React.FC<DocumentExplorerProps> = ({
 
       const data: DocumentPayload | null = await fetchSelectedDocument(
         selectedDocument,
-        credentials
+        credentials,
       );
 
       if (data) {
@@ -187,36 +182,15 @@ const DocumentExplorer: React.FC<DocumentExplorerProps> = ({
       {/* Import Footer */}
       <div className="bg-bg-alt-verba rounded-2xl flex gap-2 p-3 items-center justify-between h-min w-full">
         <div className="flex gap-3">
-          {documentFilter.some(
-            (filter) => filter.uuid === selectedDocument
-          ) && (
+          {document && (
             <VerbaButton
-              title="Delete from Chat"
-              Icon={MdCancel}
-              selected={true}
-              selected_color="bg-warning-verba"
+              title="Add to Chat"
+              Icon={IoMdAddCircle}
               onClick={() => {
-                setDocumentFilter(
-                  documentFilter.filter((f) => f.uuid !== selectedDocument)
-                );
-                addStatusMessage("Removed document from Chat", "INFO");
+                addStatusMessage("Added document to Chat", "SUCCESS");
               }}
             />
           )}
-          {!documentFilter.some((filter) => filter.uuid === selectedDocument) &&
-            document && (
-              <VerbaButton
-                title="Add to Chat"
-                Icon={IoMdAddCircle}
-                onClick={() => {
-                  setDocumentFilter([
-                    ...documentFilter,
-                    { uuid: selectedDocument, title: document.title },
-                  ]);
-                  addStatusMessage("Added document to Chat", "SUCCESS");
-                }}
-              />
-            )}
         </div>
         <div className="flex gap-3">
           {selectedDocument && document && document.source && (

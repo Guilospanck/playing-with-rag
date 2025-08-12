@@ -5,11 +5,6 @@ export type Credentials = {
   default_deployment: "Docker";
 };
 
-export type DocumentFilter = {
-  title: string;
-  uuid: string;
-};
-
 export type UserConfig = {
   getting_started: boolean;
 };
@@ -110,9 +105,6 @@ export type ThemeConfigResponse = {
 export type DatacountResponse = {
   datacount: number;
 };
-export type LabelsResponse = {
-  labels: string[];
-};
 
 export type ImportResponse = {
   logging: ConsoleMessage[];
@@ -166,7 +158,6 @@ export type FileData = {
   extension: string;
   source: string;
   content: string;
-  labels: string[];
   metadata: string;
   file_size: number;
   block?: boolean;
@@ -337,7 +328,6 @@ export type VerbaDocument = {
   metadata: string;
   extension: string;
   fileSize: number;
-  labels: string[];
   source: string;
   meta: any;
 };
@@ -355,14 +345,12 @@ export type VerbaChunk = {
 export type DocumentsPreviewPayload = {
   error: string;
   documents: DocumentPreview[];
-  labels: string[];
   totalDocuments: number;
 };
 
 export type DocumentPreview = {
   title: string;
   uuid: string;
-  labels: string[];
 };
 
 export type FormattedDocument = {

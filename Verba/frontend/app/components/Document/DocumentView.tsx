@@ -3,17 +3,15 @@
 import React, { useState } from "react";
 import DocumentSearch from "./DocumentSearch";
 import DocumentExplorer from "./DocumentExplorer";
-import { Credentials, Theme, DocumentFilter } from "@/app/types";
+import { Credentials, Theme } from "@/app/types";
 
 interface DocumentViewProps {
   selectedTheme: Theme;
   production: "Local" | "Demo" | "Production";
   credentials: Credentials;
-  documentFilter: DocumentFilter[];
-  setDocumentFilter: React.Dispatch<React.SetStateAction<DocumentFilter[]>>;
   addStatusMessage: (
     message: string,
-    type: "INFO" | "WARNING" | "SUCCESS" | "ERROR"
+    type: "INFO" | "WARNING" | "SUCCESS" | "ERROR",
   ) => void;
 }
 
@@ -21,8 +19,6 @@ const DocumentView: React.FC<DocumentViewProps> = ({
   selectedTheme,
   production,
   credentials,
-  documentFilter,
-  setDocumentFilter,
   addStatusMessage,
 }) => {
   const [selectedDocument, setSelectedDocument] = useState<string | null>(null);
@@ -51,8 +47,6 @@ const DocumentView: React.FC<DocumentViewProps> = ({
           setSelectedDocument={setSelectedDocument}
           selectedTheme={selectedTheme}
           selectedDocument={selectedDocument}
-          documentFilter={documentFilter}
-          setDocumentFilter={setDocumentFilter}
         />
       </div>
     </div>

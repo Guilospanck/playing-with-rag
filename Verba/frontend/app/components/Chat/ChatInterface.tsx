@@ -7,7 +7,6 @@ import { IoChatbubbleSharp } from "react-icons/io5";
 import { FaHammer } from "react-icons/fa";
 import { IoIosSend } from "react-icons/io";
 import { BiError } from "react-icons/bi";
-import { IoMdAddCircle } from "react-icons/io";
 import VerbaButton from "../Navigation/VerbaButton";
 
 import {
@@ -16,7 +15,6 @@ import {
   fetchDatacount,
   fetchRAGConfig,
   fetchSuggestions,
-  fetchLabels,
 } from "@/app/api";
 import { getWebSocketApiHost } from "@/app/util";
 import {
@@ -26,10 +24,8 @@ import {
   DataCountPayload,
   ChunkScore,
   Message,
-  LabelsResponse,
   RAGConfig,
   Theme,
-  DocumentFilter,
 } from "@/app/types";
 
 import InfoComponent from "../Navigation/InfoComponent";
@@ -47,10 +43,8 @@ interface ChatInterfaceProps {
   production: "Local" | "Demo" | "Production";
   addStatusMessage: (
     message: string,
-    type: "INFO" | "WARNING" | "SUCCESS" | "ERROR"
+    type: "INFO" | "WARNING" | "SUCCESS" | "ERROR",
   ) => void;
-  documentFilter: DocumentFilter[];
-  setDocumentFilter: React.Dispatch<React.SetStateAction<DocumentFilter[]>>;
 }
 
 const ChatInterface: React.FC<ChatInterfaceProps> = ({
@@ -63,8 +57,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   selectedTheme,
   setRAGConfig,
   addStatusMessage,
-  documentFilter,
-  setDocumentFilter,
 }) => {
   const [selectedSetting, setSelectedSetting] = useState("Chat");
 
@@ -79,11 +71,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const [reconnect, setReconnect] = useState(false);
 
   const [currentSuggestions, setCurrentSuggestions] = useState<Suggestion[]>(
-    []
+    [],
   );
-
-  const [labels, setLabels] = useState<string[]>([]);
-  const [filterLabels, setFilterLabels] = useState<string[]>([]);
 
   const [selectedDocumentScore, setSelectedDocumentScore] = useState<
     string | null
@@ -112,7 +101,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     } else {
       setCurrentDatacount(0);
     }
-  }, [currentEmbedding, currentPage, documentFilter]);
+  }, [currentEmbedding, currentPage]);
 
   useEffect(() => {
     setMessages((prev) => {
@@ -193,7 +182,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     localSocket.onclose = (event) => {
       if (event.wasClean) {
         console.log(
-          `WebSocket connection closed cleanly, code=${event.code}, reason=${event.reason}`
+          `WebSocket connection closed cleanly, code=${event.code}, reason=${event.reason}`,
         );
       } else {
         console.error("WebSocket connection died");
@@ -242,13 +231,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
     try {
       addStatusMessage("Sending query...", "INFO");
-      const data = await sendUserQuery(
-        sendInput,
-        RAGConfig,
-        filterLabels,
-        documentFilter,
-        credentials
-      );
+      const data = await sendUserQuery(sendInput, RAGConfig, credentials);
 
       if (!data || data.error) {
         handleErrorResponse(data ? data.error : "No data received");
@@ -276,14 +259,14 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
     addStatusMessage(
       "Received " + Object.entries(data.documents).length + " documents",
-      "SUCCESS"
+      "SUCCESS",
     );
 
     if (data.documents.length > 0) {
       const firstDoc = data.documents[0];
       setSelectedDocument(firstDoc.uuid);
       setSelectedDocumentScore(
-        `${firstDoc.uuid}${firstDoc.score}${firstDoc.chunks.length}`
+        `${firstDoc.uuid}${firstDoc.score}${firstDoc.chunks.length}`,
       );
       setSelectedChunkScore(firstDoc.chunks);
 
@@ -337,15 +320,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     try {
       const data: DataCountPayload | null = await fetchDatacount(
         currentEmbedding,
-        documentFilter,
-        credentials
+        credentials,
       );
-      const labels: LabelsResponse | null = await fetchLabels(credentials);
       if (data) {
         setCurrentDatacount(data.datacount);
-      }
-      if (labels) {
-        setLabels(labels.labels);
       }
     } catch (error) {
       console.error("Failed to fetch from API:", error);
@@ -418,104 +396,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       </div>
 
       <div className="bg-bg-alt-verba rounded-2xl flex flex-col h-[50vh] md:h-full w-full overflow-y-auto overflow-x-hidden relative">
-        {/* New fixed tab */}
-        {selectedSetting == "Chat" && (
-          <div className="sticky flex flex-col gap-2 top-0 z-9 p-4 backdrop-blur-sm bg-opacity-30 bg-bg-alt-verba rounded-lg">
-            <div className="flex gap-2 justify-start items-center">
-              <div className="flex gap-2">
-                <div className="dropdown dropdown-hover">
-                  <label tabIndex={0}>
-                    <VerbaButton
-                      title="Label"
-                      className="btn-sm min-w-min"
-                      icon_size={12}
-                      text_class_name="text-xs"
-                      Icon={IoMdAddCircle}
-                      selected={false}
-                      disabled={false}
-                    />
-                  </label>
-                  <ul
-                    tabIndex={0}
-                    className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
-                  >
-                    {labels.map((label, index) => (
-                      <li key={"Label" + index}>
-                        <a
-                          onClick={() => {
-                            if (!filterLabels.includes(label)) {
-                              setFilterLabels([...filterLabels, label]);
-                            }
-                            const dropdownElement =
-                              document.activeElement as HTMLElement;
-                            dropdownElement.blur();
-                            const dropdown = dropdownElement.closest(
-                              ".dropdown"
-                            ) as HTMLElement;
-                            if (dropdown) dropdown.blur();
-                          }}
-                        >
-                          {label}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-              {(filterLabels.length > 0 || documentFilter.length > 0) && (
-                <VerbaButton
-                  onClick={() => {
-                    setFilterLabels([]);
-                    setDocumentFilter([]);
-                  }}
-                  title="Clear"
-                  className="btn-sm max-w-min"
-                  icon_size={12}
-                  text_class_name="text-xs"
-                  Icon={MdCancel}
-                  selected={false}
-                  disabled={false}
-                />
-              )}
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {filterLabels.map((label, index) => (
-                <VerbaButton
-                  title={label}
-                  key={"FilterLabel" + index}
-                  Icon={MdCancel}
-                  className="btn-sm min-w-min max-w-[200px]"
-                  icon_size={12}
-                  selected_color="bg-primary-verba"
-                  selected={true}
-                  text_class_name="truncate max-w-[200px]"
-                  text_size="text-xs"
-                  onClick={() => {
-                    setFilterLabels(filterLabels.filter((l) => l !== label));
-                  }}
-                />
-              ))}
-              {documentFilter.map((filter, index) => (
-                <VerbaButton
-                  title={filter.title}
-                  key={"DocumentFilter" + index}
-                  Icon={MdCancel}
-                  className="btn-sm min-w-min max-w-[200px]"
-                  icon_size={12}
-                  selected_color="bg-secondary-verba"
-                  selected={true}
-                  text_size="text-xs"
-                  text_class_name="truncate md:max-w-[100px] lg:max-w-[150px]"
-                  onClick={() => {
-                    setDocumentFilter(
-                      documentFilter.filter((f) => f.uuid !== filter.uuid)
-                    );
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-        )}
         <div
           className={`${selectedSetting === "Chat" ? "flex flex-col gap-3 p-4" : "hidden"}`}
         >
@@ -633,7 +513,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                                   <strong key={i}>{part}</strong>
                                 ) : (
                                   part
-                                )
+                                ),
                               )}
                       </p>
                     </li>

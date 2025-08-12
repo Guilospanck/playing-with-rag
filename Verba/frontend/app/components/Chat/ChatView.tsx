@@ -18,7 +18,7 @@ interface ChatViewProps {
   credentials: Credentials;
   addStatusMessage: (
     message: string,
-    type: "INFO" | "WARNING" | "SUCCESS" | "ERROR"
+    type: "INFO" | "WARNING" | "SUCCESS" | "ERROR",
   ) => void;
   production: "Local" | "Demo" | "Production";
   currentPage: string;
@@ -41,7 +41,7 @@ const ChatView: React.FC<ChatViewProps> = ({
 }) => {
   const [selectedDocument, setSelectedDocument] = useState<string | null>(null);
   const [selectedChunkScore, setSelectedChunkScore] = useState<ChunkScore[]>(
-    []
+    [],
   );
   return (
     <div className="flex md:flex-row flex-col justify-center gap-3 h-[50vh] md:h-[80vh] ">
@@ -59,7 +59,6 @@ const ChatView: React.FC<ChatViewProps> = ({
           RAGConfig={RAGConfig}
           setRAGConfig={setRAGConfig}
           documentFilter={documentFilter}
-          setDocumentFilter={setDocumentFilter}
         />
       </div>
 
@@ -70,8 +69,6 @@ const ChatView: React.FC<ChatViewProps> = ({
           addStatusMessage={addStatusMessage}
           credentials={credentials}
           production={production}
-          documentFilter={documentFilter}
-          setDocumentFilter={setDocumentFilter}
           setSelectedDocument={setSelectedDocument}
           selectedTheme={selectedTheme}
           selectedDocument={selectedDocument}

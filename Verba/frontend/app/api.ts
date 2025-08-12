@@ -15,13 +15,11 @@ import {
   DatacountResponse,
   SuggestionsPayload,
   ChunkPayload,
-  DocumentFilter,
   VectorsPayload,
   UserConfigResponse,
   ThemeConfigResponse,
   Theme,
   UserConfig,
-  LabelsResponse,
   Themes,
 } from "./types";
 
@@ -79,7 +77,7 @@ export const connectToVerba = async (
   deployment: string,
   url: string,
   apiKey: string,
-  port: string
+  port: string,
 ): Promise<ConnectPayload | null> => {
   const host = await detectHost();
   const response = await fetch(`${host}/api/connect`, {
@@ -102,7 +100,7 @@ export const connectToVerba = async (
 
 // Endpoint /api/get_rag_config
 export const fetchRAGConfig = async (
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<RAGConfigResponse | null> => {
   try {
     const host = await detectHost();
@@ -124,7 +122,7 @@ export const fetchRAGConfig = async (
 // Endpoint /api/set_rag_config
 export const updateRAGConfig = async (
   RAG: RAGConfig | null,
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<boolean> => {
   if (!RAG) {
     return false;
@@ -149,7 +147,7 @@ export const updateRAGConfig = async (
 
 // Endpoint /api/get_user_config
 export const fetchUserConfig = async (
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<UserConfigResponse | null> => {
   try {
     const host = await detectHost();
@@ -171,7 +169,7 @@ export const fetchUserConfig = async (
 // Endpoint /api/set_user_config
 export const updateUserConfig = async (
   user_config: UserConfig,
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<boolean> => {
   try {
     const host = await detectHost();
@@ -195,7 +193,7 @@ export const updateUserConfig = async (
 
 // Endpoint /api/get_theme_config
 export const fetchThemeConfig = async (
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<ThemeConfigResponse | null> => {
   try {
     const host = await detectHost();
@@ -218,7 +216,7 @@ export const fetchThemeConfig = async (
 export const updateThemeConfig = async (
   themes: Themes,
   theme: Theme,
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<boolean> => {
   try {
     const host = await detectHost();
@@ -245,9 +243,7 @@ export const updateThemeConfig = async (
 export const sendUserQuery = async (
   query: string,
   RAG: RAGConfig | null,
-  labels: string[],
-  documentFilter: DocumentFilter[],
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<QueryPayload | null> => {
   try {
     const host = await detectHost();
@@ -259,8 +255,6 @@ export const sendUserQuery = async (
       body: JSON.stringify({
         query: query,
         RAG: RAG,
-        labels: labels,
-        documentFilter: documentFilter,
         credentials: credentials,
       }),
     });
@@ -276,7 +270,7 @@ export const sendUserQuery = async (
 // Endpoint /api/get_document
 export const fetchSelectedDocument = async (
   uuid: string | null,
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<DocumentPayload | null> => {
   if (!uuid) {
     return null;
@@ -305,8 +299,7 @@ export const fetchSelectedDocument = async (
 // Endpoint /api/get_datacount
 export const fetchDatacount = async (
   embedding_model: string,
-  documentFilter: DocumentFilter[],
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<DatacountResponse | null> => {
   try {
     const host = await detectHost();
@@ -317,32 +310,10 @@ export const fetchDatacount = async (
       },
       body: JSON.stringify({
         embedding_model: embedding_model,
-        documentFilter: documentFilter,
         credentials: credentials,
       }),
     });
     const data: DatacountResponse = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error retrieving content", error);
-    return null;
-  }
-};
-
-// Endpoint /api/get_labels
-export const fetchLabels = async (
-  credentials: Credentials
-): Promise<LabelsResponse | null> => {
-  try {
-    const host = await detectHost();
-    const response = await fetch(`${host}/api/get_labels`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(credentials),
-    });
-    const data: LabelsResponse = await response.json();
     return data;
   } catch (error) {
     console.error("Error retrieving content", error);
@@ -355,7 +326,7 @@ export const fetchContent = async (
   uuid: string | null,
   page: number,
   chunkScores: ChunkScore[],
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<ContentPayload | null> => {
   if (!uuid) {
     return null;
@@ -387,7 +358,7 @@ export const fetchContent = async (
 export const fetch_vectors = async (
   uuid: string | null,
   showAll: boolean,
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<VectorsPayload | null> => {
   if (!uuid) {
     return null;
@@ -419,7 +390,7 @@ export const fetch_chunks = async (
   uuid: string | null,
   page: number,
   pageSize: number,
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<ChunksPayload | null> => {
   if (!uuid) {
     return null;
@@ -451,7 +422,7 @@ export const fetch_chunks = async (
 export const fetch_chunk = async (
   uuid: string | null,
   embedder: string,
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<ChunkPayload | null> => {
   if (!uuid) {
     return null;
@@ -481,10 +452,9 @@ export const fetch_chunk = async (
 // Endpoint /api/get_all_documents
 export const retrieveAllDocuments = async (
   query: string,
-  labels: string[],
   page: number,
   pageSize: number,
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<DocumentsPreviewPayload | null> => {
   try {
     const host = await detectHost();
@@ -495,7 +465,6 @@ export const retrieveAllDocuments = async (
       },
       body: JSON.stringify({
         query: query,
-        labels: labels,
         page: page,
         pageSize: pageSize,
         credentials: credentials,
@@ -512,7 +481,7 @@ export const retrieveAllDocuments = async (
 // Endpoint /api/delete_document
 export const deleteDocument = async (
   uuid: string,
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<boolean> => {
   try {
     const host = await detectHost();
@@ -536,7 +505,7 @@ export const deleteDocument = async (
 // Endpoint /api/reset
 export const deleteAllDocuments = async (
   resetMode: string,
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<boolean> => {
   try {
     const host = await detectHost();
@@ -559,7 +528,7 @@ export const deleteAllDocuments = async (
 
 // Endpoint /api/get_meta
 export const fetchMeta = async (
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<MetadataPayload | null> => {
   try {
     const host = await detectHost();
@@ -582,7 +551,7 @@ export const fetchMeta = async (
 export const fetchSuggestions = async (
   query: string,
   limit: number,
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<SuggestionsPayload | null> => {
   try {
     const host = await detectHost();
@@ -608,7 +577,7 @@ export const fetchSuggestions = async (
 // Endpoint /api/delete_suggestion
 export const deleteSuggestion = async (
   uuid: string,
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<boolean> => {
   try {
     const host = await detectHost();
@@ -633,7 +602,7 @@ export const deleteSuggestion = async (
 export const fetchAllSuggestions = async (
   page: number,
   pageSize: number,
-  credentials: Credentials
+  credentials: Credentials,
 ): Promise<AllSuggestionsPayload | null> => {
   try {
     const host = await detectHost();

@@ -49,7 +49,6 @@ class Document:
         content: str = "",
         extension: str = "",
         fileSize: int = 0,
-        labels: list[str] = [],
         source: str = "",
         meta: dict = {},
         metadata: str = "",
@@ -58,7 +57,6 @@ class Document:
         self.content = content
         self.extension = extension
         self.fileSize = fileSize
-        self.labels = labels
         self.source = source
         self.meta = meta
         self.metadata = metadata
@@ -93,7 +91,6 @@ class Document:
             "content": document.content,
             "extension": document.extension,
             "fileSize": document.fileSize,
-            "labels": document.labels,
             "source": document.source,
             "meta": json.dumps(document.meta),
             "metadata": document.metadata,
@@ -109,7 +106,6 @@ class Document:
             and "content" in doc_dict
             and "extension" in doc_dict
             and "fileSize" in doc_dict
-            and "labels" in doc_dict
             and "source" in doc_dict
             and "meta" in doc_dict
             and "metadata" in doc_dict
@@ -119,7 +115,6 @@ class Document:
                 content=doc_dict.get("content", ""),
                 extension=doc_dict.get("extension", ""),
                 fileSize=doc_dict.get("fileSize", 0),
-                labels=doc_dict.get("labels", []),
                 source=doc_dict.get("source", ""),
                 meta=doc_dict.get("meta", {}),
                 metadata=doc_dict.get("metadata", ""),
@@ -135,7 +130,6 @@ def create_document(content: str, fileConfig: FileConfig) -> Document:
         title=fileConfig.filename,
         content=content,
         extension=fileConfig.extension,
-        labels=fileConfig.labels,
         source=fileConfig.source,
         fileSize=fileConfig.file_size,
         metadata=fileConfig.metadata,

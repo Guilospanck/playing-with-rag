@@ -68,6 +68,7 @@ class WindowRetriever(Retriever):
                 vector,
                 limit_mode,
                 limit,
+                labels,
             )
         # TODO Add other search methods
 

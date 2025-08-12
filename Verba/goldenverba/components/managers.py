@@ -95,13 +95,9 @@ else:
         CodeChunker(),
         JSONChunker(),
     ]
-    embedders = [
-        OllamaEmbedder()
-    ]
+    embedders = [OllamaEmbedder()]
     retrievers = [WindowRetriever()]
-    generators = [
-        OllamaGenerator()
-    ]
+    generators = [OllamaGenerator()]
 
 
 ### ----------------------- ###
@@ -365,7 +361,6 @@ class WeaviateManager:
         try:
             for chunk in document.chunks:
                 chunk.doc_uuid = doc_uuid
-                chunk.labels = document.labels
                 chunk.title = document.title
 
             chunk_response = await embedder_collection.data.insert_many(
@@ -468,7 +463,6 @@ class WeaviateManager:
         query: str,
         pageSize: int,
         page: int,
-        labels: list[str],
         properties: list[str] = None,
     ) -> list[dict]:
         collection_exists = await self.verify_collection(
@@ -480,10 +474,7 @@ class WeaviateManager:
         offset = pageSize * (page - 1)
         document_collection = client.collections.get(self.document_collection_name)
 
-        if len(labels) > 0:
-            filter = Filter.by_property("labels").contains_all(labels)
-        else:
-            filter = None
+        filter = None
 
         response = await document_collection.aggregate.over_all(
             total_count=True, filters=filter
@@ -516,7 +507,6 @@ class WeaviateManager:
             {
                 "title": doc.properties["title"],
                 "uuid": str(doc.uuid),
-                "labels": doc.properties["labels"],
             }
             for doc in response.objects
         ], total_count
@@ -535,19 +525,6 @@ class WeaviateManager:
             else:
                 msg.warn(f"Document not found ({uuid})")
                 return None
-
-    ### Labels
-
-    async def get_labels(self, client: WeaviateAsyncClient) -> list[str]:
-        if await self.verify_collection(client, self.document_collection_name):
-            document_collection = client.collections.get(self.document_collection_name)
-            aggregation = await document_collection.aggregate.over_all(
-                group_by=GroupByAggregate(prop="labels"), total_count=True
-            )
-            return [
-                aggregation_group.grouped_by.value
-                for aggregation_group in aggregation.groups
-            ]
 
     ### Chunks Retrieval
 
@@ -730,21 +707,11 @@ class WeaviateManager:
         vector: list[float],
         limit_mode: str,
         limit: int,
-        labels: list[str],
-        document_uuids: list[str],
     ):
         if await self.verify_embedding_collection(client, embedder):
             embedder_collection = client.collections.get(self.embedding_table[embedder])
 
             filters = []
-
-            if labels:
-                filters.append(Filter.by_property("labels").contains_all(labels))
-
-            if document_uuids:
-                filters.append(
-                    Filter.by_property("doc_uuid").contains_any(document_uuids)
-                )
 
             if filters:
                 apply_filters = filters[0]
@@ -871,22 +838,18 @@ class WeaviateManager:
         if await self.verify_collection(client, self.suggestion_collection_name):
             await client.collections.delete(self.suggestion_collection_name)
 
-    ### Cache Logic
-
-    # TODO: Implement Cache Logic
-
     ### Metadata Retrieval
 
     async def get_datacount(
-        self, client: WeaviateAsyncClient, embedder: str, document_uuids: list[str] = []
+        self,
+        client: WeaviateAsyncClient,
+        embedder: str,
     ) -> int:
         if await self.verify_embedding_collection(client, embedder):
             embedder_collection = client.collections.get(self.embedding_table[embedder])
 
-            if document_uuids:
-                filters = Filter.by_property("doc_uuid").contains_any(document_uuids)
-            else:
-                filters = None
+            filters = None
+
             try:
                 response = await embedder_collection.aggregate.over_all(
                     filters=filters,
@@ -1151,8 +1114,6 @@ class RetrieverManager:
         vector: list[float],
         rag_config: dict,
         weaviate_manager: WeaviateManager,
-        labels: list[str],
-        document_uuids: list[str],
     ):
         try:
             if retriever not in self.retrievers:
@@ -1172,8 +1133,6 @@ class RetrieverManager:
                 config,
                 weaviate_manager,
                 embedder_model,
-                labels,
-                document_uuids,
             )
             return (documents, context)
 
