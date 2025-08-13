@@ -58,7 +58,7 @@ export default function Home() {
     deployment: "Docker",
     url: "",
     key: "",
-    default_deployment: "",
+    default_deployment: "Docker",
   });
 
   // RAG Config

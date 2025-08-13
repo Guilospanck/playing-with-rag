@@ -111,7 +111,6 @@ class GitReader(Reader):
                         extension=extension,
                         source=link,
                         content=content,
-                        labels=fileConfig.labels,
                         rag_config=fileConfig.rag_config,
                         file_size=size,
                         status=fileConfig.status,

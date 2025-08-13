@@ -7,12 +7,12 @@ from fastapi import FastAPI, Request, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
-from goldenverba.env import load_env
 from starlette.websockets import WebSocketDisconnect
 from wasabi import msg  # type: ignore[import]
 from weaviate.client import WeaviateAsyncClient
 
 from goldenverba import verba_manager
+from goldenverba.env import load_env
 from goldenverba.server.helpers import BatchManager, LoggerManager
 from goldenverba.server.types import (
     ChunksPayload,
@@ -458,7 +458,6 @@ async def get_document(payload: GetDocumentPayload):
                 "title",
                 "extension",
                 "fileSize",
-                "labels",
                 "source",
                 "meta",
                 "metadata",
@@ -632,7 +631,6 @@ async def get_all_documents(payload: SearchQueryPayload):
         return JSONResponse(
             content={
                 "documents": [],
-                "label": [],
                 "error": f"All Document retrieval failed: {str(e)}",
                 "totalDocuments": 0,
             }

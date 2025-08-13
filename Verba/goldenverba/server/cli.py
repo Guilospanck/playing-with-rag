@@ -1,10 +1,10 @@
 import os
 
 import click
-from goldenverba.env import load_env
 import uvicorn
 
 from goldenverba import verba_manager
+from goldenverba.env import load_env
 from goldenverba.server.types import Credentials
 
 load_env()

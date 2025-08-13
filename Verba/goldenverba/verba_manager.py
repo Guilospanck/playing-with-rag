@@ -7,7 +7,6 @@ import os
 from copy import deepcopy
 from datetime import datetime
 
-from goldenverba.env import load_env
 from wasabi import msg
 from weaviate.client import WeaviateAsyncClient
 
@@ -20,6 +19,7 @@ from goldenverba.components.managers import (
     RetrieverManager,
     WeaviateManager,
 )
+from goldenverba.env import load_env
 from goldenverba.server.helpers import LoggerManager
 from goldenverba.server.types import (
     ChunkScore,

@@ -8,7 +8,6 @@ def test_document_initialization():
         content="This is a test document.",
         extension=".txt",
         fileSize=23,
-        labels=["test"],
         source="local",
         meta={"key": "value"},
         metadata="test metadata",
@@ -18,7 +17,6 @@ def test_document_initialization():
     assert doc.content == "This is a test document."
     assert doc.extension == ".txt"
     assert doc.fileSize == 23
-    assert doc.labels == ["test"]
     assert doc.source == "local"
     assert doc.meta == {"key": "value"}
     assert doc.metadata == "test metadata"
@@ -32,7 +30,6 @@ def test_document_json_serialization():
         content="Test content",
         extension=".txt",
         fileSize=12,
-        labels=["test"],
         source="local",
         meta={"key": "value"},
         metadata="test metadata",
@@ -48,7 +45,6 @@ def test_document_json_serialization():
     assert restored_doc.content == original_doc.content
     assert restored_doc.extension == original_doc.extension
     assert restored_doc.fileSize == original_doc.fileSize
-    assert restored_doc.labels == original_doc.labels
     assert restored_doc.source == original_doc.source
     assert restored_doc.metadata == original_doc.metadata
 

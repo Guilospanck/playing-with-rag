@@ -30,7 +30,7 @@ interface ConfigurationViewProps {
   credentials: Credentials;
   addStatusMessage: (
     message: string,
-    type: "INFO" | "WARNING" | "SUCCESS" | "ERROR"
+    type: "INFO" | "WARNING" | "SUCCESS" | "ERROR",
   ) => void;
 
   setFileMap: React.Dispatch<React.SetStateAction<FileMap>>;
@@ -55,17 +55,16 @@ const ConfigurationView: React.FC<ConfigurationViewProps> = ({
     setFileMap((prevFileMap) => {
       if (selectedFileData) {
         const newRAGConfig: RAGConfig = JSON.parse(
-          JSON.stringify(prevFileMap[selectedFileData].rag_config)
+          JSON.stringify(prevFileMap[selectedFileData].rag_config),
         );
         const newFileMap: FileMap = { ...prevFileMap };
 
         for (const fileID in prevFileMap) {
           const newFileData: FileData = JSON.parse(
-            JSON.stringify(prevFileMap[fileID])
+            JSON.stringify(prevFileMap[fileID]),
           );
           newFileData.rag_config = newRAGConfig;
           newFileData.source = prevFileMap[selectedFileData].source;
-          newFileData.labels = prevFileMap[selectedFileData].labels;
           newFileData.overwrite = prevFileMap[selectedFileData].overwrite;
           newFileMap[fileID] = newFileData;
         }
@@ -80,7 +79,7 @@ const ConfigurationView: React.FC<ConfigurationViewProps> = ({
     if (selectedFileData) {
       const response = await updateRAGConfig(
         fileMap[selectedFileData].rag_config,
-        credentials
+        credentials,
       );
       if (response) {
         // Update local state if the API call was successful
@@ -99,7 +98,7 @@ const ConfigurationView: React.FC<ConfigurationViewProps> = ({
       if (selectedFileData && RAGConfig) {
         const newFileMap: FileMap = { ...prevFileMap };
         const newFileData: FileData = JSON.parse(
-          JSON.stringify(prevFileMap[selectedFileData])
+          JSON.stringify(prevFileMap[selectedFileData]),
         );
         newFileData.rag_config = RAGConfig;
         newFileMap[selectedFileData] = newFileData;
@@ -134,7 +133,7 @@ const ConfigurationView: React.FC<ConfigurationViewProps> = ({
     (
       component_n: string,
       configTitle: string,
-      value: string | boolean | string[]
+      value: string | boolean | string[],
     ) => {
       setFileMap((prevFileMap) => {
         if (selectedFileData) {
@@ -157,17 +156,17 @@ const ConfigurationView: React.FC<ConfigurationViewProps> = ({
         return prevFileMap;
       });
     },
-    [selectedFileData]
+    [selectedFileData],
   );
 
   const selectComponent = (component_n: string, selected_component: string) => {
     setFileMap((prevFileMap) => {
       if (selectedFileData) {
         const newFileData: FileData = JSON.parse(
-          JSON.stringify(prevFileMap[selectedFileData])
+          JSON.stringify(prevFileMap[selectedFileData]),
         );
         const newRAGConfig: RAGConfig = JSON.parse(
-          JSON.stringify(prevFileMap[selectedFileData].rag_config)
+          JSON.stringify(prevFileMap[selectedFileData].rag_config),
         );
         newRAGConfig[component_n].selected = selected_component;
         newFileData.rag_config = newRAGConfig;
@@ -183,7 +182,7 @@ const ConfigurationView: React.FC<ConfigurationViewProps> = ({
     async (
       component_n: string,
       selected_component: string,
-      component_config: RAGComponentConfig
+      component_config: RAGComponentConfig,
     ) => {
       if (!RAGConfig) return;
 
@@ -198,7 +197,7 @@ const ConfigurationView: React.FC<ConfigurationViewProps> = ({
         setRAGConfig(newRAGConfig);
       }
     },
-    [RAGConfig, credentials]
+    [RAGConfig, credentials],
   );
 
   return (
@@ -246,7 +245,6 @@ const ConfigurationView: React.FC<ConfigurationViewProps> = ({
         {selectedSetting === "Basic" && (
           <BasicSettingView
             selectedFileData={selectedFileData}
-            addStatusMessage={addStatusMessage}
             fileMap={fileMap}
             selectComponent={selectComponent}
             updateConfig={updateConfig}

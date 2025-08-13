@@ -17,6 +17,10 @@ install_dev_deps(){
 	python -m pip install -e "./verba[dev]"
 }
 
+build_frontend(){
+	npm run build
+}
+
 init_env_and_install_dev_deps(){
 	init_venv
 	install_dev_deps	
@@ -40,6 +44,8 @@ init(){
 	# Trap CTRL+C for the duration of init()
 	trap cleanup SIGINT
 
+	cd ./verba/frontend && build_frontend
+	cd ../../
 	export ENV="dev"
 	init_env_and_install_dev_deps
 	init_ragit
@@ -61,4 +67,5 @@ types() {
 lint() {
 	init_venv
 	ruff check ./verba --fix
+	cd ./verba/frontend && npm run lint --fix
 }

@@ -224,7 +224,7 @@ const IngestionView: React.FC<IngestionViewProps> = ({
 
     // Send the batches
     batches.forEach((chunk, order) => {
-      socket.send(
+      socket?.send(
         JSON.stringify({
           chunk: chunk,
           isLastChunk: order === totalBatches - 1,

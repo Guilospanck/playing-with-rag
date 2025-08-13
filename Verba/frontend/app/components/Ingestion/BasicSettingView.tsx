@@ -9,8 +9,6 @@ import {
   RAGComponentConfig,
 } from "@/app/types";
 import VerbaButton from "../Navigation/VerbaButton";
-import { MdCancel } from "react-icons/md";
-import { IoAddCircleSharp } from "react-icons/io5";
 import { CgDebug } from "react-icons/cg";
 
 import ComponentView from "./ComponentView";
@@ -27,16 +25,12 @@ interface BasicSettingViewProps {
   updateConfig: (
     component_n: string,
     configTitle: string,
-    value: string | boolean | string[]
+    value: string | boolean | string[],
   ) => void;
   saveComponentConfig: (
     component_n: string,
     selected_component: string,
-    component_config: RAGComponentConfig
-  ) => void;
-  addStatusMessage: (
-    message: string,
-    type: "INFO" | "WARNING" | "SUCCESS" | "ERROR"
+    component_config: RAGComponentConfig,
   ) => void;
 }
 
@@ -48,12 +42,10 @@ const BasicSettingView: React.FC<BasicSettingViewProps> = ({
   saveComponentConfig,
   setFileMap,
   blocked,
-  addStatusMessage,
 }) => {
   const [filename, setFilename] = useState("");
   const [source, setSource] = useState("");
   const [metadata, setMetadata] = useState("");
-  const [label, setLabel] = useState("");
 
   useEffect(() => {
     if (selectedFileData) {
@@ -67,7 +59,7 @@ const BasicSettingView: React.FC<BasicSettingViewProps> = ({
     (key: "filename" | "source" | "metadata", value: string) => {
       if (selectedFileData) {
         const newFileData: FileData = JSON.parse(
-          JSON.stringify(fileMap[selectedFileData])
+          JSON.stringify(fileMap[selectedFileData]),
         );
         newFileData[key] = value;
         const newFileMap: FileMap = { ...fileMap };
@@ -75,7 +67,7 @@ const BasicSettingView: React.FC<BasicSettingViewProps> = ({
         setFileMap(newFileMap);
       }
     },
-    [selectedFileData, fileMap, setFileMap]
+    [selectedFileData, fileMap, setFileMap],
   );
 
   const handleFilenameChange = useCallback(
@@ -84,7 +76,7 @@ const BasicSettingView: React.FC<BasicSettingViewProps> = ({
       setFilename(newFilename);
       updateFileMap("filename", newFilename);
     },
-    [updateFileMap]
+    [updateFileMap],
   );
 
   const handleSourceChange = useCallback(
@@ -93,7 +85,7 @@ const BasicSettingView: React.FC<BasicSettingViewProps> = ({
       setSource(newSource);
       updateFileMap("source", newSource);
     },
-    [updateFileMap]
+    [updateFileMap],
   );
 
   const handleMetadataChange = useCallback(
@@ -102,7 +94,7 @@ const BasicSettingView: React.FC<BasicSettingViewProps> = ({
       setMetadata(newMetadata);
       updateFileMap("metadata", newMetadata);
     },
-    [updateFileMap]
+    [updateFileMap],
   );
 
   const openDebugModal = () => {
@@ -124,7 +116,7 @@ const BasicSettingView: React.FC<BasicSettingViewProps> = ({
   const setOverwrite = (o: boolean) => {
     if (selectedFileData) {
       const newFileData: FileData = JSON.parse(
-        JSON.stringify(fileMap[selectedFileData])
+        JSON.stringify(fileMap[selectedFileData]),
       );
       newFileData.overwrite = o;
       const newFileMap: FileMap = { ...fileMap };
@@ -132,56 +124,6 @@ const BasicSettingView: React.FC<BasicSettingViewProps> = ({
       setFileMap(newFileMap);
     }
   };
-
-  const addLabel = (l: string) => {
-    if (
-      selectedFileData &&
-      !fileMap[selectedFileData].labels.includes(l) &&
-      l.length > 0
-    ) {
-      const newFileData: FileData = JSON.parse(
-        JSON.stringify(fileMap[selectedFileData])
-      );
-      newFileData.labels.push(l);
-      const newFileMap: FileMap = { ...fileMap };
-      newFileMap[selectedFileData] = newFileData;
-      setFileMap(newFileMap);
-      setLabel("");
-    }
-  };
-
-  const removeLabel = (l: string) => {
-    if (
-      selectedFileData &&
-      fileMap[selectedFileData].labels.includes(l) &&
-      l.length > 0
-    ) {
-      const newFileData: FileData = JSON.parse(
-        JSON.stringify(fileMap[selectedFileData])
-      );
-      newFileData.labels = newFileData.labels.filter((item) => item !== l);
-      const newFileMap: FileMap = { ...fileMap };
-      newFileMap[selectedFileData] = newFileData;
-      setFileMap(newFileMap);
-      setLabel("");
-    }
-  };
-
-  function renderLabelBoxes(fileData: FileData) {
-    return Object.entries(fileData.labels).map(([key, label]) => (
-      <div key={fileData.fileID + key + label}>
-        <VerbaButton
-          title={label}
-          className="btn-sm"
-          text_class_name="text-xs"
-          onClick={() => {
-            removeLabel(label);
-          }}
-          Icon={MdCancel}
-        />
-      </div>
-    ));
-  }
 
   if (selectedFileData) {
     return (
@@ -220,7 +162,7 @@ const BasicSettingView: React.FC<BasicSettingViewProps> = ({
                     />
                   </label>
                 </div>
-              )
+              ),
             )}
         </div>
 
@@ -278,51 +220,6 @@ const BasicSettingView: React.FC<BasicSettingViewProps> = ({
             Add a link to reference the original source of the document. You can
             access it through the Document Explorer via the View Source button
           </p>
-        </div>
-
-        {/* Labels */}
-        <div className="flex gap-2 justify-between items-center text-text-verba">
-          <p className="flex min-w-[8vw]">Labels</p>
-          <label className="input flex items-center gap-2 w-full bg-bg-verba">
-            <input
-              type="text"
-              className="grow w-full"
-              value={label}
-              onChange={(e) => {
-                setLabel(e.target.value);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  addLabel(label);
-                }
-              }}
-              disabled={blocked}
-              title={label}
-            />
-          </label>
-          <VerbaButton
-            title="Add"
-            Icon={IoAddCircleSharp}
-            onClick={() => {
-              addLabel(label);
-            }}
-            disabled={blocked}
-          />
-        </div>
-
-        <div className="flex gap-2 items-center text-text-verba">
-          <p className="flex min-w-[8vw]"></p>
-          <p className="text-sm text-text-alt-verba text-start">
-            Add or remove labels for Document Filtering
-          </p>
-        </div>
-
-        <div className="flex gap-2 items-center text-text-verba">
-          <p className="flex min-w-[8vw]"></p>
-          <div className="flex flex-wrap gap-2">
-            {renderLabelBoxes(fileMap[selectedFileData])}
-          </div>
         </div>
 
         {/* Overwrite */}

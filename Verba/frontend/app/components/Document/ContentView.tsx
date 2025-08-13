@@ -95,7 +95,7 @@ const ContentView: React.FC<ContentViewProps> = ({
         selectedDocument,
         page,
         chunkScores ? chunkScores : [],
-        credentials
+        credentials,
       );
 
       if (data) {
@@ -239,17 +239,6 @@ const ContentView: React.FC<ContentViewProps> = ({
                   {document.title}
                 </p>
               </div>
-              <div className="gap-2 flex flex-wrap">
-                {Object.entries(document.labels).map(([key, label]) => (
-                  <VerbaButton
-                    key={document.title + key + label}
-                    title={label}
-                    text_size="text-xs"
-                    text_class_name="truncate max-w-[200px]"
-                    className="btn-sm min-w-min max-w-[200px]"
-                  />
-                ))}
-              </div>
             </div>
           </div>
 
@@ -258,7 +247,7 @@ const ContentView: React.FC<ContentViewProps> = ({
             <div className="overflow-y-auto h-full">
               {content &&
                 content.map((contentSnippet, index) =>
-                  renderText(contentSnippet, index)
+                  renderText(contentSnippet, index),
                 )}
             </div>
           </div>

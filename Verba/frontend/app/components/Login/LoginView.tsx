@@ -5,14 +5,8 @@ import { PresentationControls, useGLTF, Float } from "@react-three/drei";
 import GUI from "lil-gui";
 
 import { FaDatabase } from "react-icons/fa";
-import { FaDocker } from "react-icons/fa";
 import { FaKey } from "react-icons/fa";
-import { FaLaptopCode } from "react-icons/fa";
 import { GrConnect } from "react-icons/gr";
-import { CgWebsite } from "react-icons/cg";
-import { FaBackspace } from "react-icons/fa";
-import { HiMiniSparkles } from "react-icons/hi2";
-import { TbDatabaseEdit } from "react-icons/tb";
 
 import { connectToVerba } from "@/app/api";
 
@@ -44,23 +38,7 @@ const VerbaThree = ({
         color: "#e6e6e6",
         matcap: new THREE.TextureLoader().load(prefix + "/ice_cap.png"), // Add this line
       }),
-    []
-  );
-
-  const material1 = useMemo(
-    () =>
-      new THREE.MeshPhysicalMaterial({
-        metalness: 0.4,
-        roughness: 0.4,
-        color: "#ffe229",
-        ior: 1,
-        thickness: 1,
-        transparent: false,
-        wireframe: false,
-        clearcoat: 1,
-        clearcoatRoughness: 0.0,
-      }),
-    []
+    [],
   );
 
   useEffect(() => {
@@ -149,8 +127,6 @@ const LoginView: React.FC<LoginViewProps> = ({
 
   const [isConnecting, setIsConnecting] = useState(false);
 
-  const [selectStage, setSelectStage] = useState(true);
-
   const [errorText, setErrorText] = useState("");
 
   const [selectedDeployment, setSelectedDeployment] = useState<
@@ -176,16 +152,14 @@ const LoginView: React.FC<LoginViewProps> = ({
     }
   }, [credentials]);
 
-  const connect = async (
-    deployment: "Local" | "Weaviate" | "Docker" | "Custom"
-  ) => {
+  const connect = async (deployment: "Docker") => {
     setErrorText("");
     setIsConnecting(true);
     const response = await connectToVerba(
       deployment,
       weaviateURL,
       weaviateAPIKey,
-      port
+      port,
     );
     if (response) {
       if (!("error" in response)) {
@@ -194,7 +168,9 @@ const LoginView: React.FC<LoginViewProps> = ({
       } else if (response.connected == false) {
         setIsLoggedIn(false);
         setErrorText(
-          response.error == "" ? "Couldn't connect to Weaviate" : response.error
+          response.error == ""
+            ? "Couldn't connect to Weaviate"
+            : response.error,
         );
       } else {
         setIsLoggedIn(true);
@@ -274,171 +250,72 @@ const LoginView: React.FC<LoginViewProps> = ({
                 </p>
               )}
             </div>
-            {selectStage ? (
+            <div className="flex flex-col justify-start gap-4 w-full">
               <div className="flex flex-col justify-start gap-4 w-full">
-                {production == "Local" && (
-                  <div className="flex flex-col justify-start gap-2 w-full">
-                    <VerbaButton
-                      Icon={FaDatabase}
-                      title="Weaviate"
-                      disabled={isConnecting}
-                      onClick={() => {
-                        setSelectStage(false);
-                        setSelectedDeployment("Weaviate");
-                      }}
-                    />
-                    <VerbaButton
-                      title="Docker"
-                      Icon={FaDocker}
-                      disabled={isConnecting}
-                      onClick={() => {
-                        setSelectedDeployment("Docker");
-                        connect("Docker");
-                      }}
-                      loading={isConnecting && selectedDeployment == "Docker"}
-                    />
-                    <VerbaButton
-                      title="Custom"
-                      Icon={TbDatabaseEdit}
-                      disabled={isConnecting}
-                      onClick={() => {
-                        setSelectedDeployment("Custom");
-                        setSelectStage(false);
-                      }}
-                      loading={isConnecting && selectedDeployment == "Custom"}
-                    />
-                    <VerbaButton
-                      title="Local"
-                      Icon={FaLaptopCode}
-                      disabled={isConnecting}
-                      onClick={() => {
-                        setSelectedDeployment("Local");
-                        connect("Local");
-                      }}
-                      loading={isConnecting && selectedDeployment == "Local"}
-                    />
-                  </div>
-                )}
-                {production == "Demo" && (
-                  <div className="flex flex-col justify-start gap-4 w-full">
-                    <VerbaButton
-                      Icon={HiMiniSparkles}
-                      title="Start Demo"
-                      disabled={isConnecting}
-                      onClick={() => {
-                        setSelectedDeployment("Weaviate");
-                        connect("Weaviate");
-                      }}
-                      loading={isConnecting && selectedDeployment == "Weaviate"}
-                    />
-                  </div>
-                )}
-                {production == "Production" && (
-                  <div className="flex flex-col justify-start gap-4 w-full">
-                    <VerbaButton
-                      Icon={HiMiniSparkles}
-                      title="Start Verba"
-                      onClick={() => {
-                        setSelectStage(false);
-                        setSelectedDeployment("Weaviate");
-                      }}
-                    />
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="flex flex-col justify-start gap-4 w-full">
-                {production != "Demo" && (
-                  <div className="flex flex-col justify-start gap-4 w-full">
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        connect(selectedDeployment);
-                      }}
-                    >
-                      <div className="flex gap-2 items-center justify-between">
-                        <label className="input flex items-center gap-2 border-none shadow-md w-full bg-bg-verba">
-                          <FaDatabase className="text-text-alt-verba" />
-                          <input
-                            type="text"
-                            name="username"
-                            value={weaviateURL}
-                            onChange={(e) => setWeaviateURL(e.target.value)}
-                            placeholder="Weaviate URL"
-                            className="grow bg-button-verba text-text-alt-verba hover:text-text-verba w-full"
-                            autoComplete="username"
-                          />
-                        </label>
-                        {selectedDeployment == "Custom" && (
-                          <label className="input flex items-center gap-2 border-none shadow-md bg-bg-verba">
-                            <p className="text-text-alt-verba text-xs">Port</p>
-                            <input
-                              type="text"
-                              name="Port"
-                              value={port}
-                              onChange={(e) => setPort(e.target.value)}
-                              placeholder="Port"
-                              className="grow bg-button-verba text-text-alt-verba hover:text-text-verba w-full"
-                              autoComplete="port"
-                            />
-                          </label>
-                        )}
-                      </div>
-
-                      <label className="input flex items-center gap-2 border-none shadow-md bg-bg-verba mt-4">
-                        <FaKey className="text-text-alt-verba" />
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    connect("Docker");
+                  }}
+                >
+                  <div className="flex gap-2 items-center justify-between">
+                    <label className="input flex items-center gap-2 border-none shadow-md w-full bg-bg-verba">
+                      <FaDatabase className="text-text-alt-verba" />
+                      <input
+                        type="text"
+                        name="username"
+                        value={weaviateURL}
+                        onChange={(e) => setWeaviateURL(e.target.value)}
+                        placeholder="Weaviate URL"
+                        className="grow bg-button-verba text-text-alt-verba hover:text-text-verba w-full"
+                        autoComplete="username"
+                      />
+                    </label>
+                    {selectedDeployment == "Custom" && (
+                      <label className="input flex items-center gap-2 border-none shadow-md bg-bg-verba">
+                        <p className="text-text-alt-verba text-xs">Port</p>
                         <input
-                          type="password"
-                          name="current-password"
-                          value={weaviateAPIKey}
-                          onChange={(e) => setWeaviateAPIKey(e.target.value)}
-                          placeholder="API Key"
+                          type="text"
+                          name="Port"
+                          value={port}
+                          onChange={(e) => setPort(e.target.value)}
+                          placeholder="Port"
                           className="grow bg-button-verba text-text-alt-verba hover:text-text-verba w-full"
-                          autoComplete="current-password"
+                          autoComplete="port"
                         />
                       </label>
-                      <div className="flex justify-between gap-4 mt-4">
-                        <div className="flex flex-col w-full gap-2">
-                          <div className="flex flex-col justify-start gap-2 w-full">
-                            <VerbaButton
-                              Icon={GrConnect}
-                              title="Connect to Weaviate"
-                              type="submit"
-                              selected={true}
-                              selected_color="bg-primary-verba"
-                              loading={isConnecting}
-                            />
-                            {selectedDeployment == "Weaviate" && (
-                              <VerbaButton
-                                Icon={CgWebsite}
-                                title="Register"
-                                type="button"
-                                disabled={isConnecting}
-                                onClick={() =>
-                                  window.open(
-                                    "https://console.weaviate.cloud",
-                                    "_blank"
-                                  )
-                                }
-                              />
-                            )}
-                            <VerbaButton
-                              Icon={FaBackspace}
-                              title="Back"
-                              type="button"
-                              text_size="text-xs"
-                              icon_size={12}
-                              onClick={() => setSelectStage(true)}
-                              disabled={isConnecting}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </form>
+                    )}
                   </div>
-                )}
+
+                  <label className="input flex items-center gap-2 border-none shadow-md bg-bg-verba mt-4">
+                    <FaKey className="text-text-alt-verba" />
+                    <input
+                      type="password"
+                      name="current-password"
+                      value={weaviateAPIKey}
+                      onChange={(e) => setWeaviateAPIKey(e.target.value)}
+                      placeholder="API Key"
+                      className="grow bg-button-verba text-text-alt-verba hover:text-text-verba w-full"
+                      autoComplete="current-password"
+                    />
+                  </label>
+                  <div className="flex justify-between gap-4 mt-4">
+                    <div className="flex flex-col w-full gap-2">
+                      <div className="flex flex-col justify-start gap-2 w-full">
+                        <VerbaButton
+                          Icon={GrConnect}
+                          title="Connect to Weaviate"
+                          type="submit"
+                          selected={true}
+                          selected_color="bg-primary-verba"
+                          loading={isConnecting}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </form>
               </div>
-            )}
+            </div>
             {errorText && (
               <div className="bg-warning-verba p-4 rounded w-full h-full overflow-auto">
                 <p className="flex w-full h-full whitespace-pre-wrap">

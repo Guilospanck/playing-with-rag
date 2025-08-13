@@ -91,12 +91,6 @@ const DocumentMetaView: React.FC<DocumentMetaViewProps> = ({
                 {document.source}
               </button>
             </div>
-            <div className="p-4 flex flex-col gap-2 items-start justify-start">
-              <p className="font-bold flex text-xs text-start text-text-alt-verba">
-                Labels
-              </p>
-              <p className="text-text-verba max-w-full">{document.labels}</p>
-            </div>
           </div>
         )
       )}

@@ -32,7 +32,7 @@ interface FileSelectionViewProps {
   socketStatus: "ONLINE" | "OFFLINE";
   addStatusMessage: (
     message: string,
-    type: "INFO" | "WARNING" | "SUCCESS" | "ERROR"
+    type: "INFO" | "WARNING" | "SUCCESS" | "ERROR",
   ) => void;
 }
 
@@ -84,15 +84,15 @@ const FileSelectionView: React.FC<FileSelectionViewProps> = ({
   };
 
   const [selectedFileReader, setSelectedFileReader] = useState<string | null>(
-    null
+    null,
   );
   const [selectedDirReader, setSelectedDirReader] = useState<string | null>(
-    null
+    null,
   );
 
   const handleUploadFiles = async (
     event: React.ChangeEvent<HTMLInputElement>,
-    isDirectory: boolean
+    isDirectory: boolean,
   ) => {
     if (event.target.files && RAGConfig) {
       const files = event.target.files;
@@ -132,7 +132,6 @@ const FileSelectionView: React.FC<FileSelectionViewProps> = ({
           metadata: "",
           overwrite: false,
           content: fileContent,
-          labels: ["Document"],
           rag_config: newRAGConfig,
           file_size: calculateBytesFromHexString(fileContent),
           status: "READY",
@@ -169,7 +168,6 @@ const FileSelectionView: React.FC<FileSelectionViewProps> = ({
         source: "",
         overwrite: false,
         content: "",
-        labels: ["Document"],
         rag_config: newRAGConfig,
         file_size: 0,
         status: "READY",

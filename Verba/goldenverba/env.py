@@ -1,7 +1,8 @@
 import os
+from pathlib import Path
+
 from dotenv import load_dotenv
 from wasabi import msg
-from pathlib import Path
 
 
 def load_env():
