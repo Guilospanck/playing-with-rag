@@ -1,10 +1,11 @@
-from goldenverba.server.types import FileConfig
-from goldenverba.components.chunk import Chunk
-from spacy.tokens import Doc
-import spacy
 import json
 
+import spacy
 from langdetect import detect
+from spacy.tokens import Doc
+
+from goldenverba.components.chunk import Chunk
+from goldenverba.server.types import FileConfig
 
 
 def load_nlp_for_language(language: str):

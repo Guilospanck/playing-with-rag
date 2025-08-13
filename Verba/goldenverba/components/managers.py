@@ -1,54 +1,52 @@
-from wasabi import msg
-
-import weaviate
-from weaviate.client import WeaviateAsyncClient
-from weaviate.auth import AuthApiKey
-from weaviate.classes.query import Filter, Sort, MetadataQuery
-from weaviate.collections.classes.data import DataObject
-from weaviate.classes.aggregate import GroupByAggregate
-from weaviate.classes.init import AdditionalConfig, Timeout
-
-import os
 import asyncio
 import json
+import os
 import re
 from datetime import datetime
 
+import weaviate
 from sklearn.decomposition import PCA
+from wasabi import msg
+from weaviate.auth import AuthApiKey
+from weaviate.classes.aggregate import GroupByAggregate
+from weaviate.classes.init import AdditionalConfig, Timeout
+from weaviate.classes.query import Filter, MetadataQuery, Sort
+from weaviate.client import WeaviateAsyncClient
+from weaviate.collections.classes.data import DataObject
 
+from goldenverba.components.chunking.CodeChunker import CodeChunker
+from goldenverba.components.chunking.HTMLChunker import HTMLChunker
+from goldenverba.components.chunking.JSONChunker import JSONChunker
+from goldenverba.components.chunking.MarkdownChunker import MarkdownChunker
+from goldenverba.components.chunking.RecursiveChunker import RecursiveChunker
+from goldenverba.components.chunking.SemanticChunker import SemanticChunker
+from goldenverba.components.chunking.SentenceChunker import SentenceChunker
+
+# Import Chunkers
+from goldenverba.components.chunking.TokenChunker import TokenChunker
 from goldenverba.components.document import Document
+
+# Import Embedders
+from goldenverba.components.embedding.OllamaEmbedder import OllamaEmbedder
+
+# Import Generators
+from goldenverba.components.generation.OllamaGenerator import OllamaGenerator
 from goldenverba.components.interfaces import (
-    Reader,
     Chunker,
     Embedding,
-    Retriever,
     Generator,
+    Reader,
+    Retriever,
 )
-from goldenverba.server.helpers import LoggerManager
-from goldenverba.server.types import FileConfig, FileStatus
 
 # Import Readers
 from goldenverba.components.reader.BasicReader import BasicReader
 from goldenverba.components.reader.GitReader import GitReader
 
-# Import Chunkers
-from goldenverba.components.chunking.TokenChunker import TokenChunker
-from goldenverba.components.chunking.SentenceChunker import SentenceChunker
-from goldenverba.components.chunking.RecursiveChunker import RecursiveChunker
-from goldenverba.components.chunking.HTMLChunker import HTMLChunker
-from goldenverba.components.chunking.MarkdownChunker import MarkdownChunker
-from goldenverba.components.chunking.CodeChunker import CodeChunker
-from goldenverba.components.chunking.JSONChunker import JSONChunker
-from goldenverba.components.chunking.SemanticChunker import SemanticChunker
-
-# Import Embedders
-from goldenverba.components.embedding.OllamaEmbedder import OllamaEmbedder
-
 # Import Retrievers
 from goldenverba.components.retriever.WindowRetriever import WindowRetriever
-
-# Import Generators
-from goldenverba.components.generation.OllamaGenerator import OllamaGenerator
+from goldenverba.server.helpers import LoggerManager
+from goldenverba.server.types import FileConfig, FileStatus
 
 try:
     import tiktoken
@@ -126,7 +124,7 @@ class WeaviateManager:
             raise Exception("No URL or API Key provided")
 
     async def connect_to_docker(self, w_url):
-        msg.info(f"Connecting to Weaviate Docker")
+        msg.info("Connecting to Weaviate Docker")
         return weaviate.use_async_with_local(
             host=w_url,
             additional_config=AdditionalConfig(
@@ -136,7 +134,7 @@ class WeaviateManager:
 
     async def connect_to_custom(self, host, w_key, port):
         # Extract the port from the host
-        msg.info(f"Connecting to Weaviate Custom")
+        msg.info("Connecting to Weaviate Custom")
 
         if host is None or host == "":
             raise Exception("No Host URL provided")
@@ -162,7 +160,7 @@ class WeaviateManager:
             )
 
     async def connect_to_embedded(self):
-        msg.info(f"Connecting to Weaviate Embedded")
+        msg.info("Connecting to Weaviate Embedded")
         return weaviate.use_async_with_embedded(
             additional_config=AdditionalConfig(
                 timeout=Timeout(init=60, query=300, insert=300)
@@ -671,7 +669,7 @@ class WeaviateManager:
                         pca_embeddings,
                         vector_ids,
                         vector_chunk_uuids,
-                        vector_chunk_ids,
+                        vector_chunk_ids, strict=False,
                     ):
                         vector_map[_uuid]["chunks"].append(
                             {
@@ -1022,7 +1020,7 @@ class EmbeddingManager:
                         pca_embeddings = [embedding[0:3] for embedding in embeddings]
 
                     for vector, chunk, pca_ in zip(
-                        embeddings, document.chunks, pca_embeddings
+                        embeddings, document.chunks, pca_embeddings, strict=False
                     ):
                         chunk.vector = vector
                         chunk.pca = pca_
@@ -1037,7 +1035,7 @@ class EmbeddingManager:
                 await logger.send_report(
                     fileConfig.fileID,
                     FileStatus.EMBEDDING,
-                    f"Vectorized all chunks",
+                    "Vectorized all chunks",
                     took=elapsed_time,
                 )
                 await logger.send_report(

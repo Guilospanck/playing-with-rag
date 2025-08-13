@@ -18,18 +18,25 @@ local-docker-up:
 local-docker-down:
 	docker-compose -f docker-compose.dev.yml down
 
-# Run RAGit locally
-local-ragit-up: local-docker-up
+# Activate venv and install frontend deps but without starting it
+install-frontend:
+	bash -c 'source ./scripts/run.dev.sh && init_env_and_install_dev_deps'
+
+# Activate venv, install frontend deps and start it
+init-frontend:
 	bash -c 'source ./scripts/run.dev.sh && init'
 
-format:
-	cd verba/ && black .
+# Run RAGit locally
+local-ragit-up: local-docker-up init-frontend
+
+format: 
+	bash -c 'source ./scripts/run.dev.sh && format'
 
 lint:
-	cd verba/ && ruff check .
+	bash -c 'source ./scripts/run.dev.sh && lint'
 
 types:
-	cd verba/ && mypy .
+	bash -c 'source ./scripts/run.dev.sh && types'
 
 pre-pr: format lint types
 

@@ -1,34 +1,31 @@
-import os
+import asyncio
+import hashlib
 import importlib
-import math
 import json
+import math
+import os
+from copy import deepcopy
 from datetime import datetime
 
 from dotenv import load_dotenv
 from wasabi import msg
-import asyncio
-
-from copy import deepcopy
-import hashlib
-
-from goldenverba.server.helpers import LoggerManager
 from weaviate.client import WeaviateAsyncClient
 
 from goldenverba.components.document import Document
-from goldenverba.server.types import (
-    FileConfig,
-    FileStatus,
-    ChunkScore,
-    Credentials,
-)
-
 from goldenverba.components.managers import (
-    ReaderManager,
     ChunkerManager,
     EmbeddingManager,
-    RetrieverManager,
     GeneratorManager,
+    ReaderManager,
+    RetrieverManager,
     WeaviateManager,
+)
+from goldenverba.server.helpers import LoggerManager
+from goldenverba.server.types import (
+    ChunkScore,
+    Credentials,
+    FileConfig,
+    FileStatus,
 )
 
 load_dotenv()
@@ -397,7 +394,7 @@ class VerbaManager:
         try:
             if os.getenv("VERBA_PRODUCTION") == "Demo":
                 return True
-            for a_component_key, b_component_key in zip(a, b):
+            for a_component_key, b_component_key in zip(a, b, strict=False):
                 if a_component_key != b_component_key:
                     msg.fail(
                         f"Config Validation Failed, component name mismatch: {a_component_key} != {b_component_key}"
@@ -414,7 +411,7 @@ class VerbaManager:
                     return False
 
                 for a_rag_component_key, b_rag_component_key in zip(
-                    a_component, b_component
+                    a_component, b_component, strict=False
                 ):
                     if a_rag_component_key != b_rag_component_key:
                         msg.fail(
@@ -433,7 +430,7 @@ class VerbaManager:
                         )
                         return False
 
-                    for a_config_key, b_config_key in zip(a_config, b_config):
+                    for a_config_key, b_config_key in zip(a_config, b_config, strict=False):
                         if a_config_key != b_config_key:
                             msg.fail(
                                 f"Config Validation Failed, component name mismatch: {a_config_key} != {b_config_key}"

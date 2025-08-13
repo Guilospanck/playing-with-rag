@@ -1,42 +1,39 @@
-from fastapi import FastAPI, WebSocket, Request
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
-from contextlib import asynccontextmanager
-from fastapi.staticfiles import StaticFiles
 import asyncio
-
-from goldenverba.server.helpers import LoggerManager, BatchManager
-from weaviate.client import WeaviateAsyncClient
-
 import os
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from dotenv import load_dotenv
+from fastapi import FastAPI, Request, WebSocket
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from starlette.websockets import WebSocketDisconnect
 from wasabi import msg  # type: ignore[import]
+from weaviate.client import WeaviateAsyncClient
 
 from goldenverba import verba_manager
-
+from goldenverba.server.helpers import BatchManager, LoggerManager
 from goldenverba.server.types import (
-    ResetPayload,
-    QueryPayload,
-    GeneratePayload,
-    Credentials,
-    GetDocumentPayload,
+    ChunksPayload,
     ConnectPayload,
+    Credentials,
+    DataBatchPayload,
     DatacountPayload,
-    GetSuggestionsPayload,
-    GetAllSuggestionsPayload,
     DeleteSuggestionPayload,
+    GeneratePayload,
+    GetAllSuggestionsPayload,
+    GetChunkPayload,
     GetContentPayload,
-    SetThemeConfigPayload,
-    SetUserConfigPayload,
+    GetDocumentPayload,
+    GetSuggestionsPayload,
+    GetVectorPayload,
+    QueryPayload,
+    ResetPayload,
     SearchQueryPayload,
     SetRAGConfigPayload,
-    GetChunkPayload,
-    GetVectorPayload,
-    DataBatchPayload,
-    ChunksPayload,
+    SetThemeConfigPayload,
+    SetUserConfigPayload,
 )
 
 load_dotenv()
@@ -477,7 +474,7 @@ async def get_document(payload: GetDocumentPayload):
                 }
             )
         else:
-            msg.warn(f"Could't retrieve document")
+            msg.warn("Could't retrieve document")
             return JSONResponse(
                 content={
                     "error": "Couldn't retrieve requested document",

@@ -1,12 +1,13 @@
 from fastapi import WebSocket
+from wasabi import msg
+
 from goldenverba.server.types import (
-    FileStatus,
-    StatusReport,
+    CreateNewDocument,
     DataBatchPayload,
     FileConfig,
-    CreateNewDocument,
+    FileStatus,
+    StatusReport,
 )
-from wasabi import msg
 
 
 class LoggerManager:

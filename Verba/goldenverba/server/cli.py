@@ -1,6 +1,7 @@
+import os
+
 import click
 import uvicorn
-import os
 from dotenv import load_dotenv
 
 from goldenverba import verba_manager

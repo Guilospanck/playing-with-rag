@@ -1,7 +1,7 @@
 import base64
-import json
-import io
 import csv
+import io
+import json
 
 from wasabi import msg
 
@@ -126,7 +126,7 @@ class BasicReader(Reader):
             else:
                 try:
                     file_content = await self.load_text_file(decoded_bytes)
-                except Exception as e:
+                except Exception:
                     raise ValueError(
                         f"Unsupported file extension: {fileConfig.extension}"
                     )
@@ -205,7 +205,7 @@ class BasicReader(Reader):
             for i, row in enumerate(rows[1:], 1):
                 if len(row) == len(headers):
                     row_data = []
-                    for header, value in zip(headers, row):
+                    for header, value in zip(headers, row, strict=False):
                         row_data.append(f"{header}: {value}")
                     result.append(f"Row {i}: {' | '.join(row_data)}")
                 else:
@@ -267,7 +267,7 @@ class BasicReader(Reader):
 
                     for idx, (_, row) in enumerate(df.iterrows()):
                         row_data = []
-                        for header, value in zip(headers, row):
+                        for header, value in zip(headers, row, strict=False):
                             # Handle NaN values
                             display_value = str(value) if pd.notna(value) else ""
                             row_data.append(f"{header}: {display_value}")
@@ -312,7 +312,7 @@ class BasicReader(Reader):
 
                     for i, row in enumerate(rows_data[1:], 1):
                         if len(row) == len(headers):
-                            row_data = [f"{h}: {v}" for h, v in zip(headers, row)]
+                            row_data = [f"{h}: {v}" for h, v in zip(headers, row, strict=False)]
                             result.append(f"Row {i}: {' | '.join(row_data)}")
                             result.append(" \n\n")
                         else:

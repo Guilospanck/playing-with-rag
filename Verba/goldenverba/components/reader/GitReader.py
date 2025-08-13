@@ -1,17 +1,16 @@
-import aiohttp
+import base64
 import os
 import urllib
-import base64
 
+import aiohttp
 from wasabi import msg
 
 from goldenverba.components.document import Document
 from goldenverba.components.interfaces import Reader
-from goldenverba.server.types import FileConfig
 from goldenverba.components.reader.BasicReader import BasicReader
-from goldenverba.components.util import get_environment
-
 from goldenverba.components.types import InputConfig
+from goldenverba.components.util import get_environment
+from goldenverba.server.types import FileConfig
 
 
 class GitReader(Reader):
