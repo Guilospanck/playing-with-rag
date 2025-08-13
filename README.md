@@ -1,5 +1,26 @@
 # RAG
 
+## Envs
+
+
+### Developing with RAGit locally
+
+In this mode only weaviate and its addons will be dockerised. The RAGit application
+itself will be running locally. This is quicker to develop as you don't have to
+rebuild the Docker image each time.
+
+```shell
+cp ./verba/.env.dev.example ./verba/.env.dev
+```
+
+### Developing with RAGit in Docker
+
+In this mode everything is running dockerised.
+
+```shell
+cp ./verba/.env.example ./verba/.env
+```
+
 ## Running
 
 ### Docker
