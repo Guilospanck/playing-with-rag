@@ -10,6 +10,11 @@ class Credentials(BaseModel):
     key: str
 
 
+class GeneratorResult(BaseModel):
+    message: str
+    finish_reason: Literal["stop", "done", ""]
+
+
 class ConversationItem(BaseModel):
     type: str
     content: str

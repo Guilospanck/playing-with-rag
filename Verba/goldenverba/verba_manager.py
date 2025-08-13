@@ -68,7 +68,7 @@ class VerbaManager:
                 msg.info(f"Connection time: {end_time - start_time:.2f} seconds")
                 return client
 
-    async def disconnect(self, client):
+    async def disconnect(self, client) -> bool:
         start_time = asyncio.get_event_loop().time()
         result = await self.weaviate_manager.disconnect(client)
         end_time = asyncio.get_event_loop().time()
@@ -430,7 +430,9 @@ class VerbaManager:
                         )
                         return False
 
-                    for a_config_key, b_config_key in zip(a_config, b_config, strict=False):
+                    for a_config_key, b_config_key in zip(
+                        a_config, b_config, strict=False
+                    ):
                         if a_config_key != b_config_key:
                             msg.fail(
                                 f"Config Validation Failed, component name mismatch: {a_config_key} != {b_config_key}"
@@ -733,11 +735,9 @@ class VerbaManager:
         conversation: list[dict],
     ):
 
-        full_text = ""
         async for result in self.generator_manager.generate_stream(
             rag_config, query, context, conversation
         ):
-            full_text += result["message"]
             yield result
 
 
@@ -757,7 +757,7 @@ class ClientManager:
             self.locks[cred_hash] = asyncio.Lock()
         return self.locks[cred_hash]
 
-    def heartbeat(self):
+    def heartbeat(self) -> None:
         msg.info(f"{len(self.clients)} clients connected")
         for cred_hash, client in self.clients.items():
             msg.info(f"Client {cred_hash} connected at {client['timestamp']}")
@@ -794,12 +794,12 @@ class ClientManager:
                 except Exception as e:
                     raise e
 
-    async def disconnect(self):
+    async def disconnect(self) -> None:
         msg.warn("Disconnecting Clients!")
-        for cred_hash, client in self.clients.items():
+        for _cred_hash, client in self.clients.items():
             await self.manager.disconnect(client["client"])
 
-    async def clean_up(self):
+    async def clean_up(self) -> None:
         msg.info("Cleaning Clients Cache")
         current_time = datetime.now()
         clients_to_remove = []

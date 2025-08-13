@@ -8,6 +8,7 @@ import aiohttp
 from goldenverba.components.embedding.OllamaEmbedder import get_models
 from goldenverba.components.interfaces import Generator
 from goldenverba.components.types import InputConfig
+from goldenverba.server.types import GeneratorResult
 
 
 class OllamaGenerator(Generator):
@@ -35,7 +36,7 @@ class OllamaGenerator(Generator):
         query: str,
         context: str,
         conversation: list[dict] = [],
-    ) -> AsyncGenerator[dict, None]:
+    ) -> AsyncGenerator[GeneratorResult, None]:
         model = config.get("Model").value
         system_message = config.get("System Message").value
 
@@ -84,27 +85,25 @@ class OllamaGenerator(Generator):
         return messages
 
     @staticmethod
-    def _process_response(line: bytes) -> dict:
+    def _process_response(line: bytes) -> GeneratorResult:
         """Process a single line of response from the Ollama API."""
         json_data = json.loads(line.decode("utf-8"))
 
         if "error" in json_data:
-            return {
-                "message": json_data.get("error", "Unexpected Error"),
-                "finish_reason": "stop",
-            }
-
-        return {
-            "message": json_data.get("message", {}).get("content", ""),
-            "finish_reason": "stop" if json_data.get("done", False) else "",
-        }
+            return GeneratorResult(
+                message=json_data.get("error", "Unexpected Error"), finish_reason="stop"
+            )
+        return GeneratorResult(
+            message=json_data.get("message", {}).get("content", ""),
+            finish_reason="stop" if json_data.get("done", False) else "",
+        )
 
     @staticmethod
-    def _empty_response() -> dict:
+    def _empty_response() -> GeneratorResult:
         """Return an empty response."""
-        return {"message": "", "finish_reason": "stop"}
+        return GeneratorResult(message="", finish_reason="stop")
 
     @staticmethod
-    def _error_response(message: str) -> dict:
+    def _error_response(message: str) -> GeneratorResult:
         """Return an error response."""
-        return {"message": message, "finish_reason": "stop"}
+        return GeneratorResult(message=message, finish_reason="stop")

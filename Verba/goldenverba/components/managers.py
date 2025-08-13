@@ -669,7 +669,8 @@ class WeaviateManager:
                         pca_embeddings,
                         vector_ids,
                         vector_chunk_uuids,
-                        vector_chunk_ids, strict=False,
+                        vector_chunk_ids,
+                        strict=False,
                     ):
                         vector_map[_uuid]["chunks"].append(
                             {

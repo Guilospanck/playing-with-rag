@@ -312,7 +312,9 @@ class BasicReader(Reader):
 
                     for i, row in enumerate(rows_data[1:], 1):
                         if len(row) == len(headers):
-                            row_data = [f"{h}: {v}" for h, v in zip(headers, row, strict=False)]
+                            row_data = [
+                                f"{h}: {v}" for h, v in zip(headers, row, strict=False)
+                            ]
                             result.append(f"Row {i}: {' | '.join(row_data)}")
                             result.append(" \n\n")
                         else:
