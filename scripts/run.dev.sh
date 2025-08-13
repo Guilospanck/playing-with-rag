@@ -39,6 +39,8 @@ init(){
 
 	# Trap CTRL+C for the duration of init()
 	trap cleanup SIGINT
+
+	export ENV="dev"
 	init_env_and_install_dev_deps
 	init_ragit
 

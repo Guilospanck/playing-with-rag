@@ -1,13 +1,13 @@
 import os
 
 import click
+from goldenverba.env import load_env
 import uvicorn
-from dotenv import load_dotenv
 
 from goldenverba import verba_manager
 from goldenverba.server.types import Credentials
 
-load_dotenv()
+load_env()
 
 
 @click.group()

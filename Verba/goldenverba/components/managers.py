@@ -124,7 +124,7 @@ class WeaviateManager:
             raise Exception("No URL or API Key provided")
 
     async def connect_to_docker(self, w_url):
-        msg.info("Connecting to Weaviate Docker")
+        msg.info(f"Connecting to Weaviate Docker at {w_url}")
         return weaviate.use_async_with_local(
             host=w_url,
             additional_config=AdditionalConfig(
@@ -179,7 +179,9 @@ class WeaviateManager:
                     weaviateAPIKey = os.environ.get("WEAVIATE_API_KEY_VERBA")
                 client = await self.connect_to_cluster(weaviateURL, weaviateAPIKey)
             elif deployment == "Docker":
-                client = await self.connect_to_docker("weaviate")
+                client = await self.connect_to_docker(
+                    "weaviate" if os.getenv("ENV") != "dev" else "localhost"
+                )
             elif deployment == "Local":
                 client = await self.connect_to_embedded()
             elif deployment == "Custom":

@@ -3,11 +3,11 @@ import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from dotenv import load_dotenv
 from fastapi import FastAPI, Request, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from goldenverba.env import load_env
 from starlette.websockets import WebSocketDisconnect
 from wasabi import msg  # type: ignore[import]
 from weaviate.client import WeaviateAsyncClient
@@ -36,7 +36,7 @@ from goldenverba.server.types import (
     SetUserConfigPayload,
 )
 
-load_dotenv()
+load_env()
 
 # Check if runs in production
 production_key = os.environ.get("VERBA_PRODUCTION")

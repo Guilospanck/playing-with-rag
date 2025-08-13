@@ -1,13 +1,12 @@
 import os
 from collections.abc import AsyncGenerator
 
-from dotenv import load_dotenv
-
 from goldenverba.components.document import Document
 from goldenverba.components.types import InputConfig
+from goldenverba.env import load_env
 from goldenverba.server.types import FileConfig, GeneratorResult
 
-load_dotenv()
+load_env()
 
 
 class VerbaComponent:

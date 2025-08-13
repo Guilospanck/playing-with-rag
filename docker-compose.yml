@@ -134,6 +134,8 @@ services:
       start_period: 10s
     networks:
       - weaviate-network
+    environment:
+      ENV: prod
     depends_on:
       weaviate:
         condition: service_healthy

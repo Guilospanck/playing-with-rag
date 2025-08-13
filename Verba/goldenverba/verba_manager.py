@@ -7,7 +7,7 @@ import os
 from copy import deepcopy
 from datetime import datetime
 
-from dotenv import load_dotenv
+from goldenverba.env import load_env
 from wasabi import msg
 from weaviate.client import WeaviateAsyncClient
 
@@ -28,7 +28,7 @@ from goldenverba.server.types import (
     FileStatus,
 )
 
-load_dotenv()
+load_env()
 
 
 class VerbaManager:
