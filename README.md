@@ -2,6 +2,8 @@
 
 ## Envs
 
+In order to have the RAGit application working correctly, you have to have either a `GITHUB_TOKEN` - if querying GitHub repositories - or a `GITLAB_TOKEN` - if querying GitLab repositories.
+
 
 ### Developing with RAGit locally
 
