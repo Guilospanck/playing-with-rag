@@ -159,7 +159,7 @@ class ImportStreamPayload(BaseModel):
     fileMap: dict[str, FileConfig]
 
 
-class VerbaConfig(BaseModel):
+class RagitConfig(BaseModel):
     RAG: dict[str, RAGComponentClass]
     SETTING: dict
 
@@ -235,11 +235,11 @@ class GeneratePayload(BaseModel):
 
 
 class ConfigPayload(BaseModel):
-    config: VerbaConfig
+    config: RagitConfig
 
 
 class RAGConfigPayload(BaseModel):
-    config: VerbaConfig
+    config: RagitConfig
 
 
 class SearchQueryPayload(BaseModel):

@@ -7,9 +7,9 @@ import GUI from "lil-gui";
 import { FaDatabase } from "react-icons/fa";
 import { GrConnect } from "react-icons/gr";
 
-import { connectToVerba } from "@/app/api";
+import { connectToRagit } from "@/app/api";
 
-import VerbaButton from "../Navigation/VerbaButton";
+import RagitButton from "../Navigation/RagitButton";
 
 import { Credentials, RAGConfig, Theme, Themes } from "@/app/types";
 
@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === "production") {
   prefix = "";
 }
 
-const VerbaThree = ({
+const RagitThree = ({
   color,
   useMaterial,
   model_path,
@@ -29,7 +29,7 @@ const VerbaThree = ({
   useMaterial: boolean;
   model_path: string;
 }) => {
-  const verba_model = useGLTF(prefix + model_path);
+  const ragit_model = useGLTF(prefix + model_path);
 
   const material = useMemo(
     () =>
@@ -62,7 +62,7 @@ const VerbaThree = ({
 
   // Apply the shiny material to all meshes in the model
   useEffect(() => {
-    verba_model.scene.traverse((child) => {
+    ragit_model.scene.traverse((child) => {
       if (child instanceof THREE.Mesh) {
         if (!useMaterial) {
           child.material = material;
@@ -74,7 +74,7 @@ const VerbaThree = ({
         child.receiveShadow = true;
       }
     });
-  }, [verba_model, material]);
+  }, [ragit_model, material]);
 
   return (
     <>
@@ -89,7 +89,7 @@ const VerbaThree = ({
       >
         <Float speed={2} rotationIntensity={1}>
           <primitive
-            object={verba_model.scene}
+            object={ragit_model.scene}
             position-y={0}
             position-x={0}
             rotation-y={0.2}
@@ -153,7 +153,7 @@ const LoginView: React.FC<LoginViewProps> = ({
   const connect = async (deployment: "Docker") => {
     setErrorText("");
     setIsConnecting(true);
-    const response = await connectToVerba(deployment, weaviateURL, port);
+    const response = await connectToRagit(deployment, weaviateURL, port);
     if (response) {
       if (!("error" in response)) {
         setIsLoggedIn(false);
@@ -216,11 +216,11 @@ const LoginView: React.FC<LoginViewProps> = ({
               intensity={1}
               shadow-mapSize={1024}
             />
-            <VerbaThree
+            <RagitThree
               color="#FAFAFA"
               useMaterial={production == "Local" ? false : true}
               model_path={
-                production == "Local" ? "/verba.glb" : "/weaviate.glb"
+                production == "Local" ? "/ragit.glb" : "/weaviate.glb"
               }
             />
           </Canvas>
@@ -229,15 +229,15 @@ const LoginView: React.FC<LoginViewProps> = ({
           <div className="flex flex-col gap-8 items-center md:items-start justify-center w-4/5">
             <div className="flex flex-col items-center md:items-start gap-2">
               <div className="flex items-center gap-3">
-                <p className="font-light text-3xl md:text-4xl text-text-alt-verba">
+                <p className="font-light text-3xl md:text-4xl text-text-alt-ragit">
                   Welcome to
                 </p>
-                <p className="font-light text-3xl md:text-4xl text-text-verba">
+                <p className="font-light text-3xl md:text-4xl text-text-ragit">
                   Ragit
                 </p>
               </div>
               {production == "Local" && (
-                <p className="text-text-verba text-base lg:text-lg ">
+                <p className="text-text-ragit text-base lg:text-lg ">
                   Choose your deployment
                 </p>
               )}
@@ -251,28 +251,28 @@ const LoginView: React.FC<LoginViewProps> = ({
                   }}
                 >
                   <div className="flex gap-2 items-center justify-between">
-                    <label className="input flex items-center gap-2 border-none shadow-md w-full bg-bg-verba">
-                      <FaDatabase className="text-text-alt-verba" />
+                    <label className="input flex items-center gap-2 border-none shadow-md w-full bg-bg-ragit">
+                      <FaDatabase className="text-text-alt-ragit" />
                       <input
                         type="text"
                         name="username"
                         value={weaviateURL}
                         onChange={(e) => setWeaviateURL(e.target.value)}
                         placeholder="Weaviate URL"
-                        className="grow bg-button-verba text-text-alt-verba hover:text-text-verba w-full"
+                        className="grow bg-button-ragit text-text-alt-ragit hover:text-text-ragit w-full"
                         autoComplete="username"
                       />
                     </label>
                     {selectedDeployment == "Custom" && (
-                      <label className="input flex items-center gap-2 border-none shadow-md bg-bg-verba">
-                        <p className="text-text-alt-verba text-xs">Port</p>
+                      <label className="input flex items-center gap-2 border-none shadow-md bg-bg-ragit">
+                        <p className="text-text-alt-ragit text-xs">Port</p>
                         <input
                           type="text"
                           name="Port"
                           value={port}
                           onChange={(e) => setPort(e.target.value)}
                           placeholder="Port"
-                          className="grow bg-button-verba text-text-alt-verba hover:text-text-verba w-full"
+                          className="grow bg-button-ragit text-text-alt-ragit hover:text-text-ragit w-full"
                           autoComplete="port"
                         />
                       </label>
@@ -282,12 +282,12 @@ const LoginView: React.FC<LoginViewProps> = ({
                   <div className="flex justify-between gap-4 mt-4">
                     <div className="flex flex-col w-full gap-2">
                       <div className="flex flex-col justify-start gap-2 w-full">
-                        <VerbaButton
+                        <RagitButton
                           Icon={GrConnect}
                           title="Connect to Weaviate"
                           type="submit"
                           selected={true}
-                          selected_color="bg-primary-verba"
+                          selected_color="bg-primary-ragit"
                           loading={isConnecting}
                         />
                       </div>
@@ -297,7 +297,7 @@ const LoginView: React.FC<LoginViewProps> = ({
               </div>
             </div>
             {errorText && (
-              <div className="bg-warning-verba p-4 rounded w-full h-full overflow-auto">
+              <div className="bg-warning-ragit p-4 rounded w-full h-full overflow-auto">
                 <p className="flex w-full h-full whitespace-pre-wrap">
                   {errorText}
                 </p>

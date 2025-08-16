@@ -7,7 +7,7 @@ import { FaWrench } from "react-icons/fa";
 import { deleteAllDocuments, fetchMeta } from "@/app/api";
 import UserModalComponent from "../Navigation/UserModal";
 
-import VerbaButton from "../Navigation/VerbaButton";
+import RagitButton from "../Navigation/RagitButton";
 
 interface InfoViewProps {
   credentials: Credentials;
@@ -54,7 +54,7 @@ const InfoView: React.FC<InfoViewProps> = ({
     }
   };
 
-  const resetVerba = async () => {
+  const resetRagit = async () => {
     const response = await deleteAllDocuments("ALL", credentials);
     if (response) {
       addStatusMessage("Ragit reset", "SUCCESS");
@@ -95,7 +95,7 @@ const InfoView: React.FC<InfoViewProps> = ({
     <div className="flex flex-col w-full h-full p-4">
       <div className="flex justify-between items-center mb-4">
         <p className="text-2xl font-bold">Admin Panel</p>
-        <VerbaButton
+        <RagitButton
           title="Refresh"
           loading={isLoading}
           onClick={fetchMetadata}
@@ -104,26 +104,26 @@ const InfoView: React.FC<InfoViewProps> = ({
         />
       </div>
       <div className="flex-grow overflow-y-auto">
-        <div className="gap-4 flex flex-col p-4 text-text-verba">
+        <div className="gap-4 flex flex-col p-4 text-text-ragit">
           <p className="font-bold text-lg">Resetting RAGit</p>
           <div className="flex flex-wrap gap-2 justify-between">
             <div className="flex flex-wrap gap-2">
-              <VerbaButton
+              <RagitButton
                 title="Clear Documents"
                 onClick={() => openModal("reset-documents")}
                 Icon={IoDocumentSharp}
               />
-              <VerbaButton
+              <RagitButton
                 title="Clear Config"
                 onClick={() => openModal("reset-configs")}
                 Icon={FaWrench}
               />
-              <VerbaButton
+              <RagitButton
                 title="Clear Everything"
-                onClick={() => openModal("reset-verba")}
+                onClick={() => openModal("reset-ragit")}
                 Icon={IoTrash}
               />
-              <VerbaButton
+              <RagitButton
                 title="Clear Suggestions"
                 onClick={() => openModal("reset-suggestions")}
                 Icon={IoTrash}
@@ -132,38 +132,38 @@ const InfoView: React.FC<InfoViewProps> = ({
           </div>
           <p className="font-bold text-lg">Weaviate Information</p>
 
-          <div className="flex flex-col border-2 gap-2 border-bg-verba shadow-sm p-4 rounded-lg">
-            <p className="text-sm lg:text-base font-semibold text-text-alt-verba">
+          <div className="flex flex-col border-2 gap-2 border-bg-ragit shadow-sm p-4 rounded-lg">
+            <p className="text-sm lg:text-base font-semibold text-text-alt-ragit">
               Connected to
             </p>
-            <p className="   text-text-verba">{credentials.url}</p>
+            <p className="   text-text-ragit">{credentials.url}</p>
           </div>
 
-          <div className="flex flex-col border-2 gap-2 border-bg-verba shadow-sm p-4 rounded-lg">
-            <p className="text-sm lg:text-base font-semibold text-text-alt-verba">
+          <div className="flex flex-col border-2 gap-2 border-bg-ragit shadow-sm p-4 rounded-lg">
+            <p className="text-sm lg:text-base font-semibold text-text-alt-ragit">
               Deployment
             </p>
-            <p className=" text-text-verba">{credentials.deployment}</p>
+            <p className=" text-text-ragit">{credentials.deployment}</p>
           </div>
 
-          <div className="flex flex-col border-2 gap-2 border-secondary-verba shadow-sm p-4 rounded-lg">
-            <p className="text-sm lg:text-base font-semibold text-text-alt-verba">
+          <div className="flex flex-col border-2 gap-2 border-secondary-ragit shadow-sm p-4 rounded-lg">
+            <p className="text-sm lg:text-base font-semibold text-text-alt-ragit">
               Version
             </p>
             {nodePayload ? (
-              <p className="text-text-verba">{nodePayload.weaviate_version}</p>
+              <p className="text-text-ragit">{nodePayload.weaviate_version}</p>
             ) : (
               <span className="loading loading-spinner loading-sm"></span>
             )}
           </div>
 
-          <div className="flex flex-col border-2 border-bg-verba shadow-sm p-4 rounded-lg">
+          <div className="flex flex-col border-2 border-bg-ragit shadow-sm p-4 rounded-lg">
             <div className="flex gap-2 items-center">
-              <p className="text-text-alt-verba text-sm lg:text-base font-semibold">
+              <p className="text-text-alt-ragit text-sm lg:text-base font-semibold">
                 Nodes
               </p>
               {nodePayload ? (
-                <p className="text-text-alt-verba text-sm lg:text-base font-semibold">
+                <p className="text-text-alt-ragit text-sm lg:text-base font-semibold">
                   {nodePayload.node_count}
                 </p>
               ) : (
@@ -176,7 +176,7 @@ const InfoView: React.FC<InfoViewProps> = ({
                 {nodePayload.nodes.map((node) => (
                   <li
                     key={"Node" + node.name}
-                    className="text-sm text-text-verba flex justify-between"
+                    className="text-sm text-text-ragit flex justify-between"
                   >
                     <span className="w-64 truncate">{node.name}</span>
                     <span>
@@ -190,13 +190,13 @@ const InfoView: React.FC<InfoViewProps> = ({
             )}
           </div>
 
-          <div className="flex flex-col border-2 border-bg-verba shadow-sm p-4 rounded-lg">
+          <div className="flex flex-col border-2 border-bg-ragit shadow-sm p-4 rounded-lg">
             <div className="flex gap-2 items-center">
-              <p className="text-text-alt-verba text-sm lg:text-base font-semibold">
+              <p className="text-text-alt-ragit text-sm lg:text-base font-semibold">
                 Collections
               </p>
               {collectionPayload ? (
-                <p className="text-text-alt-verba text-sm lg:text-base font-semibold">
+                <p className="text-text-alt-ragit text-sm lg:text-base font-semibold">
                   {collectionPayload.collection_count}
                 </p>
               ) : (
@@ -209,7 +209,7 @@ const InfoView: React.FC<InfoViewProps> = ({
                 {collectionPayload.collections.map((collection) => (
                   <li
                     key={"Collection" + collection.name}
-                    className="text-sm text-text-verba flex justify-between"
+                    className="text-sm text-text-ragit flex justify-between"
                   >
                     <span className="w-128 truncate">{collection.name}</span>
                     <span>{collection.count} objects</span>
@@ -237,10 +237,10 @@ const InfoView: React.FC<InfoViewProps> = ({
         triggerString="Reset"
       />
       <UserModalComponent
-        modal_id="reset-verba"
+        modal_id="reset-ragit"
         title="Reset Ragit"
         text="Are you sure you want to reset Ragit? This will delete all collections related to Ragit."
-        triggerAccept={resetVerba}
+        triggerAccept={resetRagit}
         triggerString="Reset"
       />
       <UserModalComponent

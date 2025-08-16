@@ -9,7 +9,7 @@ from backend.server.types import FileConfig, GeneratorResult
 load_env()
 
 
-class VerbaComponent:
+class RagitComponent:
     """
     Base Class for Ragit Readers, Chunkers, Embedders, Retrievers, and Generators.
     """
@@ -51,7 +51,7 @@ class VerbaComponent:
         return True
 
 
-class Reader(VerbaComponent):
+class Reader(RagitComponent):
     """
     Interface for Ragit Readers.
     """
@@ -69,7 +69,7 @@ class Reader(VerbaComponent):
         raise NotImplementedError("load method must be implemented by a subclass.")
 
 
-class Embedding(VerbaComponent):
+class Embedding(RagitComponent):
     """
     Interface for Ragit Embedder Components.
     """
@@ -87,7 +87,7 @@ class Embedding(VerbaComponent):
         raise NotImplementedError("embed method must be implemented by a subclass.")
 
 
-class Chunker(VerbaComponent):
+class Chunker(RagitComponent):
     """
     Interface for Ragit Chunking.
     """
@@ -113,7 +113,7 @@ class Chunker(VerbaComponent):
         raise NotImplementedError("chunk method must be implemented by a subclass.")
 
 
-class Retriever(VerbaComponent):
+class Retriever(RagitComponent):
     """
     Interface for Ragit Retrievers.
     """
@@ -140,7 +140,7 @@ class Retriever(VerbaComponent):
         raise NotImplementedError("retrieve method must be implemented by a subclass.")
 
 
-class Generator(VerbaComponent):
+class Generator(RagitComponent):
     """
     Interface for Ragit Generators.
     """

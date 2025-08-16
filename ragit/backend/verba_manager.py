@@ -33,7 +33,7 @@ from backend.server.types import (
 load_env()
 
 
-class VerbaManager:
+class RagitManager:
     """Manages all Ragit Components."""
 
     def __init__(self) -> None:
@@ -741,7 +741,7 @@ class VerbaManager:
 class ClientManager:
     def __init__(self) -> None:
         self.clients: dict[str, dict] = {}
-        self.manager: VerbaManager = VerbaManager()
+        self.manager: RagitManager = RagitManager()
         self.max_time: int = 10
         self.locks: dict[str, asyncio.Lock] = {}
 

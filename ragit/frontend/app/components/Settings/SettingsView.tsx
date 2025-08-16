@@ -8,7 +8,7 @@ import { BiSolidCommentError } from "react-icons/bi";
 import { IoLogOutSharp } from "react-icons/io5";
 import { IoChatboxEllipsesSharp } from "react-icons/io5";
 
-import VerbaButton from "../Navigation/VerbaButton";
+import RagitButton from "../Navigation/RagitButton";
 
 import { Theme, Themes, Credentials } from "@/app/types";
 
@@ -46,7 +46,7 @@ const SettingsView: React.FC<SettingsViewProps> = ({
     <div className="flex justify-center gap-3 h-[80vh] ">
       <div className={`w-1/3 flex`}>
         <div className="flex flex-col gap-2 w-full">
-          <div className="bg-bg-alt-verba rounded-2xl flex gap-2 p-3 items-center justify-between h-min w-full">
+          <div className="bg-bg-alt-ragit rounded-2xl flex gap-2 p-3 items-center justify-between h-min w-full">
             <div className="flex gap-2 justify-start ">
               <InfoComponent
                 tooltip_text="Customize Ragit's Theme, reset collections, logout or report issues."
@@ -54,31 +54,31 @@ const SettingsView: React.FC<SettingsViewProps> = ({
               />
             </div>
           </div>
-          <div className="bg-bg-alt-verba gap-2 rounded-2xl flex flex-col p-3 w-full overflow-y-auto overflow-x-hidden">
-            <VerbaButton
+          <div className="bg-bg-alt-ragit gap-2 rounded-2xl flex flex-col p-3 w-full overflow-y-auto overflow-x-hidden">
+            <RagitButton
               title="Admin"
               onClick={() => setSettingMode("INFO")}
               selected={settingMode === "INFO"}
-              selected_color="bg-secondary-verba"
+              selected_color="bg-secondary-ragit"
               Icon={RiAdminFill}
             />
-            <VerbaButton
+            <RagitButton
               title="Customize Theme"
               onClick={() => setSettingMode("THEME")}
               selected={settingMode === "THEME"}
-              selected_color="bg-secondary-verba"
+              selected_color="bg-secondary-ragit"
               Icon={FaPaintBrush}
             />
-            <VerbaButton
+            <RagitButton
               title="Manage Suggestions"
               onClick={() => setSettingMode("SUGGESTIONS")}
               selected={settingMode === "SUGGESTIONS"}
-              selected_color="bg-secondary-verba"
+              selected_color="bg-secondary-ragit"
               Icon={IoChatboxEllipsesSharp}
             />
           </div>
-          <div className="bg-bg-alt-verba gap-2 rounded-2xl flex flex-col p-6 w-full overflow-y-auto overflow-x-hidden">
-            <VerbaButton
+          <div className="bg-bg-alt-ragit gap-2 rounded-2xl flex flex-col p-6 w-full overflow-y-auto overflow-x-hidden">
+            <RagitButton
               title="Report Issue"
               onClick={() =>
                 window.open(
@@ -94,7 +94,7 @@ const SettingsView: React.FC<SettingsViewProps> = ({
 
       <div className={`w-2/3 flex`}>
         <div className="flex flex-col gap-2 w-full">
-          <div className="bg-bg-alt-verba gap-2 rounded-2xl flex flex-col p-6 h-full w-full overflow-y-auto overflow-x-hidden">
+          <div className="bg-bg-alt-ragit gap-2 rounded-2xl flex flex-col p-6 h-full w-full overflow-y-auto overflow-x-hidden">
             {settingMode === "THEME" && (
               <SettingsComponent
                 themes={themes}

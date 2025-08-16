@@ -11,7 +11,7 @@ interface UserModalComponentProps {
   triggerString?: string | null;
 }
 
-import VerbaButton from "./VerbaButton";
+import RagitButton from "./RagitButton";
 
 const UserModalComponent: React.FC<UserModalComponentProps> = ({
   title,
@@ -29,7 +29,7 @@ const UserModalComponent: React.FC<UserModalComponentProps> = ({
         <div className="modal-action">
           <form method="dialog" className="flex gap-2">
             {triggerAccept && triggerString && (
-              <VerbaButton
+              <RagitButton
                 type="submit"
                 title={triggerString}
                 onClick={() => {
@@ -37,10 +37,10 @@ const UserModalComponent: React.FC<UserModalComponentProps> = ({
                 }}
               />
             )}
-            <VerbaButton
+            <RagitButton
               type="submit"
               title="Cancel"
-              selected_color="bg-warning-verba"
+              selected_color="bg-warning-ragit"
               selected={true}
             />
           </form>

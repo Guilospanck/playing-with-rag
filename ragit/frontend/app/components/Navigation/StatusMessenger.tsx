@@ -46,15 +46,15 @@ const StatusMessengerComponent: React.FC<StatusMessengerProps> = ({
   const getMessageColor = (type: string) => {
     switch (type) {
       case "INFO":
-        return "bg-button-verba";
+        return "bg-button-ragit";
       case "WARNING":
-        return "bg-secondary-verba";
+        return "bg-secondary-ragit";
       case "SUCCESS":
-        return "bg-primary-verba";
+        return "bg-primary-ragit";
       case "ERROR":
-        return "bg-warning-verba";
+        return "bg-warning-ragit";
       default:
-        return "bg-button-verba";
+        return "bg-button-ragit";
     }
   };
 
@@ -90,7 +90,7 @@ const StatusMessengerComponent: React.FC<StatusMessengerProps> = ({
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 50 }}
-              className={`${getMessageColor(message.type)} text-text-verba p-4 min-w-[300px] rounded-lg z-10 shadow-md`}
+              className={`${getMessageColor(message.type)} text-text-ragit p-4 min-w-[300px] rounded-lg z-10 shadow-md`}
             >
               <div className="flex flex-col gap-2">
                 <div className="flex flex-row gap-2 items-center">

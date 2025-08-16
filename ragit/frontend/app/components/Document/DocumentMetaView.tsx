@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { VerbaDocument, Credentials } from "@/app/types";
+import { RagitDocument, Credentials } from "@/app/types";
 import { fetchSelectedDocument } from "@/app/api";
 
 interface DocumentMetaViewProps {
@@ -14,7 +14,7 @@ const DocumentMetaView: React.FC<DocumentMetaViewProps> = ({
   credentials,
 }) => {
   const [isFetching, setIsFetching] = useState(true);
-  const [document, setDocument] = useState<VerbaDocument | null>(null);
+  const [document, setDocument] = useState<RagitDocument | null>(null);
 
   useEffect(() => {
     handleFetchDocument();
@@ -45,46 +45,46 @@ const DocumentMetaView: React.FC<DocumentMetaViewProps> = ({
     <div className="flex flex-col h-full">
       {isFetching ? (
         <div className="flex items-center justify-center h-full">
-          <span className="loading loading-spinner loading-md text-text-verba bg-text-alt-verba"></span>
+          <span className="loading loading-spinner loading-md text-text-ragit bg-text-alt-ragit"></span>
         </div>
       ) : (
         document && (
-          <div className="bg-bg-alt-verba flex flex-col rounded-lg overflow-hidden h-full">
+          <div className="bg-bg-alt-ragit flex flex-col rounded-lg overflow-hidden h-full">
             <div className="p-4 flex flex-col gap-2 items-start justify-start">
-              <p className="font-bold flex text-xs text-start text-text-alt-verba">
+              <p className="font-bold flex text-xs text-start text-text-alt-ragit">
                 Title
               </p>
               <p
-                className="text-text-verba truncate max-w-full"
+                className="text-text-ragit truncate max-w-full"
                 title={document.title}
               >
                 {document.title}
               </p>
             </div>
             <div className="p-4 flex flex-col gap-2 items-start justify-start">
-              <p className="font-bold flex text-xs text-start text-text-alt-verba">
+              <p className="font-bold flex text-xs text-start text-text-alt-ragit">
                 Metadata
               </p>
-              <p className="text-text-verba max-w-full">{document.metadata}</p>
+              <p className="text-text-ragit max-w-full">{document.metadata}</p>
             </div>
             <div className="p-4 flex flex-col gap-2 items-start justify-start">
-              <p className="font-bold flex text-xs text-start text-text-alt-verba">
+              <p className="font-bold flex text-xs text-start text-text-alt-ragit">
                 Extension
               </p>
-              <p className="text-text-verba max-w-full">{document.extension}</p>
+              <p className="text-text-ragit max-w-full">{document.extension}</p>
             </div>
             <div className="p-4 flex flex-col gap-2 items-start justify-start">
-              <p className="font-bold flex text-xs text-start text-text-alt-verba">
+              <p className="font-bold flex text-xs text-start text-text-alt-ragit">
                 File Size
               </p>
-              <p className="text-text-verba max-w-full">{document.fileSize}</p>
+              <p className="text-text-ragit max-w-full">{document.fileSize}</p>
             </div>
             <div className="p-4 flex flex-col gap-2 items-start justify-start">
-              <p className="font-bold flex text-xs text-start text-text-alt-verba">
+              <p className="font-bold flex text-xs text-start text-text-alt-ragit">
                 Source
               </p>
               <button
-                className="text-text-verba truncate max-w-full"
+                className="text-text-ragit truncate max-w-full"
                 onClick={() => window.open(document.source, "_blank")}
                 title={document.source}
               >

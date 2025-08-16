@@ -10,7 +10,7 @@ import { TiThMenu } from "react-icons/ti";
 
 import { closeOnClick } from "@/app/util";
 
-import VerbaButton from "./VerbaButton";
+import RagitButton from "./RagitButton";
 
 import NavbarButton from "./NavButton";
 
@@ -43,12 +43,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           className="flex rounded-lg w-[60px] object-contain [filter:drop-shadow(0_4px_3px_rgb(0_0_0_/0.07))_drop-shadow(0_2px_2px_rgb(0_0_0_/0.06))]"
         />
         <div className="flex flex-col">
-          <p className="text-xl font-bold text-text-verba">{title}</p>
-          <p className="text-sm  text-text-alt-verba font-light">{subtitle}</p>
+          <p className="text-xl font-bold text-text-ragit">{title}</p>
+          <p className="text-sm  text-text-alt-ragit font-light">{subtitle}</p>
         </div>
         <div className="flex md:hidden flex-col items-center gap-3 justify-between">
           <div className="dropdown dropdown-hover">
-            <VerbaButton Icon={TiThMenu} title="Menu" />
+            <RagitButton Icon={TiThMenu} title="Menu" />
             <ul
               tabIndex={0}
               className="dropdown-content dropdown-left z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"

@@ -8,7 +8,7 @@ import { MdError } from "react-icons/md";
 
 import UserModalComponent from "../Navigation/UserModal";
 
-import VerbaButton from "../Navigation/VerbaButton";
+import RagitButton from "../Navigation/RagitButton";
 
 interface FileComponentProps {
   fileData: FileData;
@@ -40,33 +40,33 @@ const FileComponent: React.FC<FileComponentProps> = ({
         <div className="flex gap-2">
           {fileMap[fileData.fileID].status != "DONE" &&
             fileMap[fileData.fileID].status != "ERROR" && (
-              <VerbaButton
+              <RagitButton
                 title={statusTextMap[fileMap[fileData.fileID].status]}
                 className="w-[120px]"
               />
             )}
           {fileMap[fileData.fileID].status == "DONE" && (
-            <VerbaButton
+            <RagitButton
               title={statusTextMap[fileMap[fileData.fileID].status]}
               Icon={FaCheckCircle}
               selected={true}
               className="w-[120px]"
-              selected_color={"bg-secondary-verba"}
+              selected_color={"bg-secondary-ragit"}
             />
           )}
           {fileMap[fileData.fileID].status == "ERROR" && (
-            <VerbaButton
+            <RagitButton
               title={statusTextMap[fileMap[fileData.fileID].status]}
               Icon={MdError}
               className="w-[120px]"
               selected={true}
-              selected_color={"bg-warning-verba"}
+              selected_color={"bg-warning-ragit"}
             />
           )}
         </div>
       ) : (
         <div className="flex gap-2">
-          <VerbaButton
+          <RagitButton
             title={fileMap[fileData.fileID].rag_config["Reader"].selected}
             className="w-[120px]"
             text_class_name="truncate w-[100px]"
@@ -74,14 +74,14 @@ const FileComponent: React.FC<FileComponentProps> = ({
         </div>
       )}
 
-      <VerbaButton
+      <RagitButton
         title={
           fileMap[fileData.fileID].filename
             ? fileMap[fileData.fileID].filename
             : "No Filename"
         }
         selected={selectedFileData === fileMap[fileData.fileID].fileID}
-        selected_color="bg-secondary-verba"
+        selected_color="bg-secondary-ragit"
         className="flex-grow"
         text_class_name="truncate max-w-[150px] lg:max-w-[300px]"
         onClick={() => {
@@ -89,12 +89,12 @@ const FileComponent: React.FC<FileComponentProps> = ({
         }}
       />
 
-      <VerbaButton
+      <RagitButton
         Icon={FaTrash}
         onClick={openDeleteModal}
         className="w-[50px]"
         selected={selectedFileData === fileMap[fileData.fileID].fileID}
-        selected_color="bg-warning-verba"
+        selected_color="bg-warning-ragit"
       />
 
       <UserModalComponent

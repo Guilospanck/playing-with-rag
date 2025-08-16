@@ -16,7 +16,7 @@ import { RAGConfig } from "@/app/types";
 
 import { Credentials, RAGComponentConfig } from "@/app/types";
 
-import VerbaButton from "../Navigation/VerbaButton";
+import RagitButton from "../Navigation/RagitButton";
 
 import BasicSettingView from "./BasicSettingView";
 import ComponentView from "./ComponentView";
@@ -203,7 +203,7 @@ const ConfigurationView: React.FC<ConfigurationViewProps> = ({
   return (
     <div className="flex flex-col gap-2 w-full">
       {/* FileSelection Header */}
-      <div className="bg-bg-alt-verba rounded-2xl flex gap-2 p-6 items-center justify-between h-min w-full">
+      <div className="bg-bg-alt-ragit rounded-2xl flex gap-2 p-6 items-center justify-between h-min w-full">
         <div className="flex gap-2 justify-start ">
           <InfoComponent
             tooltip_text="Configure all import settings related to chunking, embedding, adding meta data and more. You can save made changes individually or apply them to all other files"
@@ -211,27 +211,27 @@ const ConfigurationView: React.FC<ConfigurationViewProps> = ({
           />
         </div>
         <div className="flex gap-3 justify-end">
-          <VerbaButton
+          <RagitButton
             title="Overview"
             selected={selectedSetting === "Basic"}
-            selected_color="bg-secondary-verba"
+            selected_color="bg-secondary-ragit"
             onClick={() => {
               setSelectedSetting("Basic");
             }}
             Icon={IoSettingsSharp}
           />
 
-          <VerbaButton
+          <RagitButton
             title="Config"
             selected={selectedSetting === "Pipeline"}
-            selected_color="bg-secondary-verba"
+            selected_color="bg-secondary-ragit"
             onClick={() => {
               setSelectedSetting("Pipeline");
             }}
             Icon={FaHammer}
           />
 
-          <VerbaButton
+          <RagitButton
             onClick={() => {
               setSelectedFileData(null);
             }}
@@ -241,7 +241,7 @@ const ConfigurationView: React.FC<ConfigurationViewProps> = ({
       </div>
 
       {/* File List */}
-      <div className="bg-bg-alt-verba rounded-2xl flex flex-col p-6 items-center h-full w-full overflow-auto">
+      <div className="bg-bg-alt-ragit rounded-2xl flex flex-col p-6 items-center h-full w-full overflow-auto">
         {selectedSetting === "Basic" && (
           <BasicSettingView
             selectedFileData={selectedFileData}
@@ -282,21 +282,21 @@ const ConfigurationView: React.FC<ConfigurationViewProps> = ({
       </div>
 
       {/* Import Footer */}
-      <div className="bg-bg-alt-verba rounded-2xl flex gap-2 p-6 items-center justify-end h-min w-full">
+      <div className="bg-bg-alt-ragit rounded-2xl flex gap-2 p-6 items-center justify-end h-min w-full">
         <div className="flex gap-3 justify-end">
-          <VerbaButton
+          <RagitButton
             title="Apply to All"
             onClick={openApplyAllModal}
             Icon={VscSaveAll}
           />
 
-          <VerbaButton
+          <RagitButton
             title="Save Config"
             onClick={openDefaultModal}
             Icon={IoSettingsSharp}
           />
 
-          <VerbaButton title="Reset" onClick={openResetModal} Icon={MdCancel} />
+          <RagitButton title="Reset" onClick={openResetModal} Icon={MdCancel} />
         </div>
       </div>
       <UserModalComponent

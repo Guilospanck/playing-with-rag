@@ -7,7 +7,7 @@ import { IoChatbubbleSharp } from "react-icons/io5";
 import { FaHammer } from "react-icons/fa";
 import { IoIosSend } from "react-icons/io";
 import { BiError } from "react-icons/bi";
-import VerbaButton from "../Navigation/VerbaButton";
+import RagitButton from "../Navigation/RagitButton";
 
 import {
   updateRAGConfig,
@@ -331,7 +331,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     }
   };
 
-  const reconnectToVerba = () => {
+  const reconnectToRagit = () => {
     setReconnect((prevState) => !prevState);
   };
 
@@ -362,7 +362,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   return (
     <div className="flex flex-col gap-2 w-full">
       {/* Header */}
-      <div className="bg-bg-alt-verba rounded-2xl flex gap-2 p-3 items-center justify-between h-min w-full">
+      <div className="bg-bg-alt-ragit rounded-2xl flex gap-2 p-3 items-center justify-between h-min w-full">
         <div className="hidden md:flex gap-2 justify-start items-center">
           <InfoComponent
             tooltip_text="Use the Chat interface to interact with your data and perform Retrieval Augmented Generation (RAG). This interface allows you to ask questions, analyze sources, and generate responses based on your stored documents."
@@ -370,7 +370,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           />
         </div>
         <div className="w-full md:w-fit flex gap-3 justify-end items-center">
-          <VerbaButton
+          <RagitButton
             title="Chat"
             Icon={IoChatbubbleSharp}
             onClick={() => {
@@ -378,10 +378,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             }}
             selected={selectedSetting === "Chat"}
             disabled={false}
-            selected_color="bg-secondary-verba"
+            selected_color="bg-secondary-ragit"
           />
           {production != "Demo" && (
-            <VerbaButton
+            <RagitButton
               title="Config"
               Icon={FaHammer}
               onClick={() => {
@@ -389,20 +389,20 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
               }}
               selected={selectedSetting === "Config"}
               disabled={false}
-              selected_color="bg-secondary-verba"
+              selected_color="bg-secondary-ragit"
             />
           )}
         </div>
       </div>
 
-      <div className="bg-bg-alt-verba rounded-2xl flex flex-col h-[50vh] md:h-full w-full overflow-y-auto overflow-x-hidden relative">
+      <div className="bg-bg-alt-ragit rounded-2xl flex flex-col h-[50vh] md:h-full w-full overflow-y-auto overflow-x-hidden relative">
         <div
           className={`${selectedSetting === "Chat" ? "flex flex-col gap-3 p-4" : "hidden"}`}
         >
-          <div className="flex w-full justify-start items-center text-text-alt-verba gap-2">
+          <div className="flex w-full justify-start items-center text-text-alt-ragit gap-2">
             {currentDatacount === 0 && <BiError size={15} />}
             {currentDatacount === 0 && (
-              <p className="text-text-alt-verba text-sm items-center flex">{`${currentDatacount} documents embedded by ${currentEmbedding}`}</p>
+              <p className="text-text-alt-ragit text-sm items-center flex">{`${currentDatacount} documents embedded by ${currentEmbedding}`}</p>
             )}
           </div>
           {messages.map((message, index) => (
@@ -435,8 +435,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           {isFetching.current && (
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-3">
-                <span className="text-text-alt-verba loading loading-dots loading-md"></span>
-                <p className="text-text-alt-verba">
+                <span className="text-text-alt-ragit loading loading-dots loading-md"></span>
+                <p className="text-text-alt-ragit">
                   {fetchingStatus === "CHUNKS" && "Retrieving..."}
                   {fetchingStatus === "RESPONSE" && "Generating..."}
                 </p>
@@ -445,7 +445,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                     setFetchingStatus("DONE");
                     isFetching.current = false;
                   }}
-                  className="btn btn-circle btn-sm bg-bg-alt-verba hover:bg-warning-verba hover:text-text-verba text-text-alt-verba shadow-none border-none text-sm"
+                  className="btn btn-circle btn-sm bg-bg-alt-ragit hover:bg-warning-ragit hover:text-text-ragit text-text-alt-ragit shadow-none border-none text-sm"
                 >
                   <MdCancel size={15} />
                 </button>
@@ -466,12 +466,12 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         )}
       </div>
 
-      <div className="bg-bg-alt-verba rounded-2xl flex gap-2 p-6 items-center justify-end h-min w-full">
+      <div className="bg-bg-alt-ragit rounded-2xl flex gap-2 p-6 items-center justify-end h-min w-full">
         {socketOnline ? (
           <div className="flex gap-2 items-center justify-end w-full relative">
             <div className="relative w-full">
               <textarea
-                className="textarea textarea-bordered w-full bg-bg-verba placeholder-text-alt-verb min-h min-h-[40px] max-h-[150px] overflow-y-auto"
+                className="textarea textarea-bordered w-full bg-bg-ragit placeholder-text-alt-verb min-h min-h-[40px] max-h-[150px] overflow-y-auto"
                 placeholder={
                   currentDatacount > 0
                     ? currentDatacount >= 100
@@ -496,7 +496,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                   {currentSuggestions.map((suggestion, index) => (
                     <li
                       key={index}
-                      className="p-3 bg-button-verba hover:bg-secondary-verba text-text-alt-verba rounded-xl w-full hover:text-text-verba cursor-pointer"
+                      className="p-3 bg-button-ragit hover:bg-secondary-ragit text-text-alt-ragit rounded-xl w-full hover:text-text-ragit cursor-pointer"
                       onClick={() => {
                         setUserInput(suggestion.query);
                         setCurrentSuggestions([]);
@@ -522,16 +522,16 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
               )}
             </div>
             <div className="flex flex-col gap-1 items-center justify-center">
-              <VerbaButton
+              <RagitButton
                 type="button"
                 Icon={IoIosSend}
                 onClick={() => {
                   sendUserMessage();
                 }}
                 disabled={false}
-                selected_color="bg-primary-verba"
+                selected_color="bg-primary-ragit"
               />
-              <VerbaButton
+              <RagitButton
                 type="button"
                 Icon={MdOutlineRefresh}
                 onClick={() => {
@@ -548,15 +548,15 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                   ]);
                 }}
                 disabled={false}
-                selected_color="bg-primary-verba"
+                selected_color="bg-primary-ragit"
               />
             </div>
           </div>
         ) : (
           <div className="flex gap-2 items-center justify-end w-full">
             <button
-              onClick={reconnectToVerba}
-              className="flex btn border-none text-text-verba bg-button-verba hover:bg-button-hover-verba gap-2 items-center"
+              onClick={reconnectToRagit}
+              className="flex btn border-none text-text-ragit bg-button-ragit hover:bg-button-hover-ragit gap-2 items-center"
             >
               <TbPlugConnected size={15} />
               <p>Reconnecting...</p>

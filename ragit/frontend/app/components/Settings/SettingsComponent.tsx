@@ -17,7 +17,7 @@ import {
   Credentials,
 } from "@/app/types";
 
-import VerbaButton from "@/app/components/Navigation/VerbaButton";
+import RagitButton from "@/app/components/Navigation/RagitButton";
 
 import { HexColorPicker } from "react-colorful";
 
@@ -144,10 +144,10 @@ const SettingsComponent: React.FC<SettingsComponentProps> = ({
   ) => {
     return (
       <div key={title}>
-        <div className="flex gap-3 justify-between items-center text-text-verba">
+        <div className="flex gap-3 justify-between items-center text-text-ragit">
           <p className="flex min-w-[8vw]">{setting_type.description}</p>
           {setting_type.type === "text" && (
-            <label className="input flex items-center gap-2 w-full border-none bg-bg-verba">
+            <label className="input flex items-center gap-2 w-full border-none bg-bg-ragit">
               <input
                 type="text"
                 className="grow w-full"
@@ -163,7 +163,7 @@ const SettingsComponent: React.FC<SettingsComponentProps> = ({
               onChange={(e) => {
                 updateValue(title, e.target.value);
               }}
-              className="select bg-bg-verba"
+              className="select bg-bg-ragit"
             >
               {setting_type.options.map((template) => (
                 <option key={"Select_" + template} value={template}>
@@ -174,7 +174,7 @@ const SettingsComponent: React.FC<SettingsComponentProps> = ({
           )}
           {setting_type.type === "color" && (
             <div className="flex flex-col gap-1 h-[15vh] z-10">
-              <label className="input bg-bg-verba input-sm input-bordered flex items-center gap-2 w-full">
+              <label className="input bg-bg-ragit input-sm input-bordered flex items-center gap-2 w-full">
                 <input
                   type="text"
                   className="grow"
@@ -197,7 +197,7 @@ const SettingsComponent: React.FC<SettingsComponentProps> = ({
           {setting_type.type === "image" && (
             <div className="flex justify-between gap-4 w-full items-center">
               <div className="flex-grow">
-                <label className="input flex items-center text-text-verba gap-2 w-full border-none bg-bg-verba">
+                <label className="input flex items-center text-text-ragit gap-2 w-full border-none bg-bg-ragit">
                   <input
                     type="text"
                     className="grow"
@@ -209,11 +209,11 @@ const SettingsComponent: React.FC<SettingsComponentProps> = ({
               </div>
               <div className="flex justify-between items-center gap-4">
                 <div className="flex flex-col gap-2">
-                  <VerbaButton
+                  <RagitButton
                     title="Set Link"
                     onClick={() => updateValue(title, imageURL)}
                   />
-                  <VerbaButton
+                  <RagitButton
                     title="Upload Image"
                     onClick={() =>
                       document.getElementById(`${title}ImageInput`)?.click()
@@ -247,7 +247,7 @@ const SettingsComponent: React.FC<SettingsComponentProps> = ({
       <div className="flex justify-between items-center mb-4">
         <p className="text-2xl font-bold">Customize Theme</p>
         <select
-          className="select bg-bg-verba"
+          className="select bg-bg-ragit"
           value={
             Object.keys(themes).find((key) => themes[key] === selectedTheme) ||
             ""
@@ -292,13 +292,13 @@ const SettingsComponent: React.FC<SettingsComponentProps> = ({
         </div>
       </div>
       <div className="flex justify-end gap-2 mt-3">
-        <VerbaButton
+        <RagitButton
           title="Save"
           onClick={saveTheme}
           className="max-w-min"
           Icon={FaCheckCircle}
         />
-        <VerbaButton
+        <RagitButton
           title="Reset"
           onClick={resetThemes}
           className="max-w-min"

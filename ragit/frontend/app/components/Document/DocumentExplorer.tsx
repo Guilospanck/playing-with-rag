@@ -15,14 +15,14 @@ import ContentView from "./ContentView";
 import { IoMdAddCircle } from "react-icons/io";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import {
-  VerbaDocument,
+  RagitDocument,
   DocumentPayload,
   Credentials,
   ChunkScore,
   Theme,
 } from "@/app/types";
 
-import VerbaButton from "../Navigation/VerbaButton";
+import RagitButton from "../Navigation/RagitButton";
 
 import { fetchSelectedDocument } from "@/app/api";
 
@@ -53,7 +53,7 @@ const DocumentExplorer: React.FC<DocumentExplorerProps> = ({
   >("Content");
 
   const [isFetching, setIsFetching] = useState(false);
-  const [document, setDocument] = useState<VerbaDocument | null>(null);
+  const [document, setDocument] = useState<RagitDocument | null>(null);
 
   useEffect(() => {
     if (selectedDocument) {
@@ -101,7 +101,7 @@ const DocumentExplorer: React.FC<DocumentExplorerProps> = ({
   return (
     <div className="flex flex-col gap-2 w-full">
       {/* Search Header */}
-      <div className="bg-bg-alt-verba rounded-2xl flex gap-2 p-3 items-center justify-end lg:justify-between h-min w-full">
+      <div className="bg-bg-alt-ragit rounded-2xl flex gap-2 p-3 items-center justify-end lg:justify-between h-min w-full">
         <div className="hidden lg:flex gap-2 justify-start ">
           <InfoComponent
             tooltip_text="Inspect your all information about your document, such as chunks, metadata and more."
@@ -109,31 +109,31 @@ const DocumentExplorer: React.FC<DocumentExplorerProps> = ({
           />
         </div>
         <div className="flex gap-3 justify-end">
-          <VerbaButton
+          <RagitButton
             title="Content"
             Icon={MdContentPaste}
             onClick={() => setSelectedSetting("Content")}
             selected={selectedSetting === "Content"}
-            selected_color="bg-secondary-verba"
+            selected_color="bg-secondary-ragit"
           />
 
-          <VerbaButton
+          <RagitButton
             title="Chunks"
             Icon={MdContentCopy}
             onClick={() => setSelectedSetting("Chunks")}
             selected={selectedSetting === "Chunks"}
-            selected_color="bg-secondary-verba"
+            selected_color="bg-secondary-ragit"
           />
 
-          <VerbaButton
+          <RagitButton
             title="Vector"
             Icon={TbVectorTriangle}
             onClick={() => setSelectedSetting("Vector Space")}
             selected={selectedSetting === "Vector Space"}
-            selected_color="bg-secondary-verba"
+            selected_color="bg-secondary-ragit"
           />
 
-          <VerbaButton
+          <RagitButton
             Icon={MdCancel}
             onClick={() => {
               setSelectedDocument(null);
@@ -143,7 +143,7 @@ const DocumentExplorer: React.FC<DocumentExplorerProps> = ({
       </div>
 
       {/* Document List */}
-      <div className="bg-bg-alt-verba rounded-2xl flex flex-col p-6 h-full w-full overflow-y-auto overflow-x-hidden">
+      <div className="bg-bg-alt-ragit rounded-2xl flex flex-col p-6 h-full w-full overflow-y-auto overflow-x-hidden">
         {selectedSetting === "Content" && (
           <ContentView
             selectedTheme={selectedTheme}
@@ -180,10 +180,10 @@ const DocumentExplorer: React.FC<DocumentExplorerProps> = ({
       </div>
 
       {/* Import Footer */}
-      <div className="bg-bg-alt-verba rounded-2xl flex gap-2 p-3 items-center justify-between h-min w-full">
+      <div className="bg-bg-alt-ragit rounded-2xl flex gap-2 p-3 items-center justify-between h-min w-full">
         <div className="flex gap-3">
           {document && (
-            <VerbaButton
+            <RagitButton
               title="Add to Chat"
               Icon={IoMdAddCircle}
               onClick={() => {
@@ -194,7 +194,7 @@ const DocumentExplorer: React.FC<DocumentExplorerProps> = ({
         </div>
         <div className="flex gap-3">
           {selectedDocument && document && document.source && (
-            <VerbaButton
+            <RagitButton
               title="Go To Source"
               Icon={FaExternalLinkAlt}
               onClick={() => {
@@ -202,12 +202,12 @@ const DocumentExplorer: React.FC<DocumentExplorerProps> = ({
               }}
             />
           )}
-          <VerbaButton
+          <RagitButton
             title="Document Info"
             Icon={FaInfoCircle}
             onClick={() => setSelectedSetting("Metadata")}
             selected={selectedSetting === "Metadata"}
-            selected_color="bg-secondary-verba"
+            selected_color="bg-secondary-ragit"
           />
         </div>
       </div>

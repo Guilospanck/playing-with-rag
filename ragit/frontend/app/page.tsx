@@ -108,29 +108,29 @@ export default function Home() {
   const updateCSSVariables = useCallback(() => {
     const themeToUse = selectedTheme;
     const cssVars = {
-      "--primary-verba":
+      "--primary-ragit":
         themeToUse.primary_color?.color || WeaviateTheme.primary_color.color,
-      "--secondary-verba":
+      "--secondary-ragit":
         themeToUse.secondary_color?.color ||
         WeaviateTheme.secondary_color.color,
-      "--warning-verba":
+      "--warning-ragit":
         themeToUse.warning_color?.color || WeaviateTheme.warning_color.color,
-      "--bg-verba": themeToUse.bg_color?.color || WeaviateTheme.bg_color.color,
-      "--bg-alt-verba":
+      "--bg-ragit": themeToUse.bg_color?.color || WeaviateTheme.bg_color.color,
+      "--bg-alt-ragit":
         themeToUse.bg_alt_color?.color || WeaviateTheme.bg_alt_color.color,
-      "--text-verba":
+      "--text-ragit":
         themeToUse.text_color?.color || WeaviateTheme.text_color.color,
-      "--text-alt-verba":
+      "--text-alt-ragit":
         themeToUse.text_alt_color?.color || WeaviateTheme.text_alt_color.color,
-      "--button-verba":
+      "--button-ragit":
         themeToUse.button_color?.color || WeaviateTheme.button_color.color,
-      "--button-hover-verba":
+      "--button-hover-ragit":
         themeToUse.button_hover_color?.color ||
         WeaviateTheme.button_hover_color.color,
-      "--text-verba-button":
+      "--text-ragit-button":
         themeToUse.button_text_color?.color ||
         WeaviateTheme.button_text_color.color,
-      "--text-alt-verba-button":
+      "--text-alt-ragit-button":
         themeToUse.button_text_alt_color?.color ||
         WeaviateTheme.button_text_alt_color.color,
     };
@@ -153,7 +153,7 @@ export default function Home() {
 
   return (
     <main
-      className={`min-h-screen bg-bg-verba text-text-verba min-w-screen ${fontClassName}`}
+      className={`min-h-screen bg-bg-ragit text-text-ragit min-w-screen ${fontClassName}`}
       data-theme={selectedTheme.theme}
     >
       {gtag !== "" && <GoogleAnalytics gaId={gtag} />}
@@ -247,7 +247,7 @@ export default function Home() {
           </div>
 
           <div
-            className={`footer footer-center p-4 mt-8 bg-bg-verba text-text-alt-verba transition-all duration-1500 delay-1000`}
+            className={`footer footer-center p-4 mt-8 bg-bg-ragit text-text-alt-ragit transition-all duration-1500 delay-1000`}
           >
             <aside>
               <p>Build with ♥ by Guilospanck © 2025</p>

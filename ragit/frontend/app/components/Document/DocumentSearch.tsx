@@ -11,7 +11,7 @@ import { MdOutlineRefresh } from "react-icons/md";
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 import InfoComponent from "../Navigation/InfoComponent";
 import UserModalComponent from "../Navigation/UserModal";
-import VerbaButton from "../Navigation/VerbaButton";
+import RagitButton from "../Navigation/RagitButton";
 
 interface DocumentSearchComponentProps {
   selectedDocument: string | null;
@@ -143,7 +143,7 @@ const DocumentSearch: React.FC<DocumentSearchComponentProps> = ({
   return (
     <div className="flex flex-col gap-2 w-full">
       {/* Search Header */}
-      <div className="bg-bg-alt-verba rounded-2xl flex gap-2 p-3 items-center justify-between h-min w-full">
+      <div className="bg-bg-alt-ragit rounded-2xl flex gap-2 p-3 items-center justify-between h-min w-full">
         <div className="hidden lg:flex gap-2 justify-start w-[8vw]">
           <InfoComponent
             tooltip_text="Search and inspect different documents imported into Ragit"
@@ -151,7 +151,7 @@ const DocumentSearch: React.FC<DocumentSearchComponentProps> = ({
           />
         </div>
 
-        <label className="input flex items-center gap-2 w-full bg-bg-verba">
+        <label className="input flex items-center gap-2 w-full bg-bg-ragit">
           <input
             type="text"
             className="grow w-full"
@@ -164,8 +164,8 @@ const DocumentSearch: React.FC<DocumentSearchComponentProps> = ({
           />
         </label>
 
-        <VerbaButton onClick={handleSearch} Icon={FaSearch} />
-        <VerbaButton
+        <RagitButton onClick={handleSearch} Icon={FaSearch} />
+        <RagitButton
           onClick={clearSearch}
           icon_size={20}
           Icon={MdOutlineRefresh}
@@ -173,10 +173,10 @@ const DocumentSearch: React.FC<DocumentSearchComponentProps> = ({
       </div>
 
       {/* Document List */}
-      <div className="bg-bg-alt-verba rounded-2xl flex flex-col p-6 gap-3 items-center h-full w-full overflow-auto">
+      <div className="bg-bg-alt-ragit rounded-2xl flex flex-col p-6 gap-3 items-center h-full w-full overflow-auto">
         {isFetching && (
           <div className="flex items-center justify-center gap-2">
-            <span className="loading loading-spinner loading-sm text-text-alt-verba"></span>
+            <span className="loading loading-spinner loading-sm text-text-alt-ragit"></span>
           </div>
         )}
 
@@ -188,20 +188,20 @@ const DocumentSearch: React.FC<DocumentSearchComponentProps> = ({
                 className="flex justify-between items-center gap-2 rounded-2xl p-1 w-full"
               >
                 <div className="flex justify-between items-center w-full gap-2">
-                  <VerbaButton
+                  <RagitButton
                     title={document.title}
                     selected={selectedDocument == document.uuid}
-                    selected_color="bg-secondary-verba"
+                    selected_color="bg-secondary-ragit"
                     key={document.title + index}
                     className="flex-grow"
                     text_class_name="truncate max-w-[150px] lg:max-w-[350px]"
                     onClick={() => setSelectedDocument(document.uuid)}
                   />
                   {production !== "Demo" && (
-                    <VerbaButton
+                    <RagitButton
                       Icon={FaTrash}
                       selected={selectedDocument == document.uuid}
-                      selected_color="bg-warning-verba"
+                      selected_color="bg-warning-ragit"
                       className="max-w-min"
                       key={document.title + index + "delete"}
                       onClick={() => {
@@ -223,10 +223,10 @@ const DocumentSearch: React.FC<DocumentSearchComponentProps> = ({
         </div>
       </div>
 
-      <div className="bg-bg-alt-verba rounded-2xl flex gap-2 p-4 items-center justify-center h-min w-full">
-        <div className="join justify-center items-center text-text-verba">
-          <div className="flex justify-center items-center gap-2 bg-bg-alt-verba">
-            <VerbaButton
+      <div className="bg-bg-alt-ragit rounded-2xl flex gap-2 p-4 items-center justify-center h-min w-full">
+        <div className="join justify-center items-center text-text-ragit">
+          <div className="flex justify-center items-center gap-2 bg-bg-alt-ragit">
+            <RagitButton
               title={"Previous Page"}
               onClick={previousPage}
               className="btn-sm min-w-min max-w-[200px]"
@@ -234,9 +234,9 @@ const DocumentSearch: React.FC<DocumentSearchComponentProps> = ({
               Icon={FaArrowAltCircleLeft}
             />
             <div className="flex items-center">
-              <p className="text-xs text-text-verba">Page {page}</p>
+              <p className="text-xs text-text-ragit">Page {page}</p>
             </div>
-            <VerbaButton
+            <RagitButton
               title={"Next Page"}
               onClick={nextPage}
               className="btn-sm min-w-min max-w-[200px]"

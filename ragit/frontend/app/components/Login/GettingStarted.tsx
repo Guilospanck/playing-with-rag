@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import VerbaButton from "../Navigation/VerbaButton";
+import RagitButton from "../Navigation/RagitButton";
 import { FaGithub } from "react-icons/fa";
 import { FaYoutube } from "react-icons/fa";
 import { IoDocumentTextSharp } from "react-icons/io5";
@@ -72,14 +72,14 @@ const GettingStartedComponent: React.FC<GettingStartedComponentProps> = ({
                 GitHub.
               </p>
               <div className="flex flex-col md:flex-row gap-2">
-                <VerbaButton
+                <RagitButton
                   title="GitHub"
                   Icon={FaGithub}
                   onClick={() =>
-                    window.open("https://github.com/weaviate/verba", "_blank")
+                    window.open("https://github.com/weaviate/ragit", "_blank")
                   }
                 />
-                <VerbaButton
+                <RagitButton
                   title="YouTube"
                   Icon={FaYoutube}
                   onClick={() =>
@@ -89,12 +89,12 @@ const GettingStartedComponent: React.FC<GettingStartedComponentProps> = ({
                     )
                   }
                 />
-                <VerbaButton
+                <RagitButton
                   title="Blog Post"
                   Icon={IoDocumentTextSharp}
                   onClick={() =>
                     window.open(
-                      "https://weaviate.io/blog/verba-open-source-rag-app",
+                      "https://weaviate.io/blog/ragit-open-source-rag-app",
                       "_blank"
                     )
                   }
@@ -113,12 +113,12 @@ const GettingStartedComponent: React.FC<GettingStartedComponentProps> = ({
         </div>
         <div className="modal-action mt-6 justify-center md:justify-end">
           <form method="dialog">
-            <VerbaButton
+            <RagitButton
               title="Let's get started"
               type="submit"
               selected={true}
               onClick={handleGetStarted}
-              selected_color="bg-primary-verba"
+              selected_color="bg-primary-ragit"
               Icon={FaHeart}
             />
           </form>

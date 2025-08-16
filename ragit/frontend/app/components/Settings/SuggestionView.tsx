@@ -9,7 +9,7 @@ import UserModalComponent from "../Navigation/UserModal";
 import { FaArrowAltCircleRight, FaArrowAltCircleLeft } from "react-icons/fa";
 import { formatDistanceToNow, parseISO } from "date-fns";
 
-import VerbaButton from "../Navigation/VerbaButton";
+import RagitButton from "../Navigation/RagitButton";
 
 interface SuggestionViewProps {
   credentials: Credentials;
@@ -97,7 +97,7 @@ const SuggestionView: React.FC<SuggestionViewProps> = ({
     <div className="flex flex-col w-full h-full p-4">
       <div className="flex justify-between items-center mb-4">
         <p className="text-2xl font-bold">Manage Suggestions ({totalCount})</p>
-        <VerbaButton
+        <RagitButton
           title="Refresh"
           className="max-w-min"
           onClick={handleRefresh}
@@ -105,30 +105,30 @@ const SuggestionView: React.FC<SuggestionViewProps> = ({
         />
       </div>
       <div className="flex-grow overflow-y-auto">
-        <div className="gap-4 flex flex-col p-4 text-text-verba">
+        <div className="gap-4 flex flex-col p-4 text-text-ragit">
           <div className="flex flex-col gap-2">
             {suggestions.map((suggestion, index) => (
               <div
                 key={"Suggestion" + suggestion.uuid}
-                className="flex items-center justify-between gap-2 p-4 border-2 bg-bg-alt-verba rounded-xl"
+                className="flex items-center justify-between gap-2 p-4 border-2 bg-bg-alt-ragit rounded-xl"
               >
                 <div className="flex flex-col items-start justify-start gap-2 w-2/3">
-                  <p className="font-bold flex text-xs text-start text-text-alt-verba">
+                  <p className="font-bold flex text-xs text-start text-text-alt-ragit">
                     {getTimeAgo(suggestion.timestamp)}
                   </p>
                   <p
-                    className="text-sm text-text-verba truncate max-w-full"
+                    className="text-sm text-text-ragit truncate max-w-full"
                     title={suggestion.query}
                   >
                     {suggestion.query}
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <VerbaButton
+                  <RagitButton
                     onClick={() => handleCopy(suggestion.query)}
                     Icon={IoCopy}
                   />
-                  <VerbaButton
+                  <RagitButton
                     onClick={() =>
                       openModal("remove_suggestion" + suggestion.uuid)
                     }
@@ -149,16 +149,16 @@ const SuggestionView: React.FC<SuggestionViewProps> = ({
         </div>
       </div>
       {suggestions.length > 0 && (
-        <div className="flex justify-center items-center gap-2 p-3 bg-bg-alt-verba">
-          <VerbaButton
+        <div className="flex justify-center items-center gap-2 p-3 bg-bg-alt-ragit">
+          <RagitButton
             title="Previous Page"
             onClick={previousPage}
             className="btn-sm min-w-min max-w-[200px]"
             text_class_name="text-xs"
             Icon={FaArrowAltCircleLeft}
           />
-          <p className="text-xs flex text-text-verba">Page {page}</p>
-          <VerbaButton
+          <p className="text-xs flex text-text-ragit">Page {page}</p>
+          <RagitButton
             title="Next Page"
             onClick={nextPage}
             className="btn-sm min-w-min max-w-[200px]"

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { VerbaChunk, ChunksPayload, Theme } from "@/app/types";
+import { RagitChunk, ChunksPayload, Theme } from "@/app/types";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import {
@@ -14,7 +14,7 @@ import { FaArrowAltCircleRight, FaArrowAltCircleLeft } from "react-icons/fa";
 import { fetch_chunks } from "@/app/api";
 import { Credentials } from "@/app/types";
 
-import VerbaButton from "../Navigation/VerbaButton";
+import RagitButton from "../Navigation/RagitButton";
 
 interface ChunkViewProps {
   selectedDocument: string | null;
@@ -28,7 +28,7 @@ const ChunkView: React.FC<ChunkViewProps> = ({
   selectedTheme,
 }) => {
   const [isFetching, setIsFetching] = useState(false);
-  const [chunks, setChunks] = useState<VerbaChunk[]>([]);
+  const [chunks, setChunks] = useState<RagitChunk[]>([]);
   const [page, setPage] = useState(1);
   const [currentChunkIndex, setCurrentChunkIndex] = useState(0);
   const [isPreviousDisabled, setIsPreviousDisabled] = useState(true);
@@ -122,7 +122,7 @@ const ChunkView: React.FC<ChunkViewProps> = ({
     return (
       <div>
         {isFetching && (
-          <div className="flex items-center justify-center text-text-verba gap-2 h-full">
+          <div className="flex items-center justify-center text-text-ragit gap-2 h-full">
             <span className="loading loading-spinner loading-sm"></span>
           </div>
         )}
@@ -133,14 +133,14 @@ const ChunkView: React.FC<ChunkViewProps> = ({
   return (
     <div className="flex flex-col h-full">
       {chunks.length > 0 && (
-        <div className="bg-bg-alt-verba flex flex-col rounded-lg overflow-hidden h-full">
+        <div className="bg-bg-alt-ragit flex flex-col rounded-lg overflow-hidden h-full">
           {/* Content div */}
           <div className="flex-grow overflow-hidden p-3">
             <div className="flex justify-between mb-2">
               <div className="flex gap-2">
-                <div className="flex gap-2 items-center p-3 bg-secondary-verba rounded-full w-fit">
+                <div className="flex gap-2 items-center p-3 bg-secondary-ragit rounded-full w-fit">
                   <IoNewspaper size={12} />
-                  <p className="text-xs flex text-text-verba">
+                  <p className="text-xs flex text-text-ragit">
                     Chunk {chunks[currentChunkIndex].chunk_id}
                   </p>
                 </div>
@@ -148,7 +148,7 @@ const ChunkView: React.FC<ChunkViewProps> = ({
             </div>
             <div className="overflow-y-auto h-[calc(100%-3rem)]">
               <ReactMarkdown
-                className="max-w-[50vw] items-center justify-center flex-wrap md:prose-base sm:prose-sm p-3 prose-pre:bg-bg-alt-verba"
+                className="max-w-[50vw] items-center justify-center flex-wrap md:prose-base sm:prose-sm p-3 prose-pre:bg-bg-alt-ragit"
                 components={{
                   code({ node, inline, className, children, ...props }) {
                     const match = /language-(\w+)/.exec(className || "");
@@ -180,8 +180,8 @@ const ChunkView: React.FC<ChunkViewProps> = ({
 
           {/* Navigation div */}
           {chunks.length > 1 && (
-            <div className="flex justify-center items-center gap-2 p-3 bg-bg-alt-verba">
-              <VerbaButton
+            <div className="flex justify-center items-center gap-2 p-3 bg-bg-alt-ragit">
+              <RagitButton
                 title={"Previous Chunk"}
                 onClick={previousChunk}
                 className="btn-sm min-w-min max-w-[200px]"
@@ -189,7 +189,7 @@ const ChunkView: React.FC<ChunkViewProps> = ({
                 disabled={isPreviousDisabled}
                 Icon={FaArrowAltCircleLeft}
               />
-              <VerbaButton
+              <RagitButton
                 title={"Next Chunk"}
                 onClick={nextChunk}
                 className="btn-sm min-w-min max-w-[200px]"

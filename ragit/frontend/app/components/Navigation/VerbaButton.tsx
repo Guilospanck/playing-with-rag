@@ -3,7 +3,7 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
 
-interface VerbaButtonProps {
+interface RagitButtonProps {
   title?: string;
   Icon?: typeof FaStar;
   onClick?: (...args: any[]) => void; // Updated to accept any number of arguments
@@ -24,7 +24,7 @@ interface VerbaButtonProps {
   onClickParams?: any[]; // New prop to pass additional parameters
 }
 
-const VerbaButton: React.FC<VerbaButtonProps> = ({
+const RagitButton: React.FC<RagitButtonProps> = ({
   title = "",
   key = "Button" + title,
   Icon,
@@ -35,8 +35,8 @@ const VerbaButton: React.FC<VerbaButtonProps> = ({
   className = "",
   text_class_name = "",
   selected = false,
-  selected_color = "bg-button-verba",
-  selected_text_color = "text-text-verba-button",
+  selected_color = "bg-button-ragit",
+  selected_text_color = "text-text-ragit-button",
   text_size = "text-xs",
   icon_size = 12,
   type = "button",
@@ -50,7 +50,7 @@ const VerbaButton: React.FC<VerbaButtonProps> = ({
       key={key}
       className={
         className +
-        ` p-3 transition-all active:scale-95 scale-100 duration-300 flex gap-1 items-center justify-center ${circle ? "rounded-full" : "rounded-lg"} hover:bg-button-hover-verba hover:text-text-verba-button ${selected ? selected_color + " shadow-md " + selected_text_color : " bg-button-verba text-text-alt-verba-button"} `
+        ` p-3 transition-all active:scale-95 scale-100 duration-300 flex gap-1 items-center justify-center ${circle ? "rounded-full" : "rounded-lg"} hover:bg-button-hover-ragit hover:text-text-ragit-button ${selected ? selected_color + " shadow-md " + selected_text_color : " bg-button-ragit text-text-alt-ragit-button"} `
       }
       onClick={(e) => onClick(e, ...onClickParams)}
       disabled={disabled}
@@ -58,7 +58,7 @@ const VerbaButton: React.FC<VerbaButtonProps> = ({
       onMouseLeave={onMouseLeave}
     >
       {loading ? (
-        <span className="text-text-verba-button loading loading-spinner loading-xs"></span>
+        <span className="text-text-ragit-button loading loading-spinner loading-xs"></span>
       ) : (
         <>
           {Icon && <Icon size={icon_size} className="w-[20px]" />}
@@ -73,4 +73,4 @@ const VerbaButton: React.FC<VerbaButtonProps> = ({
   );
 };
 
-export default VerbaButton;
+export default RagitButton;

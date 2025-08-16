@@ -1,7 +1,7 @@
 export async function getGitHubStars(): Promise<any> {
   try {
     const response: any = await fetch(
-      "https://api.github.com/repos/weaviate/verba",
+      "https://api.github.com/repos/weaviate/ragit",
       {
         method: "GET",
       }

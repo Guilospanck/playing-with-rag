@@ -16,9 +16,9 @@ build
 ~
 .local
 .cache
-.verba
+.ragit
 .vscode
-verba_config.json
+ragit_config.json
 text-generation-inference
 test.py
 cache.txt

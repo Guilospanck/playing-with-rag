@@ -73,7 +73,7 @@ export const fetchHealth = (): Promise<HealthPayload | null> =>
   fetchData<HealthPayload>("/api/health");
 
 // Endpoint /api/connect
-export const connectToVerba = async (
+export const connectToRagit = async (
   deployment: string,
   url: string,
   port: string,

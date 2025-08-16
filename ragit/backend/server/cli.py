@@ -72,7 +72,7 @@ def reset(url, deployment, full_reset):
     """
     import asyncio
 
-    manager = verba_manager.VerbaManager()
+    manager = verba_manager.RagitManager()
 
     async def async_reset():
         if url is not None:

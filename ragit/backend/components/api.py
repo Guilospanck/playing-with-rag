@@ -49,7 +49,7 @@ if production_key:
 else:
     production = "Local"
 
-manager = verba_manager.VerbaManager()
+manager = verba_manager.RagitManager()
 
 client_manager = verba_manager.ClientManager()
 

@@ -105,7 +105,7 @@ const IngestionView: React.FC<IngestionViewProps> = ({
     };
   }, [reconnect]);
 
-  const reconnectToVerba = () => {
+  const reconnectToRagit = () => {
     setReconnect((prevState) => !prevState);
   };
 
@@ -253,7 +253,7 @@ const IngestionView: React.FC<IngestionViewProps> = ({
           importSelected={importSelected}
           importAll={importAll}
           socketStatus={socketStatus}
-          reconnect={reconnectToVerba}
+          reconnect={reconnectToRagit}
         />
       </div>
 

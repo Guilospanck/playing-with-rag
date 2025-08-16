@@ -206,18 +206,18 @@ export type CreateNewDocument = {
 };
 
 export const statusColorMap = {
-  DONE: "bg-secondary-verba",
-  ERROR: "bg-warning-verba",
-  READY: "bg-button-verba",
-  STARTING: "bg-button-verba",
-  CHUNKING: "bg-button-verba",
-  LOADING: "bg-button-verba",
-  EMBEDDING: "bg-button-verba",
-  INGESTING: "bg-button-verba",
-  NER: "bg-button-verba",
-  EXTRACTION: "bg-button-verba",
-  SUMMARIZING: "bg-button-verba",
-  WAITING: "bg-button-verba",
+  DONE: "bg-secondary-ragit",
+  ERROR: "bg-warning-ragit",
+  READY: "bg-button-ragit",
+  STARTING: "bg-button-ragit",
+  CHUNKING: "bg-button-ragit",
+  LOADING: "bg-button-ragit",
+  EMBEDDING: "bg-button-ragit",
+  INGESTING: "bg-button-ragit",
+  NER: "bg-button-ragit",
+  EXTRACTION: "bg-button-ragit",
+  SUMMARIZING: "bg-button-ragit",
+  WAITING: "bg-button-ragit",
 };
 
 export const statusTextMap = {
@@ -256,7 +256,7 @@ export type DocumentChunk = {
 
 export type DocumentPayload = {
   error: string;
-  document: VerbaDocument;
+  document: RagitDocument;
 };
 
 type NodeInfo = {
@@ -291,12 +291,12 @@ export type MetadataPayload = {
 
 export type ChunksPayload = {
   error: string;
-  chunks: VerbaChunk[];
+  chunks: RagitChunk[];
 };
 
 export type ChunkPayload = {
   error: string;
-  chunk: VerbaChunk;
+  chunk: RagitChunk;
 };
 
 export type ContentPayload = {
@@ -321,7 +321,7 @@ export type VectorsPayload = {
   };
 };
 
-export type VerbaDocument = {
+export type RagitDocument = {
   title: string;
   metadata: string;
   extension: string;
@@ -330,7 +330,7 @@ export type VerbaDocument = {
   meta: any;
 };
 
-export type VerbaChunk = {
+export type RagitChunk = {
   content: string;
   chunk_id: number;
   doc_uuid: string;
@@ -363,12 +363,12 @@ export type VectorGroup = {
 };
 
 export type VectorChunk = {
-  vector: VerbaVector;
+  vector: RagitVector;
   chunk_id: string;
   uuid: string;
 };
 
-export type VerbaVector = {
+export type RagitVector = {
   x: number;
   y: number;
   z: number;
@@ -480,7 +480,7 @@ export const LightTheme: Theme = {
     description: "First Message",
   },
   image: {
-    src: "https://github.com/weaviate/Ragit/blob/main/img/verba_icon.png?raw=true",
+    src: "https://github.com/weaviate/Ragit/blob/main/img/ragit_icon.png?raw=true",
     type: "image",
     description: "Logo",
   },
@@ -550,7 +550,7 @@ export const DarkTheme: Theme = {
   },
   image: {
     ...LightTheme.image,
-    src: "https://github.com/weaviate/Ragit/blob/main/img/verba_icon.png?raw=true",
+    src: "https://github.com/weaviate/Ragit/blob/main/img/ragit_icon.png?raw=true",
   },
   primary_color: { ...LightTheme.primary_color, color: "#BB86FC" },
   secondary_color: { ...LightTheme.secondary_color, color: "#008F82" },

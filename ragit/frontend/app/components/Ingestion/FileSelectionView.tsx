@@ -14,7 +14,7 @@ import { closeOnClick } from "@/app/util";
 
 import UserModalComponent from "../Navigation/UserModal";
 
-import VerbaButton from "../Navigation/VerbaButton";
+import RagitButton from "../Navigation/RagitButton";
 
 import { FileMap } from "@/app/types";
 import { RAGConfig } from "@/app/types";
@@ -218,7 +218,7 @@ const FileSelectionView: React.FC<FileSelectionViewProps> = ({
   return (
     <div className="flex flex-col gap-2 w-full">
       {/* FileSelection Header */}
-      <div className="bg-bg-alt-verba rounded-2xl flex gap-2 p-3 items-center justify-end lg:justify-between h-min w-full">
+      <div className="bg-bg-alt-ragit rounded-2xl flex gap-2 p-3 items-center justify-end lg:justify-between h-min w-full">
         <div className="hidden lg:flex gap-2 justify-start ">
           <InfoComponent
             tooltip_text="Upload your data through this interface into Ragit. You can select individual files, directories or add URL to fetch data from."
@@ -228,7 +228,7 @@ const FileSelectionView: React.FC<FileSelectionViewProps> = ({
         <div className="flex gap-3 justify-center lg:justify-end">
           <div className="dropdown dropdown-hover">
             <label tabIndex={0}>
-              <VerbaButton
+              <RagitButton
                 title="Files"
                 Icon={IoMdAddCircle}
                 onClick={() => document.getElementById("files_upload")?.click()}
@@ -265,7 +265,7 @@ const FileSelectionView: React.FC<FileSelectionViewProps> = ({
 
           <div className="dropdown dropdown-hover">
             <label tabIndex={0}>
-              <VerbaButton title="Directory" Icon={GoFileDirectoryFill} />
+              <RagitButton title="Directory" Icon={GoFileDirectoryFill} />
             </label>
             <ul
               tabIndex={0}
@@ -299,7 +299,7 @@ const FileSelectionView: React.FC<FileSelectionViewProps> = ({
 
           <div className="dropdown dropdown-hover">
             <label tabIndex={0}>
-              <VerbaButton title="URL" Icon={IoMdAddCircle} />
+              <RagitButton title="URL" Icon={IoMdAddCircle} />
             </label>
             <input id={"url_upload"} type="file" className="hidden" />
             <ul
@@ -326,7 +326,7 @@ const FileSelectionView: React.FC<FileSelectionViewProps> = ({
       </div>
 
       {/* File List */}
-      <div className="bg-bg-alt-verba rounded-2xl flex flex-col gap-3 p-6 items-center justify-start h-full w-full overflow-auto">
+      <div className="bg-bg-alt-ragit rounded-2xl flex flex-col gap-3 p-6 items-center justify-start h-full w-full overflow-auto">
         {Object.entries(fileMap).map(([key, fileData]) => (
           <FileComponent
             key={"FileComponent_" + key}
@@ -341,22 +341,22 @@ const FileSelectionView: React.FC<FileSelectionViewProps> = ({
 
       {/* Import Footer */}
       {socketStatus === "ONLINE" ? (
-        <div className="bg-bg-alt-verba rounded-2xl flex gap-2 p-3 items-center justify-end h-min w-full">
+        <div className="bg-bg-alt-ragit rounded-2xl flex gap-2 p-3 items-center justify-end h-min w-full">
           <div className="flex flex-wrap gap-3 justify-end">
             {selectedFileData && (
-              <VerbaButton
+              <RagitButton
                 title="Import Selected"
                 Icon={FaFileImport}
                 onClick={importSelected}
               />
             )}
-            <VerbaButton
+            <RagitButton
               title="Import All"
               Icon={FaFileImport}
               onClick={importAll}
             />
 
-            <VerbaButton
+            <RagitButton
               title="Clear Files"
               Icon={MdCancel}
               onClick={openDeleteModal}
@@ -364,11 +364,11 @@ const FileSelectionView: React.FC<FileSelectionViewProps> = ({
           </div>
         </div>
       ) : (
-        <div className="bg-bg-alt-verba rounded-2xl flex gap-2 p-3 items-center justify-end h-min w-full">
+        <div className="bg-bg-alt-ragit rounded-2xl flex gap-2 p-3 items-center justify-end h-min w-full">
           <div className="flex gap-3 justify-end">
             <button
               onClick={reconnect}
-              className="flex btn border-none text-text-verba bg-button-verba hover:bg-button-hover-verba gap-2 items-center"
+              className="flex btn border-none text-text-ragit bg-button-ragit hover:bg-button-hover-ragit gap-2 items-center"
             >
               <TbPlugConnected size={15} />
               <p>Reconnecting...</p>

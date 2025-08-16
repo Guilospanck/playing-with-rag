@@ -1,5 +1,5 @@
 import { FormattedDocument } from "@/app/types";
-import { VerbaVector } from "@/app/types";
+import { RagitVector } from "@/app/types";
 import * as THREE from "three";
 
 export function splitDocument(
@@ -104,7 +104,7 @@ export function normalize(value: number, min: number, max: number): number {
 }
 
 export function vectorToColor(
-  vector: VerbaVector,
+  vector: RagitVector,
   minX: number,
   maxX: number,
   minY: number,
