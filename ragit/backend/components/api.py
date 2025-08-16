@@ -11,7 +11,7 @@ from starlette.websockets import WebSocketDisconnect
 from wasabi import msg  # type: ignore[import]
 from weaviate.client import WeaviateAsyncClient
 
-from backend import verba_manager
+from backend import ragit_manager
 from backend.env import load_env
 from backend.server.helpers import BatchManager, LoggerManager
 from backend.server.types import (
@@ -49,9 +49,9 @@ if production_key:
 else:
     production = "Local"
 
-manager = verba_manager.RagitManager()
+manager = ragit_manager.RagitManager()
 
-client_manager = verba_manager.ClientManager()
+client_manager = ragit_manager.ClientManager()
 
 ### Lifespan
 
@@ -156,7 +156,7 @@ async def health_check():
 
 
 @app.post("/api/connect")
-async def connect_to_verba(payload: ConnectPayload):
+async def connect_to_ragit(payload: ConnectPayload):
     try:
         client = await client_manager.connect(payload.credentials, payload.port)
 
@@ -661,7 +661,7 @@ async def delete_document(payload: GetDocumentPayload):
 
 
 @app.post("/api/reset")
-async def reset_verba(payload: ResetPayload):
+async def reset_ragit(payload: ResetPayload):
     if production == "Demo":
         return JSONResponse(status_code=200, content={})
 

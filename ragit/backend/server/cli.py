@@ -3,7 +3,7 @@ import os
 import click
 import uvicorn
 
-from backend import verba_manager
+from backend import ragit_manager
 from backend.env import load_env
 from backend.server.types import Credentials
 
@@ -12,7 +12,7 @@ load_env()
 
 @click.group()
 def cli():
-    """Main command group for verba."""
+    """Main command group for ragit."""
     pass
 
 
@@ -72,7 +72,7 @@ def reset(url, deployment, full_reset):
     """
     import asyncio
 
-    manager = verba_manager.RagitManager()
+    manager = ragit_manager.RagitManager()
 
     async def async_reset():
         if url is not None:

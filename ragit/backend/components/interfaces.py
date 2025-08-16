@@ -79,7 +79,7 @@ class Embedding(RagitComponent):
         self.max_batch_size = 128
 
     async def vectorize(self, config: dict, content: list[str]) -> list[float]:
-        """Embed verba documents and its chunks to Weaviate
+        """Embed ragit documents and its chunks to Weaviate
         @parameter: config : dict - Embedder Configuration
         @parameter: content : list[str] - List of strings to embed
         @return: list[float] - List of embeddings
