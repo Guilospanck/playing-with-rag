@@ -39,8 +39,8 @@ from backend.server.types import (
 load_env()
 
 # Check if runs in production
-production_key = os.environ.get("VERBA_PRODUCTION")
-tag = os.environ.get("VERBA_GOOGLE_TAG", "")
+production_key = os.environ.get("RAGIT_PRODUCTION")
+tag = os.environ.get("RAGIT_GOOGLE_TAG", "")
 
 
 if production_key:
@@ -142,7 +142,7 @@ async def health_check():
     if production == "Local":
         deployments = await manager.get_deployments()
     else:
-        deployments = {"WEAVIATE_URL_VERBA": ""}
+        deployments = {"WEAVIATE_URL_RAGIT": ""}
 
     return JSONResponse(
         content={

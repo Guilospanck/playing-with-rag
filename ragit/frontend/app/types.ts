@@ -51,7 +51,7 @@ export type HealthPayload = {
   production: "Local" | "Demo" | "Production";
   gtag: string;
   deployments: {
-    WEAVIATE_URL_VERBA: string;
+    WEAVIATE_URL_RAGIT: string;
   };
   default_deployment: "Docker";
 };

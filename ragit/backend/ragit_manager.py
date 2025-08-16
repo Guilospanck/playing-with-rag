@@ -79,9 +79,9 @@ class RagitManager:
 
     async def get_deployments(self):
         deployments = {
-            "WEAVIATE_URL_VERBA": (
-                os.getenv("WEAVIATE_URL_VERBA")
-                if os.getenv("WEAVIATE_URL_VERBA")
+            "WEAVIATE_URL_RAGIT": (
+                os.getenv("WEAVIATE_URL_RAGIT")
+                if os.getenv("WEAVIATE_URL_RAGIT")
                 else ""
             ),
         }
@@ -389,7 +389,7 @@ class RagitManager:
     def verify_config(self, a: dict, b: dict) -> bool:
         # Check Settings ( RAG & Settings )
         try:
-            if os.getenv("VERBA_PRODUCTION") == "Demo":
+            if os.getenv("RAGIT_PRODUCTION") == "Demo":
                 return True
             for a_component_key, b_component_key in zip(a, b, strict=False):
                 if a_component_key != b_component_key:
@@ -766,7 +766,7 @@ class ClientManager:
         _credentials = credentials
 
         if not _credentials.url:
-            _credentials.url = os.environ.get("WEAVIATE_URL_VERBA", "")
+            _credentials.url = os.environ.get("WEAVIATE_URL_RAGIT", "")
 
         cred_hash = self.hash_credentials(_credentials)
 

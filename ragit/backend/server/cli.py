@@ -52,7 +52,7 @@ def start(port, host, prod, workers):
 
 @click.option(
     "--url",
-    default=os.getenv("WEAVIATE_URL_VERBA"),
+    default=os.getenv("WEAVIATE_URL_RAGIT"),
     help="Weaviate URL",
 )
 @click.option(

@@ -55,7 +55,7 @@ except Exception:
 
 ### Add new components here ###
 
-production = os.getenv("VERBA_PRODUCTION")
+production = os.getenv("RAGIT_PRODUCTION")
 if production != "Production":
     readers = [
         BasicReader(),
@@ -103,9 +103,9 @@ else:
 
 class WeaviateManager:
     def __init__(self):
-        self.document_collection_name = "VERBA_DOCUMENTS"
-        self.config_collection_name = "VERBA_CONFIGURATION"
-        self.suggestion_collection_name = "VERBA_SUGGESTIONS"
+        self.document_collection_name = "RAGIT_DOCUMENTS"
+        self.config_collection_name = "RAGIT_CONFIGURATION"
+        self.suggestion_collection_name = "RAGIT_SUGGESTIONS"
         self.embedding_table = {}
 
     ### Connection Handling
@@ -205,7 +205,7 @@ class WeaviateManager:
 
     async def verify_embedding_collection(self, client: WeaviateAsyncClient, embedder):
         if embedder not in self.embedding_table:
-            self.embedding_table[embedder] = "VERBA_Embedding_" + re.sub(
+            self.embedding_table[embedder] = "RAGIT_Embedding_" + re.sub(
                 r"[^a-zA-Z0-9]", "_", embedder
             )
             return await self.verify_collection(client, self.embedding_table[embedder])
@@ -214,7 +214,7 @@ class WeaviateManager:
 
     async def verify_cache_collection(self, client: WeaviateAsyncClient, embedder):
         if embedder not in self.embedding_table:
-            self.embedding_table[embedder] = "VERBA_Cache_" + re.sub(
+            self.embedding_table[embedder] = "RAGIT_Cache_" + re.sub(
                 r"[^a-zA-Z0-9]", "_", embedder
             )
             return await self.verify_collection(client, self.embedding_table[embedder])
@@ -228,7 +228,7 @@ class WeaviateManager:
             if embedder.check_available(environment_variables, libraries):
                 if "Model" in embedder.config:
                     for _embedder in embedder.config["Model"].values:
-                        self.embedding_table[_embedder] = "VERBA_Embedding_" + re.sub(
+                        self.embedding_table[_embedder] = "RAGIT_Embedding_" + re.sub(
                             r"[^a-zA-Z0-9]", "_", _embedder
                         )
                         await self.verify_collection(
@@ -396,7 +396,7 @@ class WeaviateManager:
     async def delete_all(self, client: WeaviateAsyncClient):
         node_payload, collection_payload = await self.get_metadata(client)
         for collection in collection_payload["collections"]:
-            if "VERBA" in collection["name"]:
+            if "RAGIT" in collection["name"]:
                 await client.collections.delete(collection["name"])
 
     async def get_documents(

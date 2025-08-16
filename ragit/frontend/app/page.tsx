@@ -76,7 +76,7 @@ export default function Home() {
         setIsHealthy(true);
         setCredentials({
           deployment: "Docker",
-          url: health_data.deployments.WEAVIATE_URL_VERBA,
+          url: health_data.deployments.WEAVIATE_URL_RAGIT,
           default_deployment: health_data.default_deployment,
         });
       } else {
