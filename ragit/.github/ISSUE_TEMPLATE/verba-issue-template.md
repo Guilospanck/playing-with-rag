@@ -14,7 +14,7 @@ assignees: ""
 
 <!-- Please specify how you installed Ragit. Please always make sure to install Ragit in a clean python environment and have at least 3.10.0 installed -->
 
-- [ ] pip install goldenverba
+- [ ] pip install backend
 - [ ] pip install from source
 - [ ] Docker installation
 

@@ -66,7 +66,7 @@ huggingface = [
 Homepage = "https://github.com/Guilospanck/playing-with-rag"
 
 [project.scripts]
-ragit = "goldenverba.server.cli:cli"
+ragit = "backend.server.cli:cli"
 
 [tool.setuptools]
 include-package-data = true
