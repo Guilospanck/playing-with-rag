@@ -744,7 +744,7 @@ class ClientManager:
         self.locks: dict[str, asyncio.Lock] = {}
 
     def hash_credentials(self, credentials: Credentials) -> str:
-        cred_string = f"{credentials.deployment}:{credentials.url}:{credentials.key}"
+        cred_string = f"{credentials.deployment}:{credentials.url}"
         return hashlib.sha256(cred_string.encode()).hexdigest()
 
     def get_or_create_lock(self, cred_hash: str) -> asyncio.Lock:
@@ -763,7 +763,7 @@ class ClientManager:
 
         _credentials = credentials
 
-        if not _credentials.url and not _credentials.key:
+        if not _credentials.url:
             _credentials.url = os.environ.get("WEAVIATE_URL_VERBA", "")
 
         cred_hash = self.hash_credentials(_credentials)

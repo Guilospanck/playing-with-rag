@@ -7,7 +7,6 @@ from pydantic import BaseModel
 class Credentials(BaseModel):
     deployment: Literal["Docker"]
     url: str
-    key: str
 
 
 class GeneratorResult(BaseModel):
