@@ -12,7 +12,7 @@ itself will be running locally. This is quicker to develop as you don't have to
 rebuild the Docker image each time.
 
 ```shell
-cp ./verba/.env.dev.example ./verba/.env.dev
+cp ./ragit/.env.dev.example ./ragit/.env.dev
 ```
 
 ### Developing with RAGit in Docker
@@ -20,7 +20,7 @@ cp ./verba/.env.dev.example ./verba/.env.dev
 In this mode everything is running dockerised.
 
 ```shell
-cp ./verba/.env.example ./verba/.env
+cp ./ragit/.env.example ./ragit/.env
 ```
 
 ## Running
@@ -34,7 +34,7 @@ just docker-up
 This will start `weaviate` (with its "addons"), `ollama` and `ragit`.
 
 - You can access your local Weaviate instance at `localhost:8080`
-- You can access the Verba frontend at `localhost:8000`
+- You can access the Ragit frontend at `localhost:8000`
 
 To terminate:
 

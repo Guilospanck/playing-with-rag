@@ -14,7 +14,7 @@ init_venv(){
 }
 
 install_dev_deps(){
-	python -m pip install -e "./verba[dev]"
+	python -m pip install -e "./ragit[dev]"
 }
 
 build_frontend(){
@@ -44,7 +44,7 @@ init(){
 	# Trap CTRL+C for the duration of init()
 	trap cleanup SIGINT
 
-	cd ./verba/frontend && build_frontend
+	cd ./ragit/frontend && build_frontend
 	cd ../../
 	export ENV="dev"
 	init_env_and_install_dev_deps
@@ -56,18 +56,26 @@ init(){
 
 format() {
 	init_venv
-	black ./verba
+	black ./ragit
 }
 
 types() {
 	echo "Skipping types. Too many problems with Python..."
 	# init_venv
-	# mypy ./verba
+	# mypy ./ragit
+}
+
+lint_frontend(){
+	cd ./ragit/frontend && npm run lint --fix
+}
+
+lint_backend(){
+	echo "Skipping linting for Python. Too many problems..."
+	# init_venv
+	# ruff check ./ragit --fix
 }
 
 lint() {
-	echo "Skipping linting for Python. Too many problems..."
-	# init_venv
-	# ruff check ./verba --fix
-	cd ./verba/frontend && npm run lint --fix
+	lint_backend
+	lint_frontend
 }

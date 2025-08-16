@@ -4,13 +4,13 @@ docker-up:
 docker-down:
 	docker-compose down
 
-# checks logs of verba
+# checks logs of ragit
 docker-logs:
-	docker-compose logs verba -f
+	docker-compose logs ragit -f
 
-# Bash exec into verba
+# Bash exec into ragit
 docker-exec:
-	docker-compose exec verba bash
+	docker-compose exec ragit bash
 
 local-docker-up:
 	docker-compose -f docker-compose.dev.yml up -d --build --remove-orphans 
@@ -39,4 +39,7 @@ types:
 	bash -c 'source ./scripts/run.dev.sh && types'
 
 pre-pr: format lint types
+
+lint-frontend:
+	bash -c 'source ./scripts/run.dev.sh && lint_frontend'
 

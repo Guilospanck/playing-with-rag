@@ -117,15 +117,15 @@ services:
       i2v-neural:
         condition: service_started
 
-  verba:
-    container_name: verba
+  ragit:
+    container_name: ragit
     build:
-      context: ./verba/
+      context: ./ragit/
       dockerfile: Dockerfile
     ports:
       - 8000:8000
     volumes:
-      - ./verba/data:/data/
+      - ./ragit/data:/data/
     healthcheck:
       test: wget --no-verbose --tries=3 --spider http://localhost:8000 || exit 1
       interval: 5s
