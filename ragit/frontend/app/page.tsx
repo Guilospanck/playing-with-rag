@@ -45,7 +45,7 @@ export default function Home() {
     Weaviate: WeaviateTheme,
     WCD: WCDTheme,
   });
-  const [selectedTheme, setSelectedTheme] = useState<Theme>(themes["Weaviate"]);
+  const [selectedTheme, setSelectedTheme] = useState<Theme>(themes["WCD"]);
 
   const fontKey = selectedTheme.font.value as FontKey; // Safely cast if you're sure, or use a check
   const fontClassName = fontKey ? fonts[fontKey]?.className || "" : "";
@@ -185,11 +185,10 @@ export default function Home() {
 
           <div>
             <Navbar
-              production={production}
               title={selectedTheme.title.text}
               subtitle={selectedTheme.subtitle.text}
               imageSrc={selectedTheme.image.src}
-              version="v2.0.0"
+              version="v1.0.0"
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
             />

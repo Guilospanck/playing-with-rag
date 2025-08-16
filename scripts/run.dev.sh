@@ -17,10 +17,6 @@ install_dev_deps(){
 	python -m pip install -e "./ragit[dev]"
 }
 
-build_frontend(){
-	npm run build
-}
-
 init_env_and_install_dev_deps(){
 	init_venv
 	install_dev_deps	
@@ -44,7 +40,7 @@ init(){
 	# Trap CTRL+C for the duration of init()
 	trap cleanup SIGINT
 
-	cd ./ragit/frontend && build_frontend
+	build_frontend
 	cd ../../
 	export ENV="dev"
 	init_env_and_install_dev_deps
@@ -67,6 +63,10 @@ types() {
 
 lint_frontend(){
 	cd ./ragit/frontend && npm run lint --fix
+}
+
+build_frontend(){
+	cd ./ragit/frontend && npm run build
 }
 
 lint_backend(){

@@ -43,3 +43,6 @@ pre-pr: format lint types
 lint-frontend:
 	bash -c 'source ./scripts/run.dev.sh && lint_frontend'
 
+build-frontend:
+	bash -c 'source ./scripts/run.dev.sh && build_frontend'
+

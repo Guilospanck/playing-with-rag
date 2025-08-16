@@ -20,7 +20,6 @@ interface NavbarProps {
   subtitle: string;
   version: string;
   currentPage: string;
-  production: "Local" | "Demo" | "Production";
   setCurrentPage: (
     page: "CHAT" | "DOCUMENTS" | "STATUS" | "ADD" | "SETTINGS" | "RAG",
   ) => void;
@@ -32,7 +31,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   subtitle,
   currentPage,
   setCurrentPage,
-  production,
 }) => {
   return (
     <div className="flex justify-between items-center mb-10">
