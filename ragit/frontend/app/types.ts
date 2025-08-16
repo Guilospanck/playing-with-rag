@@ -480,7 +480,7 @@ export const LightTheme: Theme = {
     description: "First Message",
   },
   image: {
-    src: "https://github.com/weaviate/Ragit/blob/main/img/git.png?raw=true",
+    src: "out/git.png",
     type: "image",
     description: "Logo",
   },
@@ -550,7 +550,7 @@ export const DarkTheme: Theme = {
   },
   image: {
     ...LightTheme.image,
-    src: "https://github.com/weaviate/Ragit/blob/main/img/git.png?raw=true",
+    src: "out/git.png",
   },
   primary_color: { ...LightTheme.primary_color, color: "#BB86FC" },
   secondary_color: { ...LightTheme.secondary_color, color: "#008F82" },
@@ -581,7 +581,7 @@ export const WCDTheme: Theme = {
   },
   image: {
     ...LightTheme.image,
-    src: "https://github.com/weaviate/Ragit/blob/1.0.0/frontend/public/git.png?raw=true",
+    src: "out/git.png",
   },
   primary_color: { ...LightTheme.primary_color, color: "#BF40C5" },
   secondary_color: { ...LightTheme.secondary_color, color: "#28395B" },
@@ -612,7 +612,7 @@ export const WeaviateTheme: Theme = {
   },
   image: {
     ...LightTheme.image,
-    src: "https://github.com/weaviate/Ragit/blob/1.0.0/frontend/public/git.png?raw=true",
+    src: "out/git.png",
   },
   primary_color: { ...LightTheme.primary_color, color: "#9bfc88" },
   secondary_color: { ...LightTheme.secondary_color, color: "#8bffe7" },
