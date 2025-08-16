@@ -110,19 +110,6 @@ class WeaviateManager:
 
     ### Connection Handling
 
-    async def connect_to_cluster(self, w_url, w_key):
-        if w_url is not None and w_key is not None:
-            msg.info(f"Connecting to Weaviate Cluster {w_url} with Auth")
-            return weaviate.use_async_with_weaviate_cloud(
-                cluster_url=w_url,
-                auth_credentials=AuthApiKey(w_key),
-                additional_config=AdditionalConfig(
-                    timeout=Timeout(init=60, query=300, insert=300)
-                ),
-            )
-        else:
-            raise Exception("No URL or API Key provided")
-
     async def connect_to_docker(self, w_url):
         msg.info(f"Connecting to Weaviate Docker at {w_url}")
         return weaviate.use_async_with_local(
@@ -132,60 +119,15 @@ class WeaviateManager:
             ),
         )
 
-    async def connect_to_custom(self, host, w_key, port):
-        # Extract the port from the host
-        msg.info("Connecting to Weaviate Custom")
-
-        if host is None or host == "":
-            raise Exception("No Host URL provided")
-
-        if w_key is None or w_key == "":
-            return weaviate.use_async_with_local(
-                host=host,
-                port=int(port),
-                skip_init_checks=True,
-                additional_config=AdditionalConfig(
-                    timeout=Timeout(init=60, query=300, insert=300)
-                ),
-            )
-        else:
-            return weaviate.use_async_with_local(
-                host=host,
-                port=int(port),
-                skip_init_checks=True,
-                auth_credentials=AuthApiKey(w_key),
-                additional_config=AdditionalConfig(
-                    timeout=Timeout(init=60, query=300, insert=300)
-                ),
-            )
-
-    async def connect_to_embedded(self):
-        msg.info("Connecting to Weaviate Embedded")
-        return weaviate.use_async_with_embedded(
-            additional_config=AdditionalConfig(
-                timeout=Timeout(init=60, query=300, insert=300)
-            )
-        )
-
     async def connect(
-        self, deployment: str, weaviateURL: str, weaviateAPIKey: str, port: str = "8080"
+        self, deployment: str, weaviateURL: str, port: str = "8080"
     ) -> WeaviateAsyncClient:
         try:
 
-            if deployment == "Weaviate":
-                if weaviateURL == "" and os.environ.get("WEAVIATE_URL_VERBA"):
-                    weaviateURL = os.environ.get("WEAVIATE_URL_VERBA")
-                if weaviateAPIKey == "" and os.environ.get("WEAVIATE_API_KEY_VERBA"):
-                    weaviateAPIKey = os.environ.get("WEAVIATE_API_KEY_VERBA")
-                client = await self.connect_to_cluster(weaviateURL, weaviateAPIKey)
-            elif deployment == "Docker":
+            if deployment == "Docker":
                 client = await self.connect_to_docker(
                     "weaviate" if os.getenv("ENV") != "dev" else "localhost"
                 )
-            elif deployment == "Local":
-                client = await self.connect_to_embedded()
-            elif deployment == "Custom":
-                client = await self.connect_to_custom(weaviateURL, weaviateAPIKey, port)
             else:
                 raise Exception(f"Invalid deployment type: {deployment}")
 

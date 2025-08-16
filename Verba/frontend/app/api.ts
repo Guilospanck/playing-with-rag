@@ -76,7 +76,6 @@ export const fetchHealth = (): Promise<HealthPayload | null> =>
 export const connectToVerba = async (
   deployment: string,
   url: string,
-  apiKey: string,
   port: string,
 ): Promise<ConnectPayload | null> => {
   const host = await detectHost();
@@ -89,7 +88,6 @@ export const connectToVerba = async (
       credentials: {
         deployment: deployment,
         url: url,
-        key: apiKey,
       },
       port: port,
     }),

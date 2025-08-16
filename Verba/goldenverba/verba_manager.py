@@ -54,7 +54,7 @@ class VerbaManager:
         start_time = asyncio.get_event_loop().time()
         try:
             client = await self.weaviate_manager.connect(
-                credentials.deployment, credentials.url, credentials.key, port
+                credentials.deployment, credentials.url, port
             )
         except Exception as e:
             raise e
@@ -80,11 +80,6 @@ class VerbaManager:
             "WEAVIATE_URL_VERBA": (
                 os.getenv("WEAVIATE_URL_VERBA")
                 if os.getenv("WEAVIATE_URL_VERBA")
-                else ""
-            ),
-            "WEAVIATE_API_KEY_VERBA": (
-                os.getenv("WEAVIATE_API_KEY_VERBA")
-                if os.getenv("WEAVIATE_API_KEY_VERBA")
                 else ""
             ),
         }
@@ -770,7 +765,6 @@ class ClientManager:
 
         if not _credentials.url and not _credentials.key:
             _credentials.url = os.environ.get("WEAVIATE_URL_VERBA", "")
-            _credentials.key = os.environ.get("WEAVIATE_API_KEY_VERBA", "")
 
         cred_hash = self.hash_credentials(_credentials)
 

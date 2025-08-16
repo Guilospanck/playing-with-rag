@@ -5,7 +5,6 @@ import { PresentationControls, useGLTF, Float } from "@react-three/drei";
 import GUI from "lil-gui";
 
 import { FaDatabase } from "react-icons/fa";
-import { FaKey } from "react-icons/fa";
 import { GrConnect } from "react-icons/gr";
 
 import { connectToVerba } from "@/app/api";
@@ -134,7 +133,6 @@ const LoginView: React.FC<LoginViewProps> = ({
   >("Local");
 
   const [weaviateURL, setWeaviateURL] = useState(credentials.url);
-  const [weaviateAPIKey, setWeaviateAPIKey] = useState(credentials.key);
   const [port, setPort] = useState("8080");
 
   useEffect(() => {
@@ -155,12 +153,7 @@ const LoginView: React.FC<LoginViewProps> = ({
   const connect = async (deployment: "Docker") => {
     setErrorText("");
     setIsConnecting(true);
-    const response = await connectToVerba(
-      deployment,
-      weaviateURL,
-      weaviateAPIKey,
-      port,
-    );
+    const response = await connectToVerba(deployment, weaviateURL, port);
     if (response) {
       if (!("error" in response)) {
         setIsLoggedIn(false);
@@ -176,7 +169,6 @@ const LoginView: React.FC<LoginViewProps> = ({
         setIsLoggedIn(true);
         setCredentials({
           deployment: deployment,
-          key: weaviateAPIKey,
           url: weaviateURL,
           default_deployment: credentials.default_deployment,
         });
@@ -287,18 +279,6 @@ const LoginView: React.FC<LoginViewProps> = ({
                     )}
                   </div>
 
-                  <label className="input flex items-center gap-2 border-none shadow-md bg-bg-verba mt-4">
-                    <FaKey className="text-text-alt-verba" />
-                    <input
-                      type="password"
-                      name="current-password"
-                      value={weaviateAPIKey}
-                      onChange={(e) => setWeaviateAPIKey(e.target.value)}
-                      placeholder="API Key"
-                      className="grow bg-button-verba text-text-alt-verba hover:text-text-verba w-full"
-                      autoComplete="current-password"
-                    />
-                  </label>
                   <div className="flex justify-between gap-4 mt-4">
                     <div className="flex flex-col w-full gap-2">
                       <div className="flex flex-col justify-start gap-2 w-full">

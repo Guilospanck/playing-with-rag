@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 
 class Credentials(BaseModel):
-    deployment: Literal["Weaviate", "Docker", "Local", "Custom"]
+    deployment: Literal["Docker"]
     url: str
     key: str
 

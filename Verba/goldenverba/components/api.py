@@ -142,7 +142,7 @@ async def health_check():
     if production == "Local":
         deployments = await manager.get_deployments()
     else:
-        deployments = {"WEAVIATE_URL_VERBA": "", "WEAVIATE_API_KEY_VERBA": ""}
+        deployments = {"WEAVIATE_URL_VERBA": ""}
 
     return JSONResponse(
         content={

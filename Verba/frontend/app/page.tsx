@@ -57,7 +57,6 @@ export default function Home() {
   const [credentials, setCredentials] = useState<Credentials>({
     deployment: "Docker",
     url: "",
-    key: "",
     default_deployment: "Docker",
   });
 
@@ -78,7 +77,6 @@ export default function Home() {
         setCredentials({
           deployment: "Docker",
           url: health_data.deployments.WEAVIATE_URL_VERBA,
-          key: health_data.deployments.WEAVIATE_API_KEY_VERBA,
           default_deployment: health_data.default_deployment,
         });
       } else {
@@ -252,7 +250,7 @@ export default function Home() {
             className={`footer footer-center p-4 mt-8 bg-bg-verba text-text-alt-verba transition-all duration-1500 delay-1000`}
           >
             <aside>
-              <p>Build with ♥ and Weaviate © 2024</p>
+              <p>Build with ♥ by Guilospanck © 2025</p>
             </aside>
           </div>
         </div>

@@ -56,14 +56,9 @@ def start(port, host, prod, workers):
     help="Weaviate URL",
 )
 @click.option(
-    "--api_key",
-    default=os.getenv("WEAVIATE_API_KEY_VERBA"),
-    help="Weaviate API Key",
-)
-@click.option(
     "--deployment",
-    default="",
-    help="Deployment (Local, Weaviate, Docker)",
+    default="Docker",
+    help="Deployment (Docker)",
 )
 @click.option(
     "--full_reset",
@@ -71,7 +66,7 @@ def start(port, host, prod, workers):
     help="Full reset (True, False)",
 )
 @cli.command()
-def reset(url, api_key, deployment, full_reset):
+def reset(url, deployment, full_reset):
     """
     Run the FastAPI application.
     """
@@ -80,24 +75,15 @@ def reset(url, api_key, deployment, full_reset):
     manager = verba_manager.VerbaManager()
 
     async def async_reset():
-        if url is not None and api_key is not None:
-            if deployment == "" or deployment == "Weaviate":
+        if url is not None:
+            if deployment == "Docker":
                 client = await manager.connect(
-                    Credentials(deployment="Weaviate", url=url, key=api_key)
-                )
-            elif deployment == "Docker":
-                client = await manager.connect(
-                    Credentials(deployment="Docker", url=url, key=api_key)
+                    Credentials(deployment="Docker", url=url)
                 )
             else:
                 raise ValueError("Invalid deployment")
         else:
-            if deployment == "" or deployment == "Local":
-                client = await manager.connect(
-                    Credentials(deployment="Local", url="", key="")
-                )
-            else:
-                raise ValueError("Invalid deployment")
+            raise ValueError("Invalid deployment")
 
         if not full_reset:
             await manager.reset_rag_config(client)
