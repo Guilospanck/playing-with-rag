@@ -3,6 +3,7 @@ import json
 import os
 import re
 from datetime import datetime
+from collections.abc import AsyncGenerator
 
 import weaviate
 from sklearn.decomposition import PCA
@@ -46,7 +47,7 @@ from goldenverba.components.reader.GitReader import GitReader
 # Import Retrievers
 from goldenverba.components.retriever.WindowRetriever import WindowRetriever
 from goldenverba.server.helpers import LoggerManager
-from goldenverba.server.types import FileConfig, FileStatus
+from goldenverba.server.types import FileConfig, FileStatus, GeneratorResult
 
 try:
     import tiktoken
@@ -1089,7 +1090,9 @@ class GeneratorManager:
             generator.name: generator for generator in generators
         }
 
-    async def generate_stream(self, rag_config, query, context, conversation):
+    async def generate_stream(
+        self, rag_config, query, context, conversation
+    ) -> AsyncGenerator[GeneratorResult, None]:
         """Generate a stream of response dicts based on a list of queries and list of contexts, and includes conversational context
         @parameter: queries : list[str] - List of queries
         @parameter: context : list[str] - List of contexts

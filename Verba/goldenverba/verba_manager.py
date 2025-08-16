@@ -6,6 +6,7 @@ import math
 import os
 from copy import deepcopy
 from datetime import datetime
+from collections.abc import AsyncGenerator
 
 from wasabi import msg
 from weaviate.client import WeaviateAsyncClient
@@ -26,6 +27,7 @@ from goldenverba.server.types import (
     Credentials,
     FileConfig,
     FileStatus,
+    GeneratorResult,
 )
 
 load_env()
@@ -728,7 +730,7 @@ class VerbaManager:
         query: str,
         context: str,
         conversation: list[dict],
-    ):
+    ) -> AsyncGenerator[GeneratorResult, None]:
 
         async for result in self.generator_manager.generate_stream(
             rag_config, query, context, conversation

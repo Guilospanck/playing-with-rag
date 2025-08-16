@@ -219,10 +219,11 @@ async def websocket_generate_stream(websocket: WebSocket):
                 payload.context,
                 payload.conversation,
             ):
-                full_text += chunk["message"]
-                if chunk["finish_reason"] == "stop":
-                    chunk["full_text"] = full_text
-                await websocket.send_json(chunk)
+                chunk_dict = chunk.dict()
+                full_text += chunk_dict["message"]
+                if chunk_dict["finish_reason"] == "stop":
+                    chunk_dict["full_text"] = full_text
+                await websocket.send_json(chunk_dict)
 
         except WebSocketDisconnect:
             msg.warn("WebSocket connection closed by client.")
